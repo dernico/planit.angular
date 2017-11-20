@@ -1,0 +1,11 @@
+<h1>Plannings</h1>
+<ul>
+    <li *ngFor="let plan of plannings">
+        <p (click)="goto(plan._id)">{{plan.title}}</p>
+    </li>
+</ul>
+
+<h1>New</h1>
+<label>Name:</label>
+<input [(ngModel)]="name" />
+<button (click)="add(name)">Add</button>

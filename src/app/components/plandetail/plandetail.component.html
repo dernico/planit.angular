@@ -1,0 +1,17 @@
+<div *ngIf="plan">
+    <h1>Planning - {{plan.title}}</h1>
+</div>
+
+<label>Startdate</label>
+<input 
+    [(ngModel)]="plan.startDate"
+    (ngModelChange)="dateChanged()"
+    type="date" 
+    placeholder="When do you wanna start" />
+
+<label>Enddate</label>
+<input 
+    [(ngModel)]="plan.endDate"
+    (ngModelChange)="dateChanged()"
+    type="date"
+    placeholder="When do you have to go" />
