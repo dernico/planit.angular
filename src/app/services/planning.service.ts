@@ -17,6 +17,7 @@ export class PlanningService {
                 plannings[0] = planning;
             }
         }
+        this.setPlannings(plannings);
     }
 
     public getPlannings() : Array<Planning> {

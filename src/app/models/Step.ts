@@ -1,6 +1,9 @@
 import { Todo } from './Todo'
 
 export class Step {
+    constructor(){
+        this.todos = [];
+    }
     public _id; 
     public title: String;
     public description: String;

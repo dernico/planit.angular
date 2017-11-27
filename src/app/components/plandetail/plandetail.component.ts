@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../models/Planing';
 import { PlanningService } from '../../services/planning.service';
+import { Step } from '../../models/Step';
+import { Todo } from '../../models/Todo';
 
 @Component({
   selector: 'app-plandetail',
@@ -31,22 +33,53 @@ export class PlanDetailComponent implements OnInit {
     .params
     .subscribe(params => {
         this.plan = this.planningService.getPlanning(params.id);
-        this.startDate = new Date(this.plan.startDate).toDateString();
-        this.endDate = new Date(this.plan.endDate).toDateString();
+        if(this.plan.steps == undefined){
+          this.plan.steps = [];
+        }
     });
   }
 
-  dateChanged(){
-    var partialPlan = {
-      _id: this.plan._id,
-      startDate:  this.startDate,
-      endDate: this.endDate,
-    };
-    this.plan.startDate = this.startDate;
-    this.plan.endDate = this.endDate;
+  planChanged(){
+    this.updatePlan(this.plan);
+  }
 
-    this.planningService.setPlanning(this.plan);
-    this.http.post(this.baseUrl, partialPlan).subscribe((resp) => {
+  addStep(title, days){
+    var newStep = new Step();
+    newStep.title = title;
+    newStep.days = days;
+    this.plan.steps.push(newStep);
+    
+    this.updatePlan(this.plan);
+  }
+
+  removeStep(index){
+    this.plan.steps.splice(index, 1);
+
+    this.updatePlan(this.plan);
+  }
+
+  addTodo(title: string, step: Step){
+    var newTodo = new Todo();
+    newTodo.title = title;
+
+    //remove tmp field
+    //delete step.todoTitle;
+
+    step.todos.push(newTodo);
+    
+    this.updatePlan(this.plan);
+  }
+
+  removeTodo(index, step: Step){
+    step.todos.splice(index, 1);
+
+    this.updatePlan(this.plan);
+  }
+
+  private updatePlan(plan: Planning){
+
+    this.planningService.setPlanning(plan);
+    this.http.post(this.baseUrl, plan).subscribe((resp) => {
       console.log(resp);
     });
   }

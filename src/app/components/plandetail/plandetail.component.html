@@ -2,16 +2,41 @@
     <h1>Planning - {{plan.title}}</h1>
 </div>
 
-<label>Startdate</label>
-<input 
-    [(ngModel)]="plan.startDate"
-    (ngModelChange)="dateChanged()"
-    type="date" 
+<label>Start</label>
+<input [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;planChanged();" type="date"
     placeholder="When do you wanna start" />
 
-<label>Enddate</label>
-<input 
-    [(ngModel)]="plan.endDate"
-    (ngModelChange)="dateChanged()"
-    type="date"
-    placeholder="When do you have to go" />
+<label>End</label>
+<input [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();" type="date" placeholder="When do you have to go"
+/>
+
+<h2>Stops</h2>
+
+<input [(ngModel)]="stepTitle" placeholder="where do you wanna stop?" type="text" />
+<input [(ngModel)]="stepDays" placeholder="how many days you wann stop?" type="number" />
+<button (click)="addStep(stepTitle, stepDays)">Add</button>
+
+<div *ngIf="plan.steps">
+    <ul>
+        <li *ngFor="let step of plan.steps; let i = index;">
+            <div (click)="step.edit = true;" *ngIf="!step.edit">
+                <p>{{step.title}} ({{step.days}} days)</p>
+            </div>
+            <div *ngIf="step.edit">
+                <input [(ngModel)]="step.title" (ngModelChange)="planChanged();" />
+                <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+                <button (click)="step.edit = false;">Done</button>
+                <button (click)="removeStep(i);">Remove</button>
+            </div>
+            <ul>
+                <li *ngFor="let todo of step.todos; let i = index;">
+                    <span>{{todo.title}}</span><button (click)="removeTodo(i, step)">Remove</button>
+                </li>
+            </ul>
+            <div>
+                <input [(ngModel)]="step.todoTitle" placeholder="What's the next Todo .." type="text" />
+                <button (click)="addTodo(step.todoTitle, step);">add todo</button>
+            </div>
+        </li>
+    </ul>
+</div>
