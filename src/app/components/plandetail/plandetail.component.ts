@@ -13,9 +13,11 @@ import { Todo } from '../../models/Todo';
 })
 export class PlanDetailComponent implements OnInit {
   private baseUrl = 'http://localhost:4200/plannings';
+  private placesUrl = 'http://localhost:4200/places/autocomplete';
   private plan: Planning;
   private startDate;
   private endDate;
+  private suggestlist = [];
 
   constructor(
     private http: HttpClient,
@@ -52,6 +54,13 @@ export class PlanDetailComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
+  stepKeyUp(value){
+    var url = this.placesUrl + '?q=' + encodeURIComponent(value);
+    this.http.get(url).subscribe((res: any) => {
+      this.suggestlist = res.predictions;
+    });
+  }
+
   removeStep(index){
     this.plan.steps.splice(index, 1);
 
@@ -61,9 +70,6 @@ export class PlanDetailComponent implements OnInit {
   addTodo(title: string, step: Step){
     var newTodo = new Todo();
     newTodo.title = title;
-
-    //remove tmp field
-    //delete step.todoTitle;
 
     step.todos.push(newTodo);
     

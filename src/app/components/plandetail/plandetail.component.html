@@ -12,7 +12,18 @@
 
 <h2>Stops</h2>
 
-<input [(ngModel)]="stepTitle" placeholder="where do you wanna stop?" type="text" />
+<input  #box 
+        [(ngModel)]="stepTitle" 
+        (keyup)="stepKeyUp(box.value);" 
+        placeholder="where do you wanna stop?" 
+        type="text" 
+        list="suggest-list"
+        />
+
+<datalist id="suggest-list">
+    <option *ngFor="let suggest of suggestlist" value="{{suggest.structured_formatting.main_text}}"></option>
+</datalist>
+
 <input [(ngModel)]="stepDays" placeholder="how many days you wann stop?" type="number" />
 <button (click)="addStep(stepTitle, stepDays)">Add</button>
 
