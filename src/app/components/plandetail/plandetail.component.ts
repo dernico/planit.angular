@@ -5,6 +5,8 @@ import { Planning } from '../../models/Planing';
 import { PlanningService } from '../../services/planning.service';
 import { Step } from '../../models/Step';
 import { Todo } from '../../models/Todo';
+import { PlaceSuggestion } from '../../models/PlaceSuggestion';
+import { PlaceSearchResult } from '../../models/PlaceSearchResult';
 
 @Component({
   selector: 'app-plandetail',
@@ -13,11 +15,13 @@ import { Todo } from '../../models/Todo';
 })
 export class PlanDetailComponent implements OnInit {
   private baseUrl = 'http://localhost:4200/plannings';
-  private placesUrl = 'http://localhost:4200/places/autocomplete';
+  private placesAutocompleteUrl = 'http://localhost:4200/places/autocomplete';
+  private placesUrl = 'http://localhost:4200/places/search';
   private plan: Planning;
   private startDate;
   private endDate;
   private suggestlist = [];
+  private searchTimer:any;
 
   constructor(
     private http: HttpClient,
@@ -45,20 +49,29 @@ export class PlanDetailComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
-  addStep(title, days){
+  addStep(suggest: PlaceSearchResult, days){
     var newStep = new Step();
-    newStep.title = title;
+    newStep.title = suggest.name;
     newStep.days = days;
+    newStep.location = suggest.geometry.location;
     this.plan.steps.push(newStep);
     
     this.updatePlan(this.plan);
   }
 
   stepKeyUp(value){
-    var url = this.placesUrl + '?q=' + encodeURIComponent(value);
-    this.http.get(url).subscribe((res: any) => {
-      this.suggestlist = res.predictions;
-    });
+    clearTimeout(this.searchTimer);
+
+    this.searchTimer = setTimeout(() => {
+      var url = this.placesUrl + '?q=' + encodeURIComponent(value);
+      this.http.get(url).subscribe((res: any) => {
+        this.suggestlist = res.results;
+      });
+    }, 1000);
+  }
+  
+  displaySuggest(suggest: PlaceSearchResult){
+    return suggest ? suggest.name : suggest;
   }
 
   removeStep(index){

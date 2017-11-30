@@ -12,17 +12,23 @@
 
 <h2>Stops</h2>
 
-<input  #box 
+<mat-form-field>
+    <input 
+        matInput
+        [matAutocomplete]="suggestList"
+        #box 
         [(ngModel)]="stepTitle" 
         (keyup)="stepKeyUp(box.value);" 
-        placeholder="where do you wanna stop?" 
         type="text" 
-        list="suggest-list"
-        />
+        placeholder="where do you wanna stop?"
+        >
+</mat-form-field>
 
-<datalist id="suggest-list">
-    <option *ngFor="let suggest of suggestlist" value="{{suggest.structured_formatting.main_text}}"></option>
-</datalist>
+<mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
+    <mat-option *ngFor="let suggest of suggestlist" [value]="suggest">
+        {{ suggest.name }}
+    </mat-option>
+</mat-autocomplete>
 
 <input [(ngModel)]="stepDays" placeholder="how many days you wann stop?" type="number" />
 <button (click)="addStep(stepTitle, stepDays)">Add</button>

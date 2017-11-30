@@ -4,6 +4,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
+import {
+  MatAutocompleteModule, 
+  MatInputModule,
+  MatFormFieldModule,
+} from '@angular/material';
+
 import { AppRoutingModule } from './app.routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -30,6 +36,7 @@ import { PlanningService } from './services/planning.service';
   ],
   imports: [
     BrowserAnimationsModule,
+    MatAutocompleteModule, MatInputModule, MatFormFieldModule,
     FormsModule,
     BrowserModule,
     HttpClientModule,

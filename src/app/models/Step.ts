@@ -8,7 +8,7 @@ export class Step {
     public title: String;
     public description: String;
     public todos: Array<Todo>;
-    public location: {lat: String, lng: String};
+    public location: {lat: number, lng: number};
     public days: number;
     public order: number;
 }
