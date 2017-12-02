@@ -3,12 +3,43 @@
 </div>
 
 <label>Start</label>
-<input [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;planChanged();" type="date"
-    placeholder="When do you wanna start" />
+<mat-form-field>
+<input 
+    matInput
+    [matDatepicker]="startDatePicker"
+    [ngModel]="plan.startDate | date:'yyyy-MM-dd'" 
+    (ngModelChange)="plan.startDate=$event;planChanged();"
+    placeholder="When do you wanna start"
+    >
+</mat-form-field>
+<mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
+<mat-datepicker #startDatePicker></mat-datepicker>
+
+
+<!-- 
+<input 
+[matDatepicker]="startDatePicker"
+[ngModel]="plan.startDate | date:'yyyy-MM-dd'" 
+(ngModelChange)="plan.startDate=$event;planChanged();"
+type="date" 
+placeholder="When do you wanna start"
+>
+ -->
 
 <label>End</label>
-<input [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();" type="date" placeholder="When do you have to go"
-/>
+<mat-form-field>
+        <input 
+            matInput
+            [matDatepicker]="endDatePicker"
+            [ngModel]="plan.endDate | date:'yyyy-MM-dd'" 
+            (ngModelChange)="plan.endDate=$event;planChanged();"
+            placeholder="When do you have to go"
+            >
+        </mat-form-field>
+        <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+<!-- <input [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();" type="date" placeholder="When do you have to go"
+/> -->
 
 <h2>Stops</h2>
 
@@ -23,14 +54,26 @@
         placeholder="where do you wanna stop?"
         >
 </mat-form-field>
-
 <mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
     <mat-option *ngFor="let suggest of suggestlist" [value]="suggest">
         {{ suggest.name }}
     </mat-option>
 </mat-autocomplete>
 
-<input [(ngModel)]="stepDays" placeholder="how many days you wann stop?" type="number" />
+<mat-form-field>
+    <input 
+        matInput
+        [(ngModel)]="stepDays"
+        type="number" 
+        placeholder="How many days you wanna stop?"
+        >
+</mat-form-field>
+    <!-- <mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
+        <mat-option *ngFor="let suggest of suggestlist" [value]="suggest">
+            {{ suggest.name }}
+        </mat-option>
+    </mat-autocomplete> -->
+<!-- <input [(ngModel)]="stepDays" placeholder="how many days you wann stop?" type="number" /> -->
 <button (click)="addStep(stepTitle, stepDays)">Add</button>
 
 <div *ngIf="plan.steps">
@@ -51,7 +94,15 @@
                 </li>
             </ul>
             <div>
-                <input [(ngModel)]="step.todoTitle" placeholder="What's the next Todo .." type="text" />
+                    <mat-form-field>
+                        <input 
+                            matInput
+                            [(ngModel)]="step.todoTitle"
+                            type="text" 
+                            placeholder="What's the next Todo .."
+                            >
+                    </mat-form-field>
+                <!-- <input [(ngModel)]="step.todoTitle" placeholder="What's the next Todo .." type="text" /> -->
                 <button (click)="addTodo(step.todoTitle, step);">add todo</button>
             </div>
         </li>

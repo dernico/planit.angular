@@ -8,6 +8,8 @@ import {
   MatAutocompleteModule, 
   MatInputModule,
   MatFormFieldModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app.routing.module';
@@ -36,7 +38,7 @@ import { PlanningService } from './services/planning.service';
   ],
   imports: [
     BrowserAnimationsModule,
-    MatAutocompleteModule, MatInputModule, MatFormFieldModule,
+    MatAutocompleteModule, MatInputModule, MatFormFieldModule,MatDatepickerModule,MatNativeDateModule,
     FormsModule,
     BrowserModule,
     HttpClientModule,
