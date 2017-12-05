@@ -12,18 +12,22 @@ import { LoginComponent } from './components/login/login.component';
 const appRoutes : Routes = [
   {
     path: '',
-    component: StartComponent
+    component: StartComponent,
+    pathMatch: 'full'
   },{
     path: 'callback',
-    component: LoginComponent
+    component: LoginComponent,
+    pathMatch: 'full'
   },
   {
     path: 'plan',
+    pathMatch: 'full',
     canActivate: [AuthGuard],
     component: PlanComponent
   },
   {
     path: 'plan/:id',
+    pathMatch: 'full',
     canActivate: [AuthGuard],
     component: PlanDetailComponent
   },
