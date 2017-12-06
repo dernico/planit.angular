@@ -9,7 +9,10 @@ import {
   MatInputModule,
   MatFormFieldModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatCardModule,
+  MatButtonModule,
+  MatListModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app.routing.module';
@@ -38,7 +41,12 @@ import { PlanningService } from './services/planning.service';
   ],
   imports: [
     BrowserAnimationsModule,
-    MatAutocompleteModule, MatInputModule, MatFormFieldModule,MatDatepickerModule,MatNativeDateModule,
+    
+    MatAutocompleteModule, MatInputModule, 
+    MatFormFieldModule,MatDatepickerModule,
+    MatNativeDateModule,MatCardModule,
+    MatButtonModule,MatListModule,
+    
     FormsModule,
     BrowserModule,
     HttpClientModule,

@@ -11,4 +11,5 @@ export class Step {
     public location: {lat: number, lng: number};
     public days: number;
     public order: number;
+    public photoUrl: string;
 }

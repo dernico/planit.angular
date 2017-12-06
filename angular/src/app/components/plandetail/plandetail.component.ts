@@ -7,6 +7,8 @@ import { Step } from '../../models/Step';
 import { Todo } from '../../models/Todo';
 import { PlaceSuggestion } from '../../models/PlaceSuggestion';
 import { PlaceSearchResult } from '../../models/PlaceSearchResult';
+import { Observable } from 'rxjs/Observable';
+import { PlaceDetail } from '../../models/PlaceDetail';
 
 @Component({
   selector: 'app-plandetail',
@@ -16,7 +18,9 @@ import { PlaceSearchResult } from '../../models/PlaceSearchResult';
 export class PlanDetailComponent implements OnInit {
   private baseUrl = 'http://localhost:4200/plannings';
   private placesAutocompleteUrl = 'http://localhost:4200/places/autocomplete';
-  private placesUrl = 'http://localhost:4200/places/search';
+  private placesSearchUrl = 'http://localhost:4200/places/search';
+  private placesDetailsUrl = 'http://localhost:4200/places/details';
+  private placesPhotoUrl = 'http://localhost:4200/places/photo';
   private plan: Planning;
   private startDate;
   private endDate;
@@ -49,29 +53,52 @@ export class PlanDetailComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
-  addStep(suggest: PlaceSearchResult, days){
-    var newStep = new Step();
-    newStep.title = suggest.name;
-    newStep.days = days;
-    newStep.location = suggest.geometry.location;
-    this.plan.steps.push(newStep);
-    
-    this.updatePlan(this.plan);
+  addStep(suggest: PlaceSuggestion, days){
+    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+      var newStep = new Step();
+      newStep.title = place.name;
+      newStep.days = days;
+      newStep.location = place.geometry.location;
+
+      if(place.photos.length > 0 ){
+        var photo = place.photos[0];
+        newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
+        newStep.photoUrl = place.photo;
+      }
+
+      this.plan.steps.push(newStep);
+      this.updatePlan(this.plan);
+    });
   }
 
   stepKeyUp(value){
     clearTimeout(this.searchTimer);
+    this.searchPlaces(value, (suggestlist) => {
+      this.suggestlist = suggestlist;
+    })
+  }
+
+  private placeDetails(placeid, cb: any){
+    let url = this.placesDetailsUrl + '?placeid='+placeid;
+    this.http.get(url).subscribe((res: any) => {
+      cb(res.result);
+    });
+  }
+
+  private searchPlaces(query: any, cb: any){
 
     this.searchTimer = setTimeout(() => {
-      var url = this.placesUrl + '?q=' + encodeURIComponent(value);
+      var url = this.placesAutocompleteUrl + '?q=' + encodeURIComponent(query);
       this.http.get(url).subscribe((res: any) => {
-        this.suggestlist = res.results;
+        //cb(res.results);
+        cb(res.predictions);
       });
     }, 1000);
+
   }
   
-  displaySuggest(suggest: PlaceSearchResult){
-    return suggest ? suggest.name : suggest;
+  displaySuggest(suggest: PlaceSuggestion){
+    return suggest ? suggest.description : suggest;
   }
 
   removeStep(index){
