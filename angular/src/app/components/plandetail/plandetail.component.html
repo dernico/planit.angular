@@ -73,7 +73,12 @@
                 <button (click)="removeStep(i);">Remove</button>
             </div>
         </mat-card-header>
-        <img mat-card-image [src]="step.photoUrl" alt="{{step.title}} Picture" />
+        <!-- <img mat-card-image [src]="step.photoUrl" alt="{{step.title}} Picture" /> -->
+        
+        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng">
+            <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+        </agm-map>
+        
         <mat-card-content>
             <mat-list>
                 <mat-list-item *ngFor="let todo of step.todos; let i = index;">

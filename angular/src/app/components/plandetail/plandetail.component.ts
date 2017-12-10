@@ -9,6 +9,7 @@ import { PlaceSuggestion } from '../../models/PlaceSuggestion';
 import { PlaceSearchResult } from '../../models/PlaceSearchResult';
 import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../models/PlaceDetail';
+import { Configs } from '../../configs';
 
 @Component({
   selector: 'app-plandetail',
@@ -16,11 +17,7 @@ import { PlaceDetail } from '../../models/PlaceDetail';
   styleUrls: ['./plandetail.component.css']
 })
 export class PlanDetailComponent implements OnInit {
-  private baseUrl = 'http://localhost:4200/plannings';
-  private placesAutocompleteUrl = 'http://localhost:4200/places/autocomplete';
-  private placesSearchUrl = 'http://localhost:4200/places/search';
-  private placesDetailsUrl = 'http://localhost:4200/places/details';
-  private placesPhotoUrl = 'http://localhost:4200/places/photo';
+  private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
   private startDate;
   private endDate;
@@ -48,7 +45,7 @@ export class PlanDetailComponent implements OnInit {
         }
     });
   }
-
+  
   planChanged(){
     this.updatePlan(this.plan);
   }
@@ -61,9 +58,9 @@ export class PlanDetailComponent implements OnInit {
       newStep.location = place.geometry.location;
 
       if(place.photos.length > 0 ){
-        var photo = place.photos[0];
-        newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
-        newStep.photoUrl = place.photo;
+        // var photo = place.photos[0];
+        // newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
+        // newStep.photoUrl = place.photo;
       }
 
       this.plan.steps.push(newStep);
@@ -79,7 +76,7 @@ export class PlanDetailComponent implements OnInit {
   }
 
   private placeDetails(placeid, cb: any){
-    let url = this.placesDetailsUrl + '?placeid='+placeid;
+    let url = Configs.placesDetailsUrl + '?placeid='+placeid;
     this.http.get(url).subscribe((res: any) => {
       cb(res.result);
     });
@@ -88,7 +85,7 @@ export class PlanDetailComponent implements OnInit {
   private searchPlaces(query: any, cb: any){
 
     this.searchTimer = setTimeout(() => {
-      var url = this.placesAutocompleteUrl + '?q=' + encodeURIComponent(query);
+      var url = Configs.placesAutocompleteUrl + '?q=' + encodeURIComponent(query);
       this.http.get(url).subscribe((res: any) => {
         //cb(res.results);
         cb(res.predictions);
@@ -125,7 +122,7 @@ export class PlanDetailComponent implements OnInit {
   private updatePlan(plan: Planning){
 
     this.planningService.setPlanning(plan);
-    this.http.post(this.baseUrl, plan).subscribe((resp) => {
+    this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {
       console.log(resp);
     });
   }

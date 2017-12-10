@@ -15,6 +15,8 @@ import {
   MatListModule,
 } from '@angular/material';
 
+import { AgmCoreModule } from '@agm/core';
+
 import { AppRoutingModule } from './app.routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -29,6 +31,7 @@ import { LoginComponent } from './components/login/login.component';
 import {AuthService} from './services/auth.service'
 import { HttpInterceptorService } from './services/httpInterceptor.service';
 import { PlanningService } from './services/planning.service';
+import { Configs } from './configs';
 
 
 @NgModule({
@@ -50,7 +53,10 @@ import { PlanningService } from './services/planning.service';
     FormsModule,
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: Configs.mapsApiKey
+    })
   ],
   providers: [
     AuthGuard,
@@ -65,3 +71,4 @@ import { PlanningService } from './services/planning.service';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
