@@ -22,6 +22,7 @@ export class PlanDetailComponent implements OnInit {
   private startDate;
   private endDate;
   private suggestlist = [];
+  private selectedSuggestion: PlaceSuggestion;
   private searchTimer:any;
 
   constructor(
@@ -45,7 +46,7 @@ export class PlanDetailComponent implements OnInit {
         }
     });
   }
-  
+
   planChanged(){
     this.updatePlan(this.plan);
   }
@@ -98,19 +99,31 @@ export class PlanDetailComponent implements OnInit {
     return suggest ? suggest.description : suggest;
   }
 
+  suggestlistSelectionChanged(suggest: PlaceSuggestion){
+    this.selectedSuggestion = suggest;
+  }
+
   removeStep(index){
     this.plan.steps.splice(index, 1);
 
     this.updatePlan(this.plan);
   }
 
-  addTodo(title: string, step: Step){
-    var newTodo = new Todo();
-    newTodo.title = title;
+  addTodo(suggest: PlaceSuggestion, step: Step){
+    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+      var newTodo = new Todo();
+      newTodo.title = place.name;
+      newTodo.location = place.geometry.location;
+      step.todos.push(newTodo);
 
-    step.todos.push(newTodo);
-    
-    this.updatePlan(this.plan);
+      // if(place.photos.length > 0 ){
+      //   // var photo = place.photos[0];
+      //   // newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
+      //   // newStep.photoUrl = place.photo;
+      // }
+
+      this.updatePlan(this.plan);
+    });
   }
 
   removeTodo(index, step: Step){

@@ -37,14 +37,13 @@
         matInput
         [matAutocomplete]="suggestList"
         #box 
-        [(ngModel)]="stepTitle" 
         (keyup)="stepKeyUp(box.value);" 
         type="text" 
         placeholder="where do you wanna stop?"
         >
 </mat-form-field>
 <mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
-    <mat-option *ngFor="let suggest of suggestlist" [value]="suggest">
+    <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
         {{ suggest.description }}
     </mat-option>
 </mat-autocomplete>
@@ -57,7 +56,7 @@
         placeholder="How many days you wanna stop?"
         >
 </mat-form-field>
-<button (click)="addStep(stepTitle, stepDays)">Add</button>
+<button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
 
 <div *ngIf="plan.steps">
     <mat-card *ngFor="let step of plan.steps; let i = index;">
@@ -75,8 +74,9 @@
         </mat-card-header>
         <!-- <img mat-card-image [src]="step.photoUrl" alt="{{step.title}} Picture" /> -->
         
-        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng">
+        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
             <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+            <agm-marker *ngFor="let todo of step.todos" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
         </agm-map>
         
         <mat-card-content>
@@ -90,12 +90,19 @@
         <mat-card-footer>
             <mat-form-field>
                 <input 
+                    #todoTitle
+                    [matAutocomplete]="todoSuggestList"
+                    (keyup)="stepKeyUp(todoTitle.value);"
                     matInput
-                    [(ngModel)]="step.todoTitle"
                     type="text" 
                     placeholder="What's the next Todo .." />
-            </mat-form-field>
-            <button mat-raised-button (click)="addTodo(step.todoTitle, step);">add todo</button>
+            </mat-form-field>            
+            <mat-autocomplete #todoSuggestList="matAutocomplete" [displayWith]="displaySuggest">
+                <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
+                    {{ suggest.description }}
+                </mat-option>
+            </mat-autocomplete>
+            <button mat-raised-button (click)="addTodo(selectedSuggestion, step);">add todo</button>
         </mat-card-footer>
         <!-- <div (click)="step.edit = true;" *ngIf="!step.edit">
             <p>{{step.title}} ({{step.days}} days)</p>
