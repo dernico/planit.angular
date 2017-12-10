@@ -1,0 +1,133 @@
+<div *ngIf="plan">
+    <h1>{{plan.title}}</h1>
+</div>
+
+<label>Start</label>
+<mat-form-field>
+<input 
+    matInput
+    [matDatepicker]="startDatePicker"
+    [ngModel]="plan.startDate | date:'yyyy-MM-dd'" 
+    (ngModelChange)="plan.startDate=$event;planChanged();"
+    placeholder="When do you wanna start"
+    >
+</mat-form-field>
+<mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
+<mat-datepicker #startDatePicker></mat-datepicker>
+
+
+<label>End</label>
+<mat-form-field>
+        <input 
+            matInput
+            [matDatepicker]="endDatePicker"
+            [ngModel]="plan.endDate | date:'yyyy-MM-dd'" 
+            (ngModelChange)="plan.endDate=$event;planChanged();"
+            placeholder="When do you have to go"
+            >
+        </mat-form-field>
+        <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+
+
+<h2>Stops</h2>
+
+<mat-form-field>
+    <input 
+        matInput
+        [matAutocomplete]="suggestList"
+        #box 
+        (keyup)="stepKeyUp(box.value);" 
+        type="text" 
+        placeholder="where do you wanna stop?"
+        >
+</mat-form-field>
+<mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
+    <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
+        {{ suggest.description }}
+    </mat-option>
+</mat-autocomplete>
+
+<mat-form-field>
+    <input 
+        matInput
+        [(ngModel)]="stepDays"
+        type="number" 
+        placeholder="How many days you wanna stop?"
+        >
+</mat-form-field>
+<button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
+
+<div *ngIf="plan.steps">
+    <mat-card *ngFor="let step of plan.steps; let i = index;">
+        <mat-card-header>
+            <div (click)="step.edit = true;" *ngIf="!step.edit">
+                <mat-card-title>{{step.title}}</mat-card-title>
+                <mat-card-subtitle>{{step.days}} days</mat-card-subtitle>
+            </div>
+            <div *ngIf="step.edit">
+                <input [(ngModel)]="step.title" (ngModelChange)="planChanged();" />
+                <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+                <button (click)="step.edit = false;">Done</button>
+                <button (click)="removeStep(i);">Remove</button>
+            </div>
+        </mat-card-header>
+        <!-- <img mat-card-image [src]="step.photoUrl" alt="{{step.title}} Picture" /> -->
+        
+        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
+            <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+            <agm-marker *ngFor="let todo of step.todos" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
+        </agm-map>
+        
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item *ngFor="let todo of step.todos; let i = index;">
+                    <span>{{todo.title}}</span>
+                    <button mat-mini-fab color="warn" (click)="removeTodo(i, step)">Remove</button>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-footer>
+            <mat-form-field>
+                <input 
+                    #todoTitle
+                    [matAutocomplete]="todoSuggestList"
+                    (keyup)="stepKeyUp(todoTitle.value);"
+                    matInput
+                    type="text" 
+                    placeholder="What's the next Todo .." />
+            </mat-form-field>            
+            <mat-autocomplete #todoSuggestList="matAutocomplete" [displayWith]="displaySuggest">
+                <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
+                    {{ suggest.description }}
+                </mat-option>
+            </mat-autocomplete>
+            <button mat-raised-button (click)="addTodo(selectedSuggestion, step);">add todo</button>
+        </mat-card-footer>
+        <!-- <div (click)="step.edit = true;" *ngIf="!step.edit">
+            <p>{{step.title}} ({{step.days}} days)</p>
+        </div>
+        <div *ngIf="step.edit">
+            <input [(ngModel)]="step.title" (ngModelChange)="planChanged();" />
+            <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+            <button (click)="step.edit = false;">Done</button>
+            <button (click)="removeStep(i);">Remove</button>
+        </div>
+        <ul>
+            <li *ngFor="let todo of step.todos; let i = index;">
+                <span>{{todo.title}}</span><button (click)="removeTodo(i, step)">Remove</button>
+            </li>
+        </ul>
+        <div>
+                <mat-form-field>
+                    <input 
+                        matInput
+                        [(ngModel)]="step.todoTitle"
+                        type="text" 
+                        placeholder="What's the next Todo .."
+                        >
+                </mat-form-field>
+            <button (click)="addTodo(step.todoTitle, step);">add todo</button>
+        </div> -->
+    </mat-card>
+</div>

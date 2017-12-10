@@ -1,0 +1,7 @@
+
+<div *ngIf="startLocation">
+    <agm-map #routeOverview [latitude]="startLocation.lat" [longitude]="startLocation.lng">
+        <agm-marker *ngFor="let step of plan.steps" [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+        <!-- <agm-marker *ngFor="let todo of step.todos" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker> -->
+    </agm-map>
+</div>

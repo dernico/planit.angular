@@ -7,6 +7,8 @@ import { PlanoverviewComponent } from './components/planoverview/planoverview.co
 
 import { AuthGuard } from './auth.guard';
 import { LoginComponent } from './components/login/login.component';
+import { OverviewComponent } from './components/planoverview/overview/overview.component';
+import { RouteComponent } from './components/planoverview/route/route.component';
 
 
 const appRoutes : Routes = [
@@ -31,8 +33,19 @@ const appRoutes : Routes = [
     canActivate: [AuthGuard],
     component: PlanoverviewComponent
   },
+  // {
+  //   path: 'planoverview/overview',
+  //   pathMatch: 'full',
+  //   canActivate: [AuthGuard],
+  //   component: OverviewComponent
+  // },
+  // {
+  //   path: 'planoverview/route',
+  //   pathMatch: 'full',
+  //   canActivate: [AuthGuard],
+  //   component: RouteComponent
+  // },
 ]
-
 @NgModule({
   imports: [
     RouterModule.forRoot(

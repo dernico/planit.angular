@@ -13,6 +13,7 @@ import {
   MatCardModule,
   MatButtonModule,
   MatListModule,
+  MatTabsModule,
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -32,6 +33,8 @@ import {AuthService} from './services/auth.service'
 import { HttpInterceptorService } from './services/httpInterceptor.service';
 import { PlanningService } from './services/planning.service';
 import { Configs } from './configs';
+import { OverviewComponent } from './components/planoverview/overview/overview.component';
+import { RouteComponent } from './components/planoverview/route/route.component';
 
 
 @NgModule({
@@ -41,6 +44,8 @@ import { Configs } from './configs';
     StartComponent,
     PlanningsComponent,
     PlanoverviewComponent,
+    OverviewComponent,
+    RouteComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -49,6 +54,7 @@ import { Configs } from './configs';
     MatFormFieldModule,MatDatepickerModule,
     MatNativeDateModule,MatCardModule,
     MatButtonModule,MatListModule,
+    MatTabsModule,
     
     FormsModule,
     BrowserModule,

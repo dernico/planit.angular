@@ -1,3 +1,6 @@
+import { Location } from "./Location";
+import { Geometry } from "./Geometry";
+
 export class PlaceDetail {
     public id: String;
     public name: String;
@@ -5,15 +8,6 @@ export class PlaceDetail {
     public types: Array<String>;
     public photos: Array<Photo>;
     public geometry: Geometry;
-}
-
-export class Geometry {
-    public location: Location;
-}
-
-export class Location {
-    public lat: number;
-    public lng: number;
 }
 
 export class Photo {
