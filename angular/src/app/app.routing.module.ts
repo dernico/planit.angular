@@ -2,8 +2,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { StartComponent } from './components/start/start.component';
-import { PlanComponent } from './components/plan/plan.component';
-import { PlanDetailComponent } from './components/plandetail/plandetail.component';
+import { PlanningsComponent } from './components/plannings/plannings.component';
+import { PlanoverviewComponent } from './components/planoverview/planoverview.component';
 
 import { AuthGuard } from './auth.guard';
 import { LoginComponent } from './components/login/login.component';
@@ -20,16 +20,16 @@ const appRoutes : Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'plan',
+    path: 'plannings',
     pathMatch: 'full',
     canActivate: [AuthGuard],
-    component: PlanComponent
+    component: PlanningsComponent
   },
   {
-    path: 'plan/:id',
+    path: 'planoverview/:id',
     pathMatch: 'full',
     canActivate: [AuthGuard],
-    component: PlanDetailComponent
+    component: PlanoverviewComponent
   },
 ]
 

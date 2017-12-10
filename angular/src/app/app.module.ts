@@ -24,8 +24,8 @@ import { AuthGuard } from './auth.guard';
 
 import { AppComponent } from './components/app/app.component';
 import { StartComponent } from './components/start/start.component';
-import { PlanComponent } from './components/plan/plan.component';
-import { PlanDetailComponent } from './components/plandetail/plandetail.component';
+import { PlanningsComponent } from './components/plannings/plannings.component';
+import { PlanoverviewComponent } from './components/planoverview/planoverview.component';
 import { LoginComponent } from './components/login/login.component';
 
 import {AuthService} from './services/auth.service'
@@ -39,8 +39,8 @@ import { Configs } from './configs';
     AppComponent,
     LoginComponent,
     StartComponent,
-    PlanComponent,
-    PlanDetailComponent,
+    PlanningsComponent,
+    PlanoverviewComponent,
   ],
   imports: [
     BrowserAnimationsModule,

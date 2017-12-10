@@ -12,11 +12,11 @@ import { PlaceDetail } from '../../models/PlaceDetail';
 import { Configs } from '../../configs';
 
 @Component({
-  selector: 'app-plandetail',
-  templateUrl: './plandetail.component.html',
-  styleUrls: ['./plandetail.component.css']
+  selector: 'app-planoverview',
+  templateUrl: './planoverview.component.html',
+  styleUrls: ['./planoverview.component.css']
 })
-export class PlanDetailComponent implements OnInit {
+export class PlanoverviewComponent implements OnInit {
   private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
   private startDate;

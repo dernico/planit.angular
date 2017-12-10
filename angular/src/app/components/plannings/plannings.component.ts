@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../models/Planing'
 import { PlanningService } from '../../services/planning.service';
+import { Configs } from '../../configs';
 
 @Component({
-  selector: 'app-plan',
-  templateUrl: './plan.component.html',
-  styleUrls: ['./plan.component.css']
+  selector: 'app-plannings',
+  templateUrl: './plannings.component.html',
+  styleUrls: ['./plannings.component.css']
 })
-export class PlanComponent implements OnInit {
-  baseUrl = 'http://localhost:4200/plannings';
+export class PlanningsComponent implements OnInit {
   plannings: Array<Planning> = [];
 
   constructor(
@@ -24,7 +24,7 @@ export class PlanComponent implements OnInit {
   }
 
   init(){
-    this.http.get(this.baseUrl).subscribe( (items: Array<Planning>) => {
+    this.http.get(Configs.planningsUrl).subscribe( (items: Array<Planning>) => {
       items.forEach(item => {
         this.plannings = items;
         this.planningService.setPlannings(items);
@@ -33,11 +33,11 @@ export class PlanComponent implements OnInit {
   }
 
   goto(planid){
-    this.router.navigate(['plan', planid]);
+    this.router.navigate(['planoverview', planid]);
   }
 
   add(name) {
-    this.http.post(this.baseUrl, {title: name}).subscribe(() => {
+    this.http.post(Configs.planningsUrl, {title: name}).subscribe(() => {
       this.init();
     });
   }
