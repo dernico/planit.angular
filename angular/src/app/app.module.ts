@@ -35,6 +35,7 @@ import { PlanningService } from './services/planning.service';
 import { Configs } from './configs';
 import { OverviewComponent } from './components/planoverview/overview/overview.component';
 import { RouteComponent } from './components/planoverview/route/route.component';
+import { CalendarComponent } from './components/planoverview/calendar/calendar.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { RouteComponent } from './components/planoverview/route/route.component'
     PlanningsComponent,
     PlanoverviewComponent,
     OverviewComponent,
-    RouteComponent
+    RouteComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserAnimationsModule,

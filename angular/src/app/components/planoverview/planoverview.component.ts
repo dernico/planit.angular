@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../models/PlaceDetail';
 import { Configs } from '../../configs';
 import { OverviewComponent } from './overview/overview.component';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-planoverview',
@@ -19,12 +20,16 @@ import { OverviewComponent } from './overview/overview.component';
 })
 export class PlanoverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private changeDetectRef: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
 
-  tabChanged(event){
+  tabChanged(event) {
     console.log(event);
+  }
+  ngAfterViewChecked() {
+    //check later: this fixes the error -> Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:
+    this.changeDetectRef.detectChanges();
   }
 }

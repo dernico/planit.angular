@@ -6,7 +6,12 @@
     </mat-tab>
     <mat-tab #routerTab label="Route">
         <div *ngIf="routerTab.isActive">
-            <app-route-overview></app-route-overview>
+            <app-route></app-route>
+        </div>
+    </mat-tab>
+    <mat-tab #calendarTab label="Calendar">
+        <div *ngIf="calendarTab.isActive">
+            <app-calendar></app-calendar>
         </div>
     </mat-tab>
 </mat-tab-group>

@@ -10,6 +10,7 @@ import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
 import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-overview',

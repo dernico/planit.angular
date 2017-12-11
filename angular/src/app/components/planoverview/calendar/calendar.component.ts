@@ -13,11 +13,11 @@ import { Configs } from '../../../configs';
 import { Location } from '../../../models/Location'
 
 @Component({
-  selector: 'app-route',
-  templateUrl: './route.component.html',
-  styleUrls: ['./route.component.css']
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.css']
 })
-export class RouteComponent implements OnInit {
+export class CalendarComponent implements OnInit {
   private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
   public startLocation: Location
@@ -44,18 +44,6 @@ export class RouteComponent implements OnInit {
         if(this.plan.steps == undefined){
           this.plan.steps = [];
         }
-        this.setLocations();
     });
-  }
-
-  private setLocations(){
-    if(this.plan.steps.length === 0) return;
-
-    this.startLocation = this.plan.steps[0].location;
-    this.locations = [];
-    for(var i = 0; i < this.plan.steps.length; i++){
-      let step = this.plan.steps[i];
-      this.locations.push(step.location);
-    }
   }
 }
