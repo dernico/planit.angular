@@ -37,8 +37,7 @@
 <button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
 
 <app-file-upload 
-projectId="100" 
-sectionId="107" 
+[(link)]="plan._id"
 maxFiles="4"
 maxSize="2"
 fileExt="JPG, GIF, PNG, PDF"

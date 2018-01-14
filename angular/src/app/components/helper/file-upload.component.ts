@@ -9,8 +9,7 @@ import { FileService } from '../../services/file.service';
 export class FileUploadComponent implements OnInit {
     errors: Array<string> =[];
     dragAreaClass: string = 'dragarea';
-    @Input() projectId: number = 0;
-    @Input() sectionId: number = 0;
+    @Input() link: string;
     @Input() fileExt: string = "JPG, GIF, PNG, PDF";
     @Input() maxFiles: number = 5;
     @Input() maxSize: number = 5; // 5MB
@@ -63,17 +62,12 @@ export class FileUploadComponent implements OnInit {
         if (files.length > 0) {
               let formData: FormData = new FormData();
               for (var j = 0; j < files.length; j++) {
-                  formData.append("file[]", files[j], files[j].name);
+                  formData.append("file", files[j], files[j].name);
               }
-              
-              var parameters = {
-                  projectId: this.projectId,
-                  sectionId: this.sectionId
-              }
-
               // todo:
               // formData.append("projectid", myval);
-              
+              formData.append("link", this.link);
+
               this.fileService.upload(formData)
                   .subscribe(
                   success => {

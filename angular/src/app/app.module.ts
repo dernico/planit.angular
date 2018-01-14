@@ -39,7 +39,6 @@ import { CalendarComponent } from './components/planoverview/calendar/calendar.c
 import { FileUploadComponent } from './components/helper/file-upload.component';
 import { FileService } from './services/file.service';
 
-
 @NgModule({
   declarations: [
     AppComponent,
