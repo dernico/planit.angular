@@ -65,11 +65,16 @@ export class FileUploadComponent implements OnInit {
               for (var j = 0; j < files.length; j++) {
                   formData.append("file[]", files[j], files[j].name);
               }
+              
               var parameters = {
                   projectId: this.projectId,
                   sectionId: this.sectionId
               }
-              this.fileService.upload(formData, parameters)
+
+              // todo:
+              // formData.append("projectid", myval);
+              
+              this.fileService.upload(formData)
                   .subscribe(
                   success => {
                     this.uploadStatus.emit(true);

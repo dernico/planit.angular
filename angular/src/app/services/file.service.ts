@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
+//import { Headers, RequestOptions } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+//import { Observable } from 'rxjs/Rx';
+// import 'rxjs/add/operator/map';
+// import 'rxjs/add/operator/catch';
 
 import { Configs } from '../configs';
 
@@ -11,11 +11,8 @@ import { Configs } from '../configs';
 export class FileService {
     constructor(private http: HttpClient) { }
 
-    upload(files, parameters){
-        let headers = new Headers();
-        let options = new RequestOptions({ headers: headers });
-        options.params = parameters;
-        return  this.http.post(Configs.fileuploadUrl, files);
+    upload(formData){
+        return  this.http.post(Configs.fileuploadUrl, formData);
                  //.subscribe(response => response);
                  //.catch(error => Observable.throw(error));
 
