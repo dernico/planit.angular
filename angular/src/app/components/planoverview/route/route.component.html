@@ -3,5 +3,14 @@
     <agm-map #routeOverview [latitude]="startLocation.lat" [longitude]="startLocation.lng">
         <agm-marker *ngFor="let step of plan.steps" [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
         <!-- <agm-marker *ngFor="let todo of step.todos" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker> -->
+
+        <agm-polyline>
+                <agm-polyline-point *ngFor="let step of plan.steps" [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-polyline-point>
+        </agm-polyline>
     </agm-map>
+</div>
+
+<div *ngFor="let step of plan.steps; let i = index;">
+    <h3>{{i+1}}. {{step.title}}</h3>
+    <a href="">link</a>
 </div>

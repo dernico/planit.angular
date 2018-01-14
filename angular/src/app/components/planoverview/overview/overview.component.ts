@@ -140,4 +140,8 @@ export class OverviewComponent implements OnInit {
       console.log(resp);
     });
   }
+
+  refreshImages(status){
+    console.log("status: " + status);
+  }
 }

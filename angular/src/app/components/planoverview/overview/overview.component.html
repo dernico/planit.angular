@@ -36,6 +36,15 @@
 </mat-form-field>
 <button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
 
+<app-file-upload 
+projectId="100" 
+sectionId="107" 
+maxFiles="4"
+maxSize="2"
+fileExt="JPG, GIF, PNG, PDF"
+(uploadStatus)="refreshImages($event)" >
+</app-file-upload>
+
 <div *ngIf="plan.steps">
     <div *ngFor="let step of plan.steps; let i = index;">
         <h3>{{i + 1}} Stop</h3>

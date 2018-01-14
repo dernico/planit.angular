@@ -36,6 +36,8 @@ import { Configs } from './configs';
 import { OverviewComponent } from './components/planoverview/overview/overview.component';
 import { RouteComponent } from './components/planoverview/route/route.component';
 import { CalendarComponent } from './components/planoverview/calendar/calendar.component';
+import { FileUploadComponent } from './components/helper/file-upload.component';
+import { FileService } from './services/file.service';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { CalendarComponent } from './components/planoverview/calendar/calendar.c
     PlanoverviewComponent,
     OverviewComponent,
     RouteComponent,
-    CalendarComponent
+    CalendarComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -74,9 +77,9 @@ import { CalendarComponent } from './components/planoverview/calendar/calendar.c
       useClass: HttpInterceptorService,
       multi: true
     },
-    PlanningService
+    PlanningService,
+    FileService
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
