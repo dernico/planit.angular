@@ -13,11 +13,11 @@ import { Configs } from '../../../configs';
 import { Location } from '../../../models/Location'
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  selector: 'app-files',
+  templateUrl: './files.component.html',
+  styleUrls: ['./files.component.css']
 })
-export class CalendarComponent implements OnInit {
+export class FilesComponent implements OnInit {
   private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
   public startLocation: Location
@@ -44,13 +44,6 @@ export class CalendarComponent implements OnInit {
         if(this.plan.steps == undefined){
           this.plan.steps = [];
         }
-    });
-  }
-
-  private loadFiles(){
-    let url = Configs.placesDetailsUrl + '?planid='+ this.plan._id;
-    this.http.get(url).subscribe((res: any) => {
-      //cb(res.result);
     });
   }
 }
