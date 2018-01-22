@@ -46,11 +46,4 @@ export class CalendarComponent implements OnInit {
         }
     });
   }
-
-  private loadFiles(){
-    let url = Configs.placesDetailsUrl + '?planid='+ this.plan._id;
-    this.http.get(url).subscribe((res: any) => {
-      //cb(res.result);
-    });
-  }
 }

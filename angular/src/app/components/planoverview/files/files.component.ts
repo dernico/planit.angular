@@ -10,7 +10,7 @@ import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
 import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
-import { Location } from '../../../models/Location'
+import { File } from '../../../models/File'
 
 @Component({
   selector: 'app-files',
@@ -18,10 +18,8 @@ import { Location } from '../../../models/Location'
   styleUrls: ['./files.component.css']
 })
 export class FilesComponent implements OnInit {
-  private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
-  public startLocation: Location
-  public locations: Array<Location>;
+  public files: Array<File>;
 
   constructor(
     private http: HttpClient,
@@ -29,7 +27,7 @@ export class FilesComponent implements OnInit {
     private router: Router,
     private planningService: PlanningService
   ) {
-    this.locations = [];
+    this.files = [];
    }
 
   ngOnInit() {
@@ -44,6 +42,16 @@ export class FilesComponent implements OnInit {
         if(this.plan.steps == undefined){
           this.plan.steps = [];
         }
+        this.loadFiles();
+    });
+  }
+  
+  private loadFiles(){
+    let url = Configs.fileUrl + '?planid='+ this.plan._id;
+    this.http.get(url).subscribe((res: Array<File>) => {
+      console.log("files:");
+      console.log(res);
+      this.files = res;
     });
   }
 }
