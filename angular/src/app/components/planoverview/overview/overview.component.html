@@ -86,6 +86,13 @@ fileExt="JPG, GIF, PNG, PDF"
                     </mat-option>
                 </mat-autocomplete>
                 <button mat-raised-button (click)="addTodo(selectedSuggestion, step);">add todo</button>
+
+                <app-file-upload 
+                [(link)]="step._id"
+                maxFiles="4"
+                maxSize="2"
+                fileExt="JPG, GIF, PNG, PDF" >
+                </app-file-upload>
             </mat-card-footer>
         </mat-card>
     </div>
