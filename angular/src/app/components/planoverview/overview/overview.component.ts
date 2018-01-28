@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
 import {MatDialogModule} from '@angular/material/dialog';
+import { FileService } from '../../../services/file.service';
 
 @Component({
   selector: 'app-overview',
@@ -20,6 +21,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 export class OverviewComponent implements OnInit {
   private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
+  private files;
   private startDate;
   private endDate;
   private suggestlist = [];
@@ -28,6 +30,7 @@ export class OverviewComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private fileService: FileService,
     private route: ActivatedRoute,
     private router: Router,
     private planningService: PlanningService
@@ -136,12 +139,55 @@ export class OverviewComponent implements OnInit {
   private updatePlan(plan: Planning){
 
     this.planningService.setPlanning(plan);
-    this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {
-      console.log(resp);
-    });
+    this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {});
   }
 
-  refreshImages(status){
-    console.log("status: " + status);
+  refreshFiles(status){
+    if(status){
+      this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
+        
+        files.forEach(file => {
+          this.plan.files
+        });
+      });
+    }
+  }
+
+  addFilesToPlan(newFile){
+    console.log(newFile);
+    if (!("files" in this.plan)){
+      this.plan.files = [];
+    }
+    this.plan.files.push(newFile);
+    this.updatePlan(this.plan);
+  }
+  deleteFileFromPlan(index){
+    this.plan.files.splice(index, 1);
+    this.updatePlan(this.plan);
+  }
+
+  addFilesToStep(newFile, stepid){
+    this.findStep(stepid, (step) =>{
+      if(!("files" in step)){
+        step.files = [];
+      }
+      step.files.push(newFile);
+    });
+    this.updatePlan(this.plan);
+  }
+  deleteFileFromStep(index, stepid){
+    this.findStep(stepid, (step) =>{
+      step.files.splice(index, 1);
+    });
+    this.updatePlan(this.plan);
+  }
+
+  private findStep(stepid, cb){
+    this.plan.steps.forEach(step => {
+      if(step._id == stepid){
+        cb(step);
+      }
+    });
   }
 }
+

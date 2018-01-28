@@ -37,30 +37,36 @@
 <button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
 
 <app-file-upload 
-[(link)]="plan._id"
+[(plan)]="plan._id"
+(saveCallback)="addFilesToPlan($event, plan._id)"
 maxFiles="4"
 maxSize="2"
-fileExt="JPG, GIF, PNG, PDF"
-(uploadStatus)="refreshImages($event)" >
+fileExt="JPG, GIF, PNG, PDF" >
 </app-file-upload>
+
+<div>
+    <ul *ngIf="plan.files">
+        <li *ngFor="let file of plan.files; let i = index">
+            {{i + 1}}. {{file.filename}} <button (click)="deleteFileFromPlan(i)">delete</button>
+        </li>
+    </ul>
+</div>
 
 <div *ngIf="plan.steps">
     <div *ngFor="let step of plan.steps; let i = index;">
-        <h3>{{i + 1}} Stop</h3>
+        <h3 (click)="step.edit = true;" *ngIf="!step.edit">
+            {{i + 1}}. {{step.title}} ({{step.days}} days)
+        </h3>
+        <div *ngIf="step.edit">
+            <input [(ngModel)]="step.title" (ngModelChange)="planChanged();" />
+            <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+            <button (click)="step.edit = false;">Done</button>
+            <button (click)="removeStep(i);">Remove</button>
+        </div>
         <mat-card>
             <mat-card-header>
-                <div (click)="step.edit = true;" *ngIf="!step.edit">
-                    <mat-card-title>{{step.title}}</mat-card-title>
-                    <mat-card-subtitle>{{step.days}} days</mat-card-subtitle>
-                </div>
-                <div *ngIf="step.edit">
-                    <input [(ngModel)]="step.title" (ngModelChange)="planChanged();" />
-                    <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
-                    <button (click)="step.edit = false;">Done</button>
-                    <button (click)="removeStep(i);">Remove</button>
-                </div>
+                <mat-card-title></mat-card-title>
             </mat-card-header>
-            <!-- <img mat-card-image [src]="step.photoUrl" alt="{{step.title}} Picture" /> -->
 
             <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
                 <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
@@ -88,11 +94,19 @@ fileExt="JPG, GIF, PNG, PDF"
                 <button mat-raised-button (click)="addTodo(selectedSuggestion, step);">add todo</button>
 
                 <app-file-upload 
-                [(link)]="step._id"
+                [(plan)]="plan._id"
+                (saveCallback)="addFilesToStep($event, step._id)"
                 maxFiles="4"
                 maxSize="2"
                 fileExt="JPG, GIF, PNG, PDF" >
                 </app-file-upload>
+                <div>
+                    <ul *ngIf="step.files">
+                        <li *ngFor="let file of step.files; let i = index">
+                            {{i + 1}}. {{file.filename}} <button (click)="deleteFileFromStep(i, step._id)">delete</button>
+                        </li>
+                    </ul>
+                </div>
             </mat-card-footer>
         </mat-card>
     </div>

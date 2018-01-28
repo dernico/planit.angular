@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
 import { File } from '../../../models/File'
+import { FileService } from '../../../services/file.service';
 
 @Component({
   selector: 'app-files',
@@ -22,7 +23,7 @@ export class FilesComponent implements OnInit {
   public files: Array<File>;
 
   constructor(
-    private http: HttpClient,
+    private fileService: FileService,
     private route: ActivatedRoute,
     private router: Router,
     private planningService: PlanningService
@@ -47,11 +48,19 @@ export class FilesComponent implements OnInit {
   }
   
   private loadFiles(){
-    let url = Configs.fileUrl + '?planid='+ this.plan._id;
-    this.http.get(url).subscribe((res: Array<File>) => {
-      console.log("files:");
-      console.log(res);
+    this.fileService.loadFilesForPlan(this.plan._id).subscribe((res : Array<File>) => {
       this.files = res;
+      // let files = [];
+      // for(var link in res){
+      //   for(var i = 0; i <)
+      // }
+      // this.files = files;
+    });
+  }
+
+  public deleteFile(id){
+    this.fileService.deleteFile(id).subscribe(() => {
+      this.loadFiles();
     });
   }
 }

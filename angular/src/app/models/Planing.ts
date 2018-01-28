@@ -7,4 +7,5 @@ export class Planning {
     public endDate;
     public comments: Array<String>;
     public steps: Array<Step>;
+    public files: Array<File>;
 }
