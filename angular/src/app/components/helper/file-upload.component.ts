@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { FileService } from '../../services/file.service';
+import { Configs } from '../../configs';
 
 @Component({
     selector: 'app-file-upload',
@@ -68,6 +69,7 @@ export class FileUploadComponent implements OnInit {
             // todo:
             // formData.append("projectid", myval);
             formData.append("plan", this.plan);
+            formData.append("url", Configs.fileUrl);
             
             this.fileService.upload(formData)
                 .subscribe(

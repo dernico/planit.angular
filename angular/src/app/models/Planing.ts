@@ -1,4 +1,5 @@
 import { Step } from './Step'
+import { File } from './File'
 
 export class Planning {
     public _id;

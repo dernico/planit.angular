@@ -47,7 +47,8 @@ fileExt="JPG, GIF, PNG, PDF" >
 <div>
     <ul *ngIf="plan.files">
         <li *ngFor="let file of plan.files; let i = index">
-            {{i + 1}}. {{file.filename}} <button (click)="deleteFileFromPlan(i)">delete</button>
+            <span (click)="downloadFile(file)">{{i + 1}}. {{file.filename}}</span>
+            <button (click)="deleteFileFromPlan(i)">delete</button>
         </li>
     </ul>
 </div>
