@@ -53,6 +53,10 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  sharePlan(){
+    this.router.navigate(['share', this.plan._id]);
+  }
+
   planChanged(){
     this.updatePlan(this.plan);
   }
@@ -156,7 +160,6 @@ export class OverviewComponent implements OnInit {
   }
 
   addFilesToPlan(newFile){
-    console.log(newFile);
     if (!("files" in this.plan)){
       this.plan.files = [];
     }

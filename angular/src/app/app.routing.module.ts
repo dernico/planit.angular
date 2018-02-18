@@ -9,6 +9,7 @@ import { AuthGuard } from './auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { OverviewComponent } from './components/planoverview/overview/overview.component';
 import { RouteComponent } from './components/planoverview/route/route.component';
+import { ShareComponent } from './components/planoverview/share/share.component';
 
 
 const appRoutes : Routes = [
@@ -32,6 +33,12 @@ const appRoutes : Routes = [
     pathMatch: 'full',
     canActivate: [AuthGuard],
     component: PlanoverviewComponent
+  },
+  {
+    path: 'share/:id',
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+    component: ShareComponent
   },
   // {
   //   path: 'planoverview/overview',

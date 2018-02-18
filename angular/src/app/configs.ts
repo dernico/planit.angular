@@ -11,4 +11,6 @@ export class Configs {
 
     public static fileUrl = Configs.baseUrl + '/file';
     public static fileGetImagesUrl = Configs.baseUrl + '/file/images';
+    
+    public static shareUrl = Configs.baseUrl + '/share';
 }

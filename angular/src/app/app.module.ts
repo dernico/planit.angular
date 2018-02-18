@@ -39,6 +39,7 @@ import { CalendarComponent } from './components/planoverview/calendar/calendar.c
 import { FileUploadComponent } from './components/helper/file-upload.component';
 import { FileService } from './services/file.service';
 import { FilesComponent } from './components/planoverview/files/files.component';
+import { ShareComponent } from './components/planoverview/share/share.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { FilesComponent } from './components/planoverview/files/files.component'
     RouteComponent,
     CalendarComponent,
     FileUploadComponent,
-    FilesComponent
+    FilesComponent,
+    ShareComponent
   ],
   imports: [
     BrowserAnimationsModule,

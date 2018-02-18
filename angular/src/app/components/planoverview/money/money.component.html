@@ -1,0 +1,9 @@
+<div>
+    Todo Files
+</div>
+<ul>
+    <li *ngFor="let file of files; let i = index;">
+        <p>{{file.filename}}</p>
+        <button (click)="deleteFile(file._id)">delete</button>
+    </li>
+</ul>
