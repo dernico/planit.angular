@@ -25,10 +25,8 @@ export class PlanningsComponent implements OnInit {
 
   init(){
     this.http.get(Configs.planningsUrl).subscribe( (items: Array<Planning>) => {
-      items.forEach(item => {
-        this.plannings = items;
-        this.planningService.setPlannings(items);
-      });
+      this.planningService.setPlannings(items);
+      this.plannings = items;
     });
   }
 

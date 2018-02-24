@@ -3,33 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../../models/Planing';
 import { PlanningService } from '../../../services/planning.service';
-import { Step } from '../../../models/Step';
-import { Todo } from '../../../models/Todo';
-import { PlaceSuggestion } from '../../../models/PlaceSuggestion';
-import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
 import { Observable } from 'rxjs/Observable';
-import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
-import { File } from '../../../models/File'
-import { FileService } from '../../../services/file.service';
+import { Cost } from '../../../models/Cost';
+
 
 @Component({
   selector: 'app-money',
   templateUrl: './money.component.html',
   styleUrls: ['./money.component.css']
 })
-export class FilesComponent implements OnInit {
+export class MoneyComponent implements OnInit {
   private plan: Planning;
-  public files: Array<File>;
 
   constructor(
-    private fileService: FileService,
     private route: ActivatedRoute,
     private router: Router,
     private planningService: PlanningService
-  ) {
-    this.files = [];
-   }
+  ) {}
 
   ngOnInit() {
     this.init();
@@ -40,27 +31,19 @@ export class FilesComponent implements OnInit {
     .params
     .subscribe(params => {
         this.plan = this.planningService.getPlanning(params.id);
-        if(this.plan.steps == undefined){
-          this.plan.steps = [];
+        if(this.plan.costs == undefined){
+          this.plan.costs = [];
         }
-        this.loadFiles();
     });
   }
   
-  private loadFiles(){
-    this.fileService.loadFilesForPlan(this.plan._id).subscribe((res : Array<File>) => {
-      this.files = res;
-      // let files = [];
-      // for(var link in res){
-      //   for(var i = 0; i <)
-      // }
-      // this.files = files;
-    });
+  public addCosts(whatFor, amount){
+    let cost = new Cost();
+    cost.amount = amount;
+    cost.for = whatFor;
+    this.plan.costs.push(cost)
   }
 
-  public deleteFile(id){
-    this.fileService.deleteFile(id).subscribe(() => {
-      this.loadFiles();
-    });
+  public deleteCost(id){
   }
 }

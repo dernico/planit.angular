@@ -40,6 +40,7 @@ import { FileUploadComponent } from './components/helper/file-upload.component';
 import { FileService } from './services/file.service';
 import { FilesComponent } from './components/planoverview/files/files.component';
 import { ShareComponent } from './components/planoverview/share/share.component';
+import { MoneyComponent } from './components/planoverview/money/money.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { ShareComponent } from './components/planoverview/share/share.component'
     CalendarComponent,
     FileUploadComponent,
     FilesComponent,
-    ShareComponent
+    ShareComponent,
+    MoneyComponent
   ],
   imports: [
     BrowserAnimationsModule,

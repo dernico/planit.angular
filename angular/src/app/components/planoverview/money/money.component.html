@@ -1,9 +1,17 @@
 <div>
-    Todo Files
+    Money
+</div>
+<div>
+    <mat-form-field>
+        <input matInput #forBox type="text" placeholder="What for?">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput #amoutBox type="number" placeholder="How much Money?">
+    </mat-form-field>
+    <button (click)="addCosts(forBox.value, amoutBox.value)">Add</button>
 </div>
 <ul>
-    <li *ngFor="let file of files; let i = index;">
-        <p>{{file.filename}}</p>
-        <button (click)="deleteFile(file._id)">delete</button>
+    <li *ngFor="let cost of costs; let i = index;">
+        <button (click)="deleteCost(cost._id)">delete</button>
     </li>
 </ul>
