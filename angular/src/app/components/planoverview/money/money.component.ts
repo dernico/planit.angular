@@ -17,6 +17,7 @@ export class MoneyComponent implements OnInit {
   private plan: Planning;
 
   constructor(
+    private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
     private planningService: PlanningService
@@ -41,9 +42,20 @@ export class MoneyComponent implements OnInit {
     let cost = new Cost();
     cost.amount = amount;
     cost.for = whatFor;
-    this.plan.costs.push(cost)
+    cost.from = this.plan.loggedInUser;
+    this.plan.costs.push(cost);
+    this.updatePlan(this.plan);
   }
 
-  public deleteCost(id){
+  public deleteCost(index){
+    this.plan.costs.splice(index, 1);
+    this.updatePlan(this.plan);
+  }
+
+  
+  private updatePlan(plan: Planning){
+
+    this.planningService.setPlanning(plan);
+    this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {});
   }
 }

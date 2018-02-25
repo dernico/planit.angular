@@ -12,7 +12,7 @@ export class PlanningService {
         var plannings = this.getPlannings();
         var _planning : Planning;
         for(var i = 0; i < plannings.length; i++){
-            _planning = plannings[0];
+            _planning = plannings[i];
             if(_planning._id == planning._id){
                 plannings[0] = planning;
             }

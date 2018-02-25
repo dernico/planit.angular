@@ -11,7 +11,11 @@
     <button (click)="addCosts(forBox.value, amoutBox.value)">Add</button>
 </div>
 <ul>
-    <li *ngFor="let cost of costs; let i = index;">
-        <button (click)="deleteCost(cost._id)">delete</button>
+    <li *ngFor="let cost of plan.costs; let i = index;">
+        <span>{{cost.amount}}</span>
+        <span>{{cost.for}}</span>
+        <span>{{cost.from.email}}</span>
+        
+        <button (click)="deleteCost(i)">delete</button>
     </li>
 </ul>
