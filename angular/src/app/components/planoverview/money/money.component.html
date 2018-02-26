@@ -3,6 +3,14 @@
 </div>
 <div>
     <mat-form-field>
+        <input matInput #fromBox type="text" placeholder="From?" [matAutocomplete]="fromUsers">
+    </mat-form-field>
+    <mat-autocomplete #fromUsers="matAutocomplete" [displayWith]="displayWithDisplayName">
+        <mat-option (onSelectionChange)="fromSelectionChange(user)" *ngFor="let user of plan.users" [value]="user">
+            {{ user.displayName }}
+        </mat-option>
+    </mat-autocomplete>
+    <mat-form-field>
         <input matInput #forBox type="text" placeholder="What for?">
     </mat-form-field>
     <mat-form-field>
@@ -14,7 +22,7 @@
     <li *ngFor="let cost of plan.costs; let i = index;">
         <span>{{cost.amount}}</span>
         <span>{{cost.for}}</span>
-        <span>{{cost.from.email}}</span>
+        <span>{{cost.from.displayName}}</span>
         
         <button (click)="deleteCost(i)">delete</button>
     </li>
