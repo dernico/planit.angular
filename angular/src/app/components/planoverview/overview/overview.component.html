@@ -2,6 +2,7 @@
 <h1>{{plan.title}}</h1>
 <span *ngFor="let user of plan.users" >
     <img [src]="user.picture" height="50" [title]="user.email" />
+    <span (click)="">X</span>
 </span>
 
 <br />

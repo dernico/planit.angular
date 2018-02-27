@@ -37,7 +37,6 @@ export class ShareComponent implements OnInit {
   share(){
     this.http.post(Configs.shareUrl, { email: this.email, planid: this.plan._id }).subscribe(() => {
       this.updatePlan();
-      this.router.navigate(['planoverview', this.plan._id]);
     });
   }
   
@@ -45,6 +44,7 @@ export class ShareComponent implements OnInit {
     this.http.get(Configs.planningsUrl).subscribe( (items: Array<Planning>) => {
         this.planningService.setPlannings(items);
         this.plan = this.planningService.getPlanning(this.plan._id);
+        this.router.navigate(['planoverview', this.plan._id]);
     });
   }
 }
