@@ -4,5 +4,5 @@ export class Cost {
     public _id;
     public from: User;
     public for: String;
-    public amount: Number;
+    public amount: number;
 }

@@ -53,6 +53,10 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  backToPlannings(){
+    this.router.navigate(['plannings']);
+  }
+
   sharePlan(){
     this.router.navigate(['share', this.plan._id]);
   }
@@ -94,7 +98,9 @@ export class OverviewComponent implements OnInit {
   }
 
   private searchPlaces(query: any, cb: any){
-
+    if(!query){
+      return;
+    }
     this.searchTimer = setTimeout(() => {
       var url = Configs.placesAutocompleteUrl + '?q=' + encodeURIComponent(query);
       this.http.get(url).subscribe((res: any) => {
@@ -126,12 +132,6 @@ export class OverviewComponent implements OnInit {
       newTodo.location = place.geometry.location;
       step.todos.push(newTodo);
 
-      // if(place.photos.length > 0 ){
-      //   // var photo = place.photos[0];
-      //   // newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
-      //   // newStep.photoUrl = place.photo;
-      // }
-
       this.updatePlan(this.plan);
     });
   }
@@ -141,6 +141,11 @@ export class OverviewComponent implements OnInit {
 
     this.updatePlan(this.plan);
   }
+
+  private addCash(cashTitle: String, cashAmount: Number){
+    console.log(cashTitle + " " + cashAmount);
+  }
+
 
   private updatePlan(plan: Planning){
 

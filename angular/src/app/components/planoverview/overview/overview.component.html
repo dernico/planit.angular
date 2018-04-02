@@ -1,8 +1,10 @@
 
 <h1>{{plan.title}}</h1>
+<span style="position: absolute; right: 10px; top: 10px;" (click)="backToPlannings()">Back to all plannings (click)</span>
+
 <span *ngFor="let user of plan.users" >
     <img [src]="user.picture" height="50" [title]="user.email" />
-    <span (click)="">X</span>
+    <!-- <span (click)="">X</span> -->
 </span>
 
 <br />
@@ -112,7 +114,7 @@ fileExt="JPG, GIF, PNG, PDF" >
                 <div>
                     <ul *ngIf="step.files">
                         <li *ngFor="let file of step.files; let i = index">
-                            {{i + 1}}. {{file.filename}} <button (click)="deleteFileFromStep(i, step._id)">delete</button>
+                            <span (click)="downloadFile(file)">{{i + 1}}. {{file.filename}}</span> <button (click)="deleteFileFromStep(i, step._id)">delete</button>
                         </li>
                     </ul>
                 </div>
