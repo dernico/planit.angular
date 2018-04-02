@@ -41,9 +41,14 @@ import { FileService } from './services/file.service';
 import { FilesComponent } from './pages/planoverview/files/files.component';
 import { ShareComponent } from './pages/planoverview/share/share.component';
 import { MoneyComponent } from './pages/planoverview/money/money.component';
+import { PlacesInputComponent } from './components/places-input/places-input.component';
 
 @NgModule({
   declarations: [
+    FileUploadComponent,
+    PlacesInputComponent,
+
+    
     AppComponent,
     LoginComponent,
     StartComponent,
@@ -52,7 +57,6 @@ import { MoneyComponent } from './pages/planoverview/money/money.component';
     OverviewComponent,
     RouteComponent,
     CalendarComponent,
-    FileUploadComponent,
     FilesComponent,
     ShareComponent,
     MoneyComponent

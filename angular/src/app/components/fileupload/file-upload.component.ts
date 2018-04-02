@@ -11,6 +11,7 @@ export class FileUploadComponent implements OnInit {
     errors: Array<string> = [];
     dragAreaClass: string = 'dragarea';
     @Input() plan: string;
+    @Input() infoText: string;
     @Input() fileExt: string = "JPG, GIF, PNG, PDF";
     @Input() maxFiles: number = 5;
     @Input() maxSize: number = 5; // 5MB
@@ -19,7 +20,11 @@ export class FileUploadComponent implements OnInit {
 
     constructor(private fileService: FileService) { }
 
-    ngOnInit() { }
+    ngOnInit() { 
+        if(!this.infoText){
+            this.infoText = "Drag & Drop to upload your files";
+        }
+    }
 
     onFileChange(event) {
         let files = event.target.files;

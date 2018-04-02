@@ -34,19 +34,16 @@
 (saveCallback)="addFilesToPlan($event, plan._id)"
 maxFiles="4"
 maxSize="2"
-fileExt="JPG, GIF, PNG, PDF" >
+fileExt="JPG, GIF, PNG, PDF"
+infoText="Drop your flight tickets, car voucher etc. here" >
 </app-file-upload>
 
 <h2>Stops</h2>
 
-<mat-form-field>
-    <input matInput [matAutocomplete]="suggestList" #box (keyup)="stepKeyUp(box.value);" type="text" placeholder="where do you wanna stop?">
-</mat-form-field>
-<mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
-    <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
-        {{ suggest.description }}
-    </mat-option>
-</mat-autocomplete>
+<places-input
+    placeholderInput="Where?"
+    (selectionChanged)="placesSelectionChanged($event)"
+></places-input>
 
 <mat-form-field>
     <input matInput [(ngModel)]="stepDays" type="number" placeholder="How many days you wanna stop?">
@@ -93,7 +90,7 @@ fileExt="JPG, GIF, PNG, PDF" >
                 </mat-list>
             </mat-card-content>
             <mat-card-footer>
-                <mat-form-field>
+                <!-- <mat-form-field>
                     <input #todoTitle [matAutocomplete]="todoSuggestList" (keyup)="stepKeyUp(todoTitle.value);" matInput type="text" placeholder="What's the next Todo .."
                     />
                 </mat-form-field>
@@ -101,7 +98,11 @@ fileExt="JPG, GIF, PNG, PDF" >
                     <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
                         {{ suggest.description }}
                     </mat-option>
-                </mat-autocomplete>
+                </mat-autocomplete> -->
+                <places-input
+                    placeholderInput="Next Todo .."
+                    (selectionChanged)="placesSelectionChanged($event)"
+                ></places-input>
                 <button mat-raised-button (click)="addTodo(selectedSuggestion, step);">add todo</button>
 
                 <app-file-upload 
@@ -109,7 +110,8 @@ fileExt="JPG, GIF, PNG, PDF" >
                 (saveCallback)="addFilesToStep($event, step._id)"
                 maxFiles="4"
                 maxSize="2"
-                fileExt="JPG, GIF, PNG, PDF" >
+                fileExt="JPG, GIF, PNG, PDF"
+                infoText="Drop your hotel, guesthouse etc. confirmations here" >
                 </app-file-upload>
                 <div>
                     <ul *ngIf="step.files">

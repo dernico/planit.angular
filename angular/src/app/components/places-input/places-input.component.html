@@ -1,0 +1,18 @@
+<mat-form-field>
+    <input 
+        matInput 
+        #box
+        [matAutocomplete]="suggestList" 
+        (keyup)="stepKeyUp(box.value);" 
+        type="text" 
+        placeholder="{{placeholderInput}}"
+        [(ngModel)]=inputValue>
+</mat-form-field>
+
+<span>{{inputValue}}</span>
+
+<mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
+    <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
+        {{ suggest.description }}
+    </mat-option>
+</mat-autocomplete>

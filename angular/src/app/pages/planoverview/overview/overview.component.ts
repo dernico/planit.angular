@@ -26,9 +26,7 @@ export class OverviewComponent implements OnInit {
   private files;
   private startDate;
   private endDate;
-  private suggestlist = [];
-  private selectedSuggestion: PlaceSuggestion;
-  private searchTimer:any;
+  private selectedSuggestion;
 
   constructor(
     private http: HttpClient,
@@ -65,7 +63,12 @@ export class OverviewComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
+  placesSelectionChanged(suggest: PlaceSuggestion){
+    this.selectedSuggestion = suggest;
+  }
+
   addStep(suggest: PlaceSuggestion, days){
+    console.log(suggest);
     this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
       var newStep = new Step();
       newStep.title = place.name;
@@ -83,40 +86,11 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  stepKeyUp(value){
-    clearTimeout(this.searchTimer);
-    this.searchPlaces(value, (suggestlist) => {
-      this.suggestlist = suggestlist;
-    })
-  }
-
   private placeDetails(placeid, cb: any){
     let url = Configs.placesDetailsUrl + '?placeid='+placeid;
     this.http.get(url).subscribe((res: any) => {
       cb(res.result);
     });
-  }
-
-  private searchPlaces(query: any, cb: any){
-    if(!query){
-      return;
-    }
-    this.searchTimer = setTimeout(() => {
-      var url = Configs.placesAutocompleteUrl + '?q=' + encodeURIComponent(query);
-      this.http.get(url).subscribe((res: any) => {
-        //cb(res.results);
-        cb(res.predictions);
-      });
-    }, 1000);
-
-  }
-  
-  displaySuggest(suggest: PlaceSuggestion){
-    return suggest ? suggest.description : suggest;
-  }
-
-  suggestlistSelectionChanged(suggest: PlaceSuggestion){
-    this.selectedSuggestion = suggest;
   }
 
   removeStep(index){
@@ -126,6 +100,7 @@ export class OverviewComponent implements OnInit {
   }
 
   addTodo(suggest: PlaceSuggestion, step: Step){
+    console.log(suggest);
     this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
       var newTodo = new Todo();
       newTodo.title = place.name;
@@ -165,7 +140,7 @@ export class OverviewComponent implements OnInit {
   }
 
   addFilesToPlan(newFile){
-    if (!("files" in this.plan)){
+    if (!this.plan.files){
       this.plan.files = [];
     }
     this.plan.files.push(newFile);
