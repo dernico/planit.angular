@@ -67,6 +67,15 @@ export class OverviewComponent implements OnInit {
     this.selectedSuggestion = suggest;
   }
 
+  placesSelectionUpdate(suggest: PlaceSuggestion, index){
+    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+      let step = this.plan.steps[index];
+      step.title = place.name;
+      step.location = place.geometry.location;
+      this.updatePlan(this.plan);
+    });
+  }
+
   addStep(suggest: PlaceSuggestion, days){
     console.log(suggest);
     this.placeDetails(suggest.place_id, (place : PlaceDetail) => {

@@ -46,7 +46,7 @@ export class PlacesInputComponent implements OnInit {
             this.http.get(url).subscribe((res: any) => {
                 cb(res.predictions);
             });
-        }, 1000);
+        }, 650);
     }
 
 }
