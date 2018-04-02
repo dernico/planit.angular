@@ -36,7 +36,7 @@ import { Configs } from './configs';
 import { OverviewComponent } from './pages/planoverview/overview/overview.component';
 import { RouteComponent } from './pages/planoverview/route/route.component';
 import { CalendarComponent } from './pages/planoverview/calendar/calendar.component';
-import { FileUploadComponent } from './components/helper/file-upload.component';
+import { FileUploadComponent } from './components/fileupload/file-upload.component';
 import { FileService } from './services/file.service';
 import { FilesComponent } from './pages/planoverview/files/files.component';
 import { ShareComponent } from './pages/planoverview/share/share.component';
