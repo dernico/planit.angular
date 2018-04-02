@@ -23,24 +23,24 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthGuard } from './auth.guard';
 
-import { AppComponent } from './components/app/app.component';
-import { StartComponent } from './components/start/start.component';
-import { PlanningsComponent } from './components/plannings/plannings.component';
-import { PlanoverviewComponent } from './components/planoverview/planoverview.component';
-import { LoginComponent } from './components/login/login.component';
+import { AppComponent } from './app/app.component';
+import { StartComponent } from './pages/start/start.component';
+import { PlanningsComponent } from './pages/plannings/plannings.component';
+import { PlanoverviewComponent } from './pages/planoverview/planoverview.component';
+import { LoginComponent } from './pages/login/login.component';
 
 import {AuthService} from './services/auth.service'
 import { HttpInterceptorService } from './services/httpInterceptor.service';
 import { PlanningService } from './services/planning.service';
 import { Configs } from './configs';
-import { OverviewComponent } from './components/planoverview/overview/overview.component';
-import { RouteComponent } from './components/planoverview/route/route.component';
-import { CalendarComponent } from './components/planoverview/calendar/calendar.component';
+import { OverviewComponent } from './pages/planoverview/overview/overview.component';
+import { RouteComponent } from './pages/planoverview/route/route.component';
+import { CalendarComponent } from './pages/planoverview/calendar/calendar.component';
 import { FileUploadComponent } from './components/helper/file-upload.component';
 import { FileService } from './services/file.service';
-import { FilesComponent } from './components/planoverview/files/files.component';
-import { ShareComponent } from './components/planoverview/share/share.component';
-import { MoneyComponent } from './components/planoverview/money/money.component';
+import { FilesComponent } from './pages/planoverview/files/files.component';
+import { ShareComponent } from './pages/planoverview/share/share.component';
+import { MoneyComponent } from './pages/planoverview/money/money.component';
 
 @NgModule({
   declarations: [

@@ -29,6 +29,13 @@
 <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
 <mat-datepicker #endDatePicker></mat-datepicker>
 
+<app-file-upload 
+[(plan)]="plan._id"
+(saveCallback)="addFilesToPlan($event, plan._id)"
+maxFiles="4"
+maxSize="2"
+fileExt="JPG, GIF, PNG, PDF" >
+</app-file-upload>
 
 <h2>Stops</h2>
 
@@ -46,13 +53,6 @@
 </mat-form-field>
 <button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
 
-<app-file-upload 
-[(plan)]="plan._id"
-(saveCallback)="addFilesToPlan($event, plan._id)"
-maxFiles="4"
-maxSize="2"
-fileExt="JPG, GIF, PNG, PDF" >
-</app-file-upload>
 
 <div>
     <ul *ngIf="plan.files">

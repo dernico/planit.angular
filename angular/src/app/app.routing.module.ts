@@ -1,15 +1,15 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { StartComponent } from './components/start/start.component';
-import { PlanningsComponent } from './components/plannings/plannings.component';
-import { PlanoverviewComponent } from './components/planoverview/planoverview.component';
+import { StartComponent } from './pages/start/start.component';
+import { PlanningsComponent } from './pages/plannings/plannings.component';
+import { PlanoverviewComponent } from './pages/planoverview/planoverview.component';
 
 import { AuthGuard } from './auth.guard';
-import { LoginComponent } from './components/login/login.component';
-import { OverviewComponent } from './components/planoverview/overview/overview.component';
-import { RouteComponent } from './components/planoverview/route/route.component';
-import { ShareComponent } from './components/planoverview/share/share.component';
+import { LoginComponent } from './pages/login/login.component';
+import { OverviewComponent } from './pages/planoverview/overview/overview.component';
+import { RouteComponent } from './pages/planoverview/route/route.component';
+import { ShareComponent } from './pages/planoverview/share/share.component';
 
 
 const appRoutes : Routes = [
