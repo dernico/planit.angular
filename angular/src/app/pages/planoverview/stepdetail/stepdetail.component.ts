@@ -16,16 +16,15 @@ import { saveAs } from 'file-saver';
 import { File } from '../../../models/File';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css']
+  selector: 'app-stepdetail',
+  templateUrl: './stepdetail.component.html',
+  styleUrls: ['./stepdetail.component.css']
 })
-export class OverviewComponent implements OnInit {
+export class StepDetailComponent implements OnInit {
   private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
+  private step: Step;
   private files;
-  private startDate;
-  private endDate;
   private selectedSuggestion;
 
   constructor(
@@ -44,23 +43,15 @@ export class OverviewComponent implements OnInit {
     this.route
     .params
     .subscribe(params => {
-        this.plan = this.planningService.getPlanning(params.id);
-        if(this.plan.steps == undefined){
-          this.plan.steps = [];
+        this.plan = this.planningService.getPlanning(params.planid);
+        if(this.plan.steps != undefined){
+          this.step = this.plan.steps.find(s => {return s._id == params.stepid});
         }
     });
   }
 
   backToPlannings(){
-    this.router.navigate(['plannings']);
-  }
-
-  sharePlan(){
-    this.router.navigate(['share', this.plan._id]);
-  }
-  
-  goToDetails(stepid){
-    this.router.navigate(['stepdetails', this.plan._id, stepid]);
+    this.router.navigate(['planoverview', this.plan._id]);
   }
 
   planChanged(){
@@ -80,25 +71,6 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  addStep(suggest: PlaceSuggestion, days){
-    console.log(suggest);
-    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
-      var newStep = new Step();
-      newStep.title = place.name;
-      newStep.days = days;
-      newStep.location = place.geometry.location;
-
-      if(place.photos.length > 0 ){
-        // var photo = place.photos[0];
-        // newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
-        // newStep.photoUrl = place.photo;
-      }
-
-      this.plan.steps.push(newStep);
-      this.updatePlan(this.plan);
-    });
-  }
-
   private placeDetails(placeid, cb: any){
     let url = Configs.placesDetailsUrl + '?placeid='+placeid;
     this.http.get(url).subscribe((res: any) => {
@@ -106,20 +78,29 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  removeStep(index){
-    this.plan.steps.splice(index, 1);
+  addTodo(suggest: PlaceSuggestion, step: Step){
+    console.log(suggest);
+    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+      var newTodo = new Todo();
+      newTodo.title = place.name;
+      newTodo.location = place.geometry.location;
+      step.todos.push(newTodo);
+
+      this.updatePlan(this.plan);
+    });
+  }
+
+  removeTodo(index, step: Step){
+    step.todos.splice(index, 1);
 
     this.updatePlan(this.plan);
   }
-
-
 
   private updatePlan(plan: Planning){
 
     this.planningService.setPlanning(plan);
     this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {});
   }
-
 
   refreshFiles(status){
     if(status){
@@ -132,18 +113,21 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  addFilesToPlan(newFile){
-    if (!this.plan.files){
-      this.plan.files = [];
-    }
-    this.plan.files.push(newFile);
+  addFilesToStep(newFile, stepid){
+    this.findStep(stepid, (step) =>{
+      if(!("files" in step)){
+        step.files = [];
+      }
+      step.files.push(newFile);
+    });
     this.updatePlan(this.plan);
   }
-  deleteFileFromPlan(index){
-    this.plan.files.splice(index, 1);
+  deleteFileFromStep(index, stepid){
+    this.findStep(stepid, (step) =>{
+      step.files.splice(index, 1);
+    });
     this.updatePlan(this.plan);
   }
-
   downloadFile(file:File){
     const headers = new HttpHeaders();
     headers.append('Accept', 'text/plain');

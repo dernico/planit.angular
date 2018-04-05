@@ -10,6 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { OverviewComponent } from './pages/planoverview/overview/overview.component';
 import { RouteComponent } from './pages/planoverview/route/route.component';
 import { ShareComponent } from './pages/planoverview/share/share.component';
+import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.component';
 
 
 const appRoutes : Routes = [
@@ -39,6 +40,12 @@ const appRoutes : Routes = [
     pathMatch: 'full',
     canActivate: [AuthGuard],
     component: ShareComponent
+  },
+  {
+    path: 'stepdetails/:planid/:stepid',
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+    component: StepDetailComponent
   },
   // {
   //   path: 'planoverview/overview',
