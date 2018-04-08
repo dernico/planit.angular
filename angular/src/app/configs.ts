@@ -8,6 +8,7 @@ export class Configs {
     public static placesSearchUrl = Configs.baseUrl + '/places/search';
     public static placesDetailsUrl = Configs.baseUrl + '/places/details';
     public static placesPhotoUrl = Configs.baseUrl + '/places/photo';
+    public static placesDistanceUrl = Configs.baseUrl + '/places/distance';
 
     public static fileUrl = Configs.baseUrl + '/file';
     public static fileGetImagesUrl = Configs.baseUrl + '/file/images';

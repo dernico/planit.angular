@@ -1,6 +1,7 @@
 import { Todo } from './Todo'
 import { Location } from './Location';
 import { File } from './File';
+import { Distance } from './Distance';
 
 export class Step {
     constructor(){
@@ -15,4 +16,5 @@ export class Step {
     public days: number;
     public order: number;
     public photoUrl: string;
+    public distanceNextStep: Distance;
 }

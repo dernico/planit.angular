@@ -14,6 +14,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { FileService } from '../../../services/file.service';
 import { saveAs } from 'file-saver';
 import { File } from '../../../models/File';
+import { Distance } from '../../../models/Distance';
 
 @Component({
   selector: 'app-overview',
@@ -67,6 +68,65 @@ export class OverviewComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
+  stepChanged(step: Step){
+    //delete Object.getPrototypeOf(newObj).name
+    if("edit" in step){
+      delete step["edit"];
+    }
+    
+    if(!step._id){
+      // this is when step is a new step!
+      this.plan.steps.push(step);
+    }
+
+    if(this.plan.steps.length > 0){
+      
+      let prevStep;
+      if(!step._id){
+        // this is when step is a new step!
+        prevStep = this.plan.steps[this.plan.steps.length - 2];
+      }
+      else{
+        // this is when step already exists
+        for(let i = 0; i < this.plan.steps.length; i++){
+          if(this.plan.steps[i]._id == step._id){
+            if(i > 0){
+              prevStep = this.plan.steps[i - 1];
+              break;
+            }
+          }
+        }
+      }
+      if(prevStep){
+
+        var url = Configs.placesDistanceUrl + "?startLat=" + prevStep.location.lat + "&startLng=" + prevStep.location.lng;
+        url += "&endLat=" + step.location.lat + "&endLng=" + step.location.lng;
+        this.http.get(url).subscribe( (rows :Array<any>) => {
+          if(rows.length > 0  && rows[0].elements.length > 0){
+            var result = rows[0].elements[0];
+            var distance = new Distance();
+            distance.distance = {
+              text: result.distance.text,
+              value: result.distance.value
+            };
+            distance.duration = {
+              text: result.duration.text,
+              value: result.duration.value
+            };
+            prevStep.distance = distance;
+          }
+          
+          this.updatePlan(this.plan);
+        });
+      }
+      else{
+        this.updatePlan(this.plan);
+      }
+    }else{
+      this.updatePlan(this.plan);
+    }
+  }
+
   placesSelectionChanged(suggest: PlaceSuggestion){
     this.selectedSuggestion = suggest;
   }
@@ -76,26 +136,23 @@ export class OverviewComponent implements OnInit {
       let step = this.plan.steps[index];
       step.title = place.name;
       step.location = place.geometry.location;
-      this.updatePlan(this.plan);
+      this.stepChanged(step);
     });
   }
 
   addStep(suggest: PlaceSuggestion, days){
-    console.log(suggest);
     this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
       var newStep = new Step();
       newStep.title = place.name;
       newStep.days = days;
       newStep.location = place.geometry.location;
 
-      if(place.photos.length > 0 ){
-        // var photo = place.photos[0];
-        // newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
-        // newStep.photoUrl = place.photo;
-      }
-
-      this.plan.steps.push(newStep);
-      this.updatePlan(this.plan);
+      // if(place.photos.length > 0 ){
+      //   var photo = place.photos[0];
+      //   newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
+      //   newStep.photoUrl = place.photo;
+      // }
+      this.stepChanged(newStep);
     });
   }
 

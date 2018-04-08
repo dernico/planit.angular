@@ -80,11 +80,13 @@ infoText="Drop your flight tickets, car voucher etc. here" >
             </mat-card-header>
 
             <mat-card-content>
-                <div >
-                    <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
+                <!-- <div mat-card-image>
+                    <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="6">
                         <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
-                        <agm-marker *ngFor="let todo of step.todos" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
                     </agm-map>
+                </div> -->
+                <div *ngIf="step.distance">
+                    Distance to your next location: {{step.distance.distance.text}} ({{step.distance.duration.text}})
                 </div>
             </mat-card-content>
             <mat-card-footer>
