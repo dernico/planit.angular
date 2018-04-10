@@ -1,97 +1,147 @@
 
-<h1>{{plan.title}}</h1>
-<span style="position: absolute; right: 10px; top: 10px;" (click)="backToPlannings()">Back to all plannings (click)</span>
-
-<span *ngFor="let user of plan.users" >
-    <img [src]="user.picture" height="50" [title]="user.email" />
-    <!-- <span (click)="">X</span> -->
-</span>
-
-<br />
-<button (click)="sharePlan()">Share</button>
-
-<hr>
-
-<label>Start</label>
-<mat-form-field>
-    <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;planChanged();"
-        placeholder="When do you wanna start">
-</mat-form-field>
-<mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
-<mat-datepicker #startDatePicker></mat-datepicker>
-
-
-<label>End</label>
-<mat-form-field>
-    <input matInput [matDatepicker]="endDatePicker" [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();"
-        placeholder="When do you have to go">
-</mat-form-field>
-<mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
-<mat-datepicker #endDatePicker></mat-datepicker>
-
-<app-file-upload 
-[(plan)]="plan._id"
-(saveCallback)="addFilesToPlan($event, plan._id)"
-maxFiles="4"
-maxSize="2"
-fileExt="JPG, GIF, PNG, PDF"
-infoText="Drop your flight tickets, car voucher etc. here" >
-</app-file-upload>
-
-<h2>Stops</h2>
-
-<places-input
-    placeholderInput="Where?"
-    (selectionChanged)="placesSelectionChanged($event)"
-></places-input>
-
-<mat-form-field>
-    <input matInput [(ngModel)]="stepDays" type="number" placeholder="How many days you wanna stop?">
-</mat-form-field>
-<button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
-
-
-<div>
-    <ul *ngIf="plan.files">
-        <li *ngFor="let file of plan.files; let i = index">
-            <span (click)="downloadFile(file)">{{i + 1}}. {{file.filename}}</span>
-            <button (click)="deleteFileFromPlan(i)">delete</button>
-        </li>
-    </ul>
+<div style="padding-top: 10px;">
+    <button style="float: left;" mat-raised-button (click)="backToPlannings()">Back</button>
 </div>
 
-<div *ngIf="plan.steps">
-    <div *ngFor="let step of plan.steps; let i = index;">
-        <h3 (click)="step.edit = true;" *ngIf="!step.edit">
-            {{i + 1}}. {{step.title}} ({{step.days}} days)
-        </h3>
-        <div *ngIf="step.edit">
-            <places-input
-                placeholderInput="Where?"
-                (selectionChanged)="placesSelectionUpdate($event, i)"
-            ></places-input>
-            <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
-            <button (click)="step.edit = false;">Done</button>
-            <button (click)="removeStep(i);">Remove</button>
-        </div>
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title></mat-card-title>
-            </mat-card-header>
+<div style="clear: both;"></div>
 
-            <mat-card-content>
-                <!-- <div mat-card-image>
-                    <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="6">
+<h1>{{plan.title}}</h1>
+<!-- <div style="position: absolute; left: 10px; top: 10px;" >
+    <button mat-raised-button>Back</button>
+</div>
+<div style="position: absolute; right: 10px; top: 10px;">
+    <button mat-raised-button (click)="sharePlan()">Share</button>
+</div> -->
+
+
+<div class="overview-container">
+    <h4>Attandees</h4>
+    <span *ngFor="let user of plan.users" >
+        <img [src]="user.picture" height="50" [title]="user.email" />
+        <!-- <span (click)="">X</span> -->
+    </span>
+    
+    <button style="clear: left;" mat-raised-button (click)="sharePlan()">Add</button>
+</div>
+
+
+<div class="overview-container">
+    <h4>Dates</h4>
+    <div>
+        <mat-form-field>
+            <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;planChanged();"
+                placeholder="Start">
+        </mat-form-field>
+        <mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+    </div>
+
+    <div>
+        <mat-form-field>
+            <input matInput [matDatepicker]="endDatePicker" [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();"
+                placeholder="End">
+        </mat-form-field>
+        <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+    </div>
+</div>
+
+<div class="overview-container">
+    <h4>Flight tickets, car vouchers, etc. </h4>
+    
+    <div>
+        <ul *ngIf="plan.files">
+            <li *ngFor="let file of plan.files; let i = index">
+                <span (click)="downloadFile(file)">{{i + 1}}. {{file.filename}}</span>
+                <button mat-raised-button (click)="deleteFileFromPlan(i)">delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <app-file-upload 
+    [(plan)]="plan._id"
+    (saveCallback)="addFilesToPlan($event, plan._id)"
+    maxFiles="4"
+    maxSize="2"
+    fileExt="JPG, GIF, PNG, PDF"
+    infoText="Drop your flight tickets, car voucher etc. here" >
+    </app-file-upload>
+
+</div>
+
+<div class="overview-container">
+    <h4>The places you will visit</h4>
+
+    <places-input
+        placeholderInput="Where?"
+        (selectionChanged)="placesSelectionChanged($event)"
+    ></places-input>
+
+    <mat-form-field>
+        <input matInput [(ngModel)]="stepDays" type="number" placeholder="How many days you wanna stop?">
+    </mat-form-field>
+    <button mat-raised-button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
+
+
+
+    <div *ngIf="plan.steps">
+        <div *ngFor="let step of plan.steps; let i = index;">
+            <!-- <h3 (click)="step.edit = true;" *ngIf="!step.edit">
+                {{i + 1}}. {{step.title}} ({{step.days}} days)
+            </h3>
+            <div *ngIf="step.edit">
+                <places-input
+                    placeholderInput="Where?"
+                    (selectionChanged)="placesSelectionUpdate($event, i)"
+                ></places-input>
+                <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+                <button (click)="step.edit = false;">Done</button>
+                <button (click)="removeStep(i);">Remove</button>
+            </div> -->
+            <mat-card>
+                <mat-card-header>
+                        <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
+                        <div (click)="step.edit = true;" *ngIf="!step.edit">
+                            <mat-card-title>{{step.title}}</mat-card-title>
+                            <mat-card-subtitle>Days: {{step.days}}</mat-card-subtitle>
+                        </div>
+                        <div *ngIf="step.edit">
+                            <places-input
+                                placeholderInput="Where?"
+                                (selectionChanged)="placesSelectionUpdate($event, i)"
+                            ></places-input>
+                            <mat-form-field>
+                                <input matInput [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+                            </mat-form-field>
+                            <button (click)="step.edit = false;">Done</button>
+                            <button (click)="removeStep(i);">Remove</button>
+                        </div>
+                </mat-card-header>
+<!--                 
+                <img mat-card-image src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=11" />
+                 -->
+                <div mat-card-image>
+                    <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="11">
                         <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
                     </agm-map>
-                </div> -->
-                <div *ngIf="step.distance">
-                    Distance to your next location: {{step.distance.distance.text}} ({{step.distance.duration.text}})
                 </div>
-            </mat-card-content>
-            <mat-card-footer>
-                <span (click)="goToDetails(step._id)">Here you will find your details</span>
-            </mat-card-footer>
-        </mat-card>
+                <mat-card-content>
+                    <!-- <div mat-card-image>
+                        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="6">
+                            <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+                        </agm-map>
+                    </div> -->
+                    <!-- <img mat-card-image [src]=""></img> -->
+                    <div *ngIf="step.distance">
+                        Distance to your next location: {{step.distance.distance.text}} ({{step.distance.duration.text}})
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="goToDetails(step._id)">Details</button>
+                </mat-card-actions>
+                <mat-card-footer>
+                </mat-card-footer>
+            </mat-card>
+        </div>
     </div>
 </div>
