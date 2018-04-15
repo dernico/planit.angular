@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@a
 import { Configs } from '../../configs';
 import { HttpClient } from '@angular/common/http';
 import { PlaceSuggestion } from '../../models/PlaceSuggestion';
+import { PlaceDetail } from '../../models/PlaceDetail';
+import { Todo } from '../../models/Todo';
 
 @Component({
     selector: 'places-input',
@@ -10,10 +12,11 @@ import { PlaceSuggestion } from '../../models/PlaceSuggestion';
 })
 export class PlacesInputComponent implements OnInit {
     errors: Array<string> = [];
-    @Input() inputValue;
+    //@Input() inputValue;
     @Input() placeholderInput: string = "Where do you wanna stop?";
     @Output() selectionChanged = new EventEmitter();
     
+    private inputvalue: PlaceSuggestion;
     private searchTimer:any;
     private suggestlist = [];
 
@@ -23,6 +26,11 @@ export class PlacesInputComponent implements OnInit {
     ngOnInit() {}
     
     stepKeyUp(value){
+        
+        var newTodo = new Todo();
+        newTodo.title = value;
+        this.selectionChanged.emit(newTodo);
+
         clearTimeout(this.searchTimer);
         this.searchPlaces(value, (suggestlist) => {
             this.suggestlist = suggestlist;
@@ -30,7 +38,12 @@ export class PlacesInputComponent implements OnInit {
     }
     
     suggestlistSelectionChanged(suggest: PlaceSuggestion){
-      this.selectionChanged.emit(suggest);
+        this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+            var newTodo = new Todo();
+            newTodo.title = place.name;
+            newTodo.location = place.geometry.location;
+            this.selectionChanged.emit(newTodo);
+        });
     }
   
     displaySuggest(suggest: PlaceSuggestion){
@@ -47,6 +60,13 @@ export class PlacesInputComponent implements OnInit {
                 cb(res.predictions);
             });
         }, 400);
+    }
+
+    private placeDetails(placeid, cb: any){
+      let url = Configs.placesDetailsUrl + '?placeid='+placeid;
+      this.http.get(url).subscribe((res: any) => {
+        cb(res.result);
+      });
     }
 
 }

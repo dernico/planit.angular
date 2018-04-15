@@ -25,7 +25,8 @@ export class StepDetailComponent implements OnInit {
   private plan: Planning;
   private step: Step;
   private files;
-  private selectedSuggestion;
+  private selectedTodo : Todo;
+  private todoInputValue: string;
 
   constructor(
     private http: HttpClient,
@@ -58,8 +59,8 @@ export class StepDetailComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
-  placesSelectionChanged(suggest: PlaceSuggestion){
-    this.selectedSuggestion = suggest;
+  placesSelectionChanged(newTodo: Todo){
+    this.selectedTodo = newTodo;
   }
 
   placesSelectionUpdate(suggest: PlaceSuggestion, index){
@@ -78,16 +79,15 @@ export class StepDetailComponent implements OnInit {
     });
   }
 
-  addTodo(suggest: PlaceSuggestion, step: Step){
-    console.log(suggest);
-    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
-      var newTodo = new Todo();
-      newTodo.title = place.name;
-      newTodo.location = place.geometry.location;
-      step.todos.push(newTodo);
+  getTodosWithLocation(todos: Array<Todo>){
+    return todos.filter(item => { return item.location; });
+  }
 
-      this.updatePlan(this.plan);
-    });
+  addTodo(step: Step){
+    console.log(this.selectedTodo + " - " + this.todoInputValue);
+    step.todos.push(this.selectedTodo);
+    this.updatePlan(this.plan);
+    this.selectedTodo = null;
   }
 
   removeTodo(index, step: Step){

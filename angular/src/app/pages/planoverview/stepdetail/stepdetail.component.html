@@ -23,7 +23,7 @@
 
         <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
             <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
-            <agm-marker *ngFor="let todo of step.todos" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
+            <agm-marker *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
         </agm-map>
 
         <mat-card-content>
@@ -39,7 +39,7 @@
                 placeholderInput="Next Todo .."
                 (selectionChanged)="placesSelectionChanged($event)"
             ></places-input>
-            <button mat-raised-button (click)="addTodo(selectedSuggestion, step);">add todo</button>
+            <button mat-raised-button (click)="addTodo(step);">add todo</button>
 
             <app-file-upload 
             [(plan)]="plan._id"
