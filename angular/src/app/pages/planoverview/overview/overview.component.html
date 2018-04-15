@@ -61,6 +61,7 @@
     <app-file-upload 
     [(plan)]="plan._id"
     (saveCallback)="addFilesToPlan($event, plan._id)"
+    url="fileupload.fileurl"
     maxFiles="4"
     maxSize="2"
     fileExt="JPG, GIF, PNG, PDF"

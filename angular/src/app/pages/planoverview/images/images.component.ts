@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../../models/Planing';
 import { PlanningService } from '../../../services/planning.service';
@@ -14,21 +14,25 @@ import { File } from '../../../models/File'
 import { FileService } from '../../../services/file.service';
 
 @Component({
-  selector: 'app-files',
-  templateUrl: './files.component.html',
-  styleUrls: ['./files.component.css']
+  selector: 'app-images',
+  templateUrl: './images.component.html',
+  styleUrls: ['./images.component.css']
 })
-export class FilesComponent implements OnInit {
+export class ImagesComponent implements OnInit {
   private plan: Planning;
-  public files: Array<File>;
+  public images: Array<File>;
+  public fileupload = {
+    imagesurl: Configs.imagesUrl
+  };
 
   constructor(
+    private http: HttpClient,
     private fileService: FileService,
     private route: ActivatedRoute,
     private router: Router,
     private planningService: PlanningService
   ) {
-    this.files = [];
+    this.images = [];
    }
 
   ngOnInit() {
@@ -40,22 +44,40 @@ export class FilesComponent implements OnInit {
     .params
     .subscribe(params => {
         this.plan = this.planningService.getPlanning(params.id);
-        if(this.plan.steps == undefined){
-          this.plan.steps = [];
+        if(this.plan.images == undefined){
+          this.plan.images = [];
         }
         this.loadFiles();
     });
   }
+  private updatePlan(plan: Planning){
+
+    this.planningService.setPlanning(plan);
+    this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {this.loadFiles();});
+  }
   
-  private loadFiles(){
-    this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((res : Array<File>) => {
-      this.files = res;
-    });
+  addImagesToPlan(newImages){
+    if (!this.plan.images){
+      this.plan.images = [];
+    }
+    this.plan.images = this.plan.images.concat(newImages);
+    this.updatePlan(this.plan);
   }
 
-  public deleteFile(id){
-    this.fileService.deleteFile(Configs.fileUrl, id).subscribe(() => {
-      this.loadFiles();
+  private loadFiles(){
+    // this.fileService.loadFilesForPlan(Configs.imagesUrl, this.plan._id).subscribe((res : Array<File>) => {
+    //   this.files = res;
+    // });
+  }
+
+  public deleteFile(index){
+    var fileid = this.plan.images[index].fileId;
+
+    this.fileService.deleteFile(Configs.fileUrl, fileid).subscribe(() => {
+
+      this.plan.images.splice(index, 1);
+      this.updatePlan(this.plan);
+      
     });
   }
 }

@@ -43,13 +43,15 @@ import { ShareComponent } from './pages/planoverview/share/share.component';
 import { MoneyComponent } from './pages/planoverview/money/money.component';
 import { PlacesInputComponent } from './components/places-input/places-input.component';
 import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.component';
+import { ImagesComponent } from './pages/planoverview/images/images.component';
+import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
 
 @NgModule({
   declarations: [
     FileUploadComponent,
     PlacesInputComponent,
 
-    
+    HttpSrcDirective,
     AppComponent,
     LoginComponent,
     StartComponent,
@@ -60,6 +62,7 @@ import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.
     RouteComponent,
     CalendarComponent,
     FilesComponent,
+    ImagesComponent,
     ShareComponent,
     MoneyComponent
   ],

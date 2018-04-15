@@ -12,6 +12,7 @@ export class FileUploadComponent implements OnInit {
     dragAreaClass: string = 'dragarea';
     @Input() plan: string;
     @Input() infoText: string;
+    @Input() url: string;
     @Input() fileExt: string = "JPG, GIF, PNG, PDF";
     @Input() maxFiles: number = 5;
     @Input() maxSize: number = 5; // 5MB
@@ -69,14 +70,14 @@ export class FileUploadComponent implements OnInit {
         if (files.length > 0) {
             let formData: FormData = new FormData();
             for (var j = 0; j < files.length; j++) {
-                formData.append("file", files[j], files[j].name);
+                formData.append("file"+j, files[j], files[j].name);
             }
             // todo:
             // formData.append("projectid", myval);
             formData.append("plan", this.plan);
             formData.append("url", Configs.fileUrl);
             
-            this.fileService.upload(formData)
+            this.fileService.upload(this.url, formData)
                 .subscribe(
                 success => {
                     this.uploadStatus.emit(true);

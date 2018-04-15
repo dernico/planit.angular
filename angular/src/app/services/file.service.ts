@@ -12,12 +12,12 @@ import { File } from '../models/File';
 export class FileService {
     constructor(private http: HttpClient) { }
 
-    upload(formData){
-        return  this.http.post(Configs.fileUrl, formData);
+    upload(url, formData){
+        return  this.http.post(url, formData);
 
     }
-    loadFilesForPlan(planid){
-        let url = Configs.fileUrl + '?planid='+ planid;
+    loadFilesForPlan(url, planid){
+        url = url + '?planid='+ planid;
         return this.http.get(url);
         /*.map( (files:Array<File>) => {
             let result = {};
@@ -36,8 +36,8 @@ export class FileService {
         });
         */
     }
-    deleteFile(fileid){
-        let url = Configs.fileUrl + '?id=' + fileid;
+    deleteFile(url, fileid){
+        url += '?id=' + fileid;
         return this.http.delete(url);
     }
 }

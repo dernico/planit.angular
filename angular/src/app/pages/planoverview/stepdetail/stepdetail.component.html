@@ -35,15 +35,16 @@
             </mat-list>
         </mat-card-content>
         <mat-card-footer>
-            <places-input style="width: 100%"
+            <places-input #todoInput
                 placeholderInput="Next Todo .."
                 (selectionChanged)="placesSelectionChanged($event)"
             ></places-input>
-            <button mat-raised-button (click)="addTodo(step);">add todo</button>
+            <button mat-raised-button (click)="addTodo(step);todoInput.inputValue = null;">add todo</button>
 
             <app-file-upload 
             [(plan)]="plan._id"
             (saveCallback)="addFilesToStep($event, step._id)"
+            url="fileupload.fileurl"
             maxFiles="4"
             maxSize="2"
             fileExt="JPG, GIF, PNG, PDF"

@@ -11,6 +11,7 @@ import { OverviewComponent } from './pages/planoverview/overview/overview.compon
 import { RouteComponent } from './pages/planoverview/route/route.component';
 import { ShareComponent } from './pages/planoverview/share/share.component';
 import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.component';
+import { ImagesComponent } from './pages/planoverview/images/images.component';
 
 
 const appRoutes : Routes = [
@@ -47,12 +48,12 @@ const appRoutes : Routes = [
     canActivate: [AuthGuard],
     component: StepDetailComponent
   },
-  // {
-  //   path: 'planoverview/overview',
-  //   pathMatch: 'full',
-  //   canActivate: [AuthGuard],
-  //   component: OverviewComponent
-  // },
+  {
+    path: 'images/:id',
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+    component: ImagesComponent
+  },
   // {
   //   path: 'planoverview/route',
   //   pathMatch: 'full',

@@ -27,6 +27,10 @@ export class StepDetailComponent implements OnInit {
   private files;
   private selectedTodo : Todo;
   private todoInputValue: string;
+  private fileupload = {
+    fileurl: Configs.fileUrl,
+    imageurl: Configs.imagesUrl
+  };
 
   constructor(
     private http: HttpClient,
@@ -104,7 +108,7 @@ export class StepDetailComponent implements OnInit {
 
   refreshFiles(status){
     if(status){
-      this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
+      this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((files: Array<File>) => {
         
         files.forEach(file => {
           this.plan.files

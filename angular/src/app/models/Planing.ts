@@ -11,6 +11,7 @@ export class Planning {
     public comments: Array<String>;
     public steps: Array<Step>;
     public files: Array<File>;
+    public images: Array<File>;
     public costs: Array<Cost>;
     public loggedInUser: User;
     public users: Array<User>;

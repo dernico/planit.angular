@@ -28,6 +28,10 @@ export class OverviewComponent implements OnInit {
   private startDate;
   private endDate;
   private selectedSuggestion;
+  private fileupload = {
+    fileurl: Configs.fileUrl,
+    imageurl: Configs.imagesUrl
+  };
 
   constructor(
     private http: HttpClient,
@@ -180,7 +184,7 @@ export class OverviewComponent implements OnInit {
 
   refreshFiles(status){
     if(status){
-      this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
+      this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((files: Array<File>) => {
         
         files.forEach(file => {
           this.plan.files

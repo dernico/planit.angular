@@ -16,7 +16,7 @@ export class PlacesInputComponent implements OnInit {
     @Input() placeholderInput: string = "Where do you wanna stop?";
     @Output() selectionChanged = new EventEmitter();
     
-    private inputvalue: PlaceSuggestion;
+    private inputvalue;
     private searchTimer:any;
     private suggestlist = [];
 
