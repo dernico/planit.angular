@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit{
       var token = params.access_token;
       if(token){
         this.authService.setAccessToken(token);
-        this.router.navigate(['']);
+        this.router.navigate(['plannings']);
       }
       
     });

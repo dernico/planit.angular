@@ -1,21 +1,21 @@
 
-<div style="padding-top: 10px;">
-    <button style="float: left;" mat-raised-button (click)="backToPlannings()">Back</button>
-</div>
-
-<div style="clear: both;"></div>
-
-<h1>{{plan.title}}</h1>
-<!-- <div style="position: absolute; left: 10px; top: 10px;" >
-    <button mat-raised-button>Back</button>
-</div>
-<div style="position: absolute; right: 10px; top: 10px;">
-    <button mat-raised-button (click)="sharePlan()">Share</button>
-</div> -->
-
 
 <div class="overview-container">
-    <h4>Attandees</h4>
+    <h4>Travelmates</h4>
+
+    
+    <!-- <mat-grid-list cols="4" rowHeight="50px">
+        <mat-grid-tile *ngFor="let user of plan.users" >
+                <mat-form-field class="example-full-width">
+                        <input matInput [(ngModel)]="name" placeholder="Name for next trip ..">
+                    </mat-form-field>
+        </mat-grid-tile>
+    
+        <mat-grid-tile>
+            <button mat-raised-button (click)="add(name)">Add</button>
+        </mat-grid-tile>
+    </mat-grid-list> -->
+
     <span *ngFor="let user of plan.users" >
         <img [src]="user.picture" height="50" [title]="user.email" />
         <!-- <span (click)="">X</span> -->

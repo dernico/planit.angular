@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../models/Planing';
-import { PlanningService } from '../../services/planning.service';
-import { Step } from '../../models/Step';
-import { Todo } from '../../models/Todo';
-import { PlaceSuggestion } from '../../models/PlaceSuggestion';
-import { PlaceSearchResult } from '../../models/PlaceSearchResult';
-import { Observable } from 'rxjs/Observable';
-import { PlaceDetail } from '../../models/PlaceDetail';
-import { Configs } from '../../configs';
 import { OverviewComponent } from './overview/overview.component';
 import { ChangeDetectorRef } from '@angular/core';
+import { PlanningService } from '../../services/planning.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-planoverview',
@@ -20,9 +13,24 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class PlanoverviewComponent implements OnInit {
 
-  constructor(private changeDetectRef: ChangeDetectorRef) { }
+  public plan: Planning;
+
+  constructor(private changeDetectRef: ChangeDetectorRef, 
+    private planningService: PlanningService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.route
+    .params
+    .subscribe(params => {
+        this.plan = this.planningService.getPlanning(params.id);
+    });
+  }
+
+  backToPlannings(){
+    this.router.navigate(['plannings']);
   }
 
   tabChanged(event) {

@@ -1,11 +1,31 @@
-<h1>Plannings</h1>
-<ul>
-    <li *ngFor="let plan of plannings">
-        <p (click)="goto(plan._id)">{{plan.title}}</p>
-    </li>
-</ul>
 
-<h1>New</h1>
-<label>Name:</label>
-<input [(ngModel)]="name" />
-<button (click)="add(name)">Add</button>
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span>Your Plannings</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+
+
+
+
+<mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile (click)="goto(plan._id)" *ngFor="let plan of plannings">
+        {{plan.title}}
+    </mat-grid-tile>
+</mat-grid-list>
+
+
+
+
+<mat-grid-list cols="4" rowHeight="5em">
+    <mat-grid-tile colspan="3">
+            <mat-form-field class="example-full-width">
+                    <input matInput [(ngModel)]="name" placeholder="Name for next trip ..">
+                </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <button mat-raised-button (click)="add(name)">Add</button>
+    </mat-grid-tile>
+</mat-grid-list>

@@ -56,10 +56,6 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  backToPlannings(){
-    this.router.navigate(['plannings']);
-  }
-
   sharePlan(){
     this.router.navigate(['share', this.plan._id]);
   }

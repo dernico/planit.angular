@@ -14,6 +14,9 @@ import {
   MatButtonModule,
   MatListModule,
   MatTabsModule,
+  MatGridListModule,
+  MatToolbarModule,
+  MatIconModule,
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -73,7 +76,8 @@ import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
     MatFormFieldModule,MatDatepickerModule,
     MatNativeDateModule,MatCardModule,
     MatButtonModule,MatListModule,
-    MatTabsModule,
+    MatTabsModule, MatGridListModule,
+    MatToolbarModule, MatIconModule,
     
     FormsModule,
     BrowserModule,

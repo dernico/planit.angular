@@ -5,7 +5,7 @@ agm-map {
 .overview-container{
   padding: 1em;
   margin-bottom: 1em;
-  border-left: 3px solid #bbb;
+  /* border-left: 3px solid #bbb; */
 }
   
 .mat-input-container {
