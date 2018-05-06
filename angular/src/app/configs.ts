@@ -11,7 +11,6 @@ export class Configs {
     public static placesDistanceUrl = Configs.baseUrl + '/places/distance';
 
     public static fileUrl = Configs.baseUrl + '/file';
-    public static imagesUrl = Configs.baseUrl + '/images';
     // public static fileGetImagesUrl = Configs.baseUrl + '/file/images';
     
     public static shareUrl = Configs.baseUrl + '/share';

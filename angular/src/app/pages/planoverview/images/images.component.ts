@@ -22,7 +22,7 @@ export class ImagesComponent implements OnInit {
   private plan: Planning;
   public images: Array<File>;
   public fileupload = {
-    imagesurl: Configs.imagesUrl
+    imagesurl: Configs.fileUrl
   };
 
   constructor(
