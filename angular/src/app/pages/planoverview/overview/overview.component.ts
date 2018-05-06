@@ -140,20 +140,12 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  addStep(suggest: PlaceSuggestion, days){
-    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
-      var newStep = new Step();
-      newStep.title = place.name;
-      newStep.days = days;
-      newStep.location = place.geometry.location;
-
-      // if(place.photos.length > 0 ){
-      //   var photo = place.photos[0];
-      //   newStep.photoUrl = this.placesPhotoUrl + "?photoid=" +photo.photo_reference;
-      //   newStep.photoUrl = place.photo;
-      // }
-      this.stepChanged(newStep);
-    });
+  addStep(todo: Todo, days){
+    var newStep = new Step();
+    newStep.title = todo.title;
+    newStep.days = days;
+    newStep.location = todo.location;
+    this.stepChanged(newStep);
   }
 
   private placeDetails(placeid, cb: any){
