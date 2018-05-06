@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "nothere.jpg",
         "favicon.ico"
       ],
       "index": "index.html",
