@@ -3,6 +3,8 @@ export class Configs {
     public static mapsApiKey = 'AIzaSyAcLB4ukiK5M2tuVLK4P2kIyib7vUDt_r8';
 
     public static baseUrl = 'http://localhost:4200';
+    public static loginUrl = Configs.baseUrl + '/login';
+    public static registerUrl = Configs.baseUrl + '/register';
     public static planningsUrl = Configs.baseUrl + '/plannings';
     public static placesAutocompleteUrl = Configs.baseUrl + '/places/autocomplete';
     public static placesSearchUrl = Configs.baseUrl + '/places/search';

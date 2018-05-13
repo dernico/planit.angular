@@ -6,10 +6,10 @@ import { HttpClient } from '@angular/common/http';
 import { Configs } from '../../configs';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html'
+  selector: 'app-register',
+  templateUrl: './register.component.html'
 })
-export class LoginComponent implements OnInit{
+export class RegisterComponent implements OnInit{
   
   private emailAdress: string;
   private password: string;
@@ -22,26 +22,28 @@ export class LoginComponent implements OnInit{
   ){}
   
   ngOnInit(): void {
-    this.route
-    .queryParams
-    .filter(params => params.access_token)
-    .subscribe(params => {
-      var token = params.access_token;
-      if(token){
-        this.authService.setAccessToken(token);
-        this.router.navigate(['plannings']);
-      }
+    // this.route
+    // .queryParams
+    // .filter(params => params.access_token)
+    // .subscribe(params => {
+    //   var token = params.access_token;
+    //   if(token){
+    //     this.authService.setAccessToken(token);
+    //     this.router.navigate(['plannings']);
+    //   }
       
-    });
+    // });
   }
 
-  login(){
-    var loginUser = {
+  register(){
+    //alert("register: " + this.emailAdress + " " + this.password);
+    var newuser = {
       email: this.emailAdress,
       password: this.password
     };
-    this.http.post(Configs.loginUrl, loginUser)
+    this.http.post(Configs.registerUrl, newuser)
     .subscribe((resp: any) => {
+
       this.authService.setAccessToken(resp.token);
       this.router.navigate(['plannings']);
     });

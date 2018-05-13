@@ -3,4 +3,21 @@
 
 <h3>At the moment you can only login with your google account. More Provider will be added soon ...</h3>
 
+
+
+<h4>Login with E-Mail</h4>
+<mat-form-field>
+    <input matInput [(ngModel)]="emailAdress" type="email" placeholder="Your email adress">
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput [(ngModel)]="password" type="password" placeholder="Your password">
+</mat-form-field>
+
+<button mat-raised-button (click)="login()">Login</button>
+
+
+<h4><a target="_self" rel="noopener" href="/register">Register with E-Mail</a></h4>
+
+
 <h4><a target="_self" rel="noopener" href="http://localhost:4200/auth/google">Login with Google</a></h4>

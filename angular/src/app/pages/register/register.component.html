@@ -1,0 +1,18 @@
+
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <!-- <mat-icon (click)="backToPlannings()">keyboard_backspace</mat-icon> -->
+        <span >Register</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+
+<mat-form-field>
+    <input matInput [(ngModel)]="emailAdress" type="email" placeholder="Your email adress">
+</mat-form-field>
+
+<mat-form-field>
+    <input matInput [(ngModel)]="password" type="password" placeholder="Your password">
+</mat-form-field>
+
+<button mat-raised-button (click)="register()">Register</button>

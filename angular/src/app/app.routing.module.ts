@@ -12,6 +12,7 @@ import { RouteComponent } from './pages/planoverview/route/route.component';
 import { ShareComponent } from './pages/planoverview/share/share.component';
 import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.component';
 import { ImagesComponent } from './pages/planoverview/images/images.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 
 const appRoutes : Routes = [
@@ -22,6 +23,10 @@ const appRoutes : Routes = [
   },{
     path: 'callback',
     component: LoginComponent,
+    pathMatch: 'full'
+  },{
+    path: 'register',
+    component: RegisterComponent,
     pathMatch: 'full'
   },
   {

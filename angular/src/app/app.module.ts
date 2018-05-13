@@ -48,6 +48,8 @@ import { PlacesInputComponent } from './components/places-input/places-input.com
 import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.component';
 import { ImagesComponent } from './pages/planoverview/images/images.component';
 import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
+import { RegisterComponent } from './pages/register/register.component';
+
 
 @NgModule({
   declarations: [
@@ -57,6 +59,7 @@ import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
     HttpSrcDirective,
     AppComponent,
     LoginComponent,
+    RegisterComponent,
     StartComponent,
     PlanningsComponent,
     PlanoverviewComponent,
