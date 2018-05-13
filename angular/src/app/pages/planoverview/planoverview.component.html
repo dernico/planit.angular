@@ -13,9 +13,9 @@
             <app-overview></app-overview>
         </div>
     </mat-tab>
-    <mat-tab #routerTab label="Route">
-        <div *ngIf="routerTab.isActive">
-            <app-route></app-route>
+    <mat-tab #costsTab label="Costs">
+        <div *ngIf="costsTab.isActive">
+            <app-money></app-money>
         </div>
     </mat-tab>
     <mat-tab #imagesTab label="Images">
@@ -23,14 +23,14 @@
             <app-images></app-images>
         </div>
     </mat-tab>
+    <mat-tab #routerTab label="Route">
+        <div *ngIf="routerTab.isActive">
+            <app-route></app-route>
+        </div>
+    </mat-tab>
     <mat-tab #filesTab label="Files">
         <div *ngIf="filesTab.isActive">
             <app-files></app-files>
-        </div>
-    </mat-tab>
-    <mat-tab #costsTab label="Costs">
-        <div *ngIf="costsTab.isActive">
-            <app-money></app-money>
         </div>
     </mat-tab>
 </mat-tab-group>

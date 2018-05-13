@@ -19,6 +19,7 @@ export class MoneyComponent implements OnInit {
   private selectedFromUser: User;
   private totalCosts: number;
   private costShares = [];
+  private costSharesSmart = [];
   private costPerPerson: number;
 
   constructor(
@@ -26,37 +27,38 @@ export class MoneyComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private planningService: PlanningService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.init();
   }
 
-  private init(){
+  private init() {
     this.route
-    .params
-    .subscribe(params => {
+      .params
+      .subscribe(params => {
         this.initPlanning(params.id);
         this.calcCostShare();
-    });
+        this.calcCostSharSmart();
+      });
   }
 
-  private initPlanning(id){
+  private initPlanning(id) {
     this.plan = this.planningService.getPlanning(id);
-        if(this.plan.costs == undefined){
-          this.plan.costs = [];
-        }
+    if (this.plan.costs == undefined) {
+      this.plan.costs = [];
+    }
   }
 
-  public displayWithDisplayName(user: User){
+  public displayWithDisplayName(user: User) {
     return user ? user.displayName : user;
   }
 
-  public fromSelectionChange(user: User){
+  public fromSelectionChange(user: User) {
     this.selectedFromUser = user;
   }
-  
-  public addCosts(whatFor, amount){
+
+  public addCosts(whatFor, amount) {
     let cost = new Cost();
     cost.amount = parseFloat(amount);
     cost.for = whatFor;
@@ -65,18 +67,18 @@ export class MoneyComponent implements OnInit {
     this.updatePlan(this.plan);
   }
 
-  public deleteCost(index){
+  public deleteCost(index) {
     this.plan.costs.splice(index, 1);
     this.updatePlan(this.plan);
   }
 
-  private calcCostShare(){
+  private calcCostShare() {
     this.costShares = [];
 
     this.totalCosts = 0;
     this.costPerPerson = 0;
     this.plan.costs.forEach(cost => {
-      let amount = parseFloat( cost.amount.toString() );
+      let amount = parseFloat(cost.amount.toString());
       this.totalCosts += amount
       this.costPerPerson += amount / this.plan.users.length;
     });
@@ -86,23 +88,23 @@ export class MoneyComponent implements OnInit {
         _id: user._id,
         name: user.displayName,
         totalAmount: 0,
-        owes:[]
+        owes: []
       };
 
       this.plan.costs.forEach(cost => {
-        if(cost.from._id != currentUser._id){
-          
-          let amount = parseFloat( cost.amount.toString() );
+        if (cost.from._id != currentUser._id) {
+
+          let amount = parseFloat(cost.amount.toString());
           let amountPerPerson = amount / this.plan.users.length;
           currentUser.totalAmount += amountPerPerson;
 
-          var oweUser = currentUser.owes.find(owe => {return owe.name == cost.from.displayName});
+          var oweUser = currentUser.owes.find(owe => { return owe.name == cost.from.displayName });
 
-          if(oweUser){
+          if (oweUser) {
             oweUser.amount += amountPerPerson;
             return;
           }
-          
+
           currentUser.owes.push({
             name: cost.from.displayName,
             amount: amountPerPerson
@@ -113,13 +115,79 @@ export class MoneyComponent implements OnInit {
     });
   }
 
-  
+  private calcCostSharSmart() {
+    this.costSharesSmart = [];
+
+    this.totalCosts = 0;
+    this.costPerPerson = 0;
+
+    this.plan.costs.forEach(cost => {
+      let amount = parseFloat(cost.amount.toString());
+      this.totalCosts += amount
+      this.costPerPerson += amount / this.plan.users.length;
+    });
+
+
+
+    this.plan.users.forEach(user => {
+      var currentUser = {
+        _id: user._id,
+        name: user.displayName,
+        amountToPay: this.costPerPerson,
+        totalAmount: 0,
+        owes: []
+      };
+
+      var payedFromUser = this.plan.costs.filter(c => { return c.from._id == user._id });
+      payedFromUser.forEach(c => {
+        currentUser.amountToPay -= c.amount;
+      });
+
+      this.costSharesSmart.push(currentUser);
+    });
+
+    console.log("ASd");
+    this.costSharesSmart.forEach(c => {
+      if (c.amountToPay < 0) {
+        var theothers = this.costSharesSmart.filter(c2 => { return c2._id != c._id && c2.amountToPay > 0 });
+        theothers.forEach(o => {
+          if (c.amountToPay < 0) {
+            
+            var test = c.amountToPay + o.amountToPay;
+            if (test <= 0) {
+              c.amountToPay += o.amountToPay;
+              o.totalAmount += o.amountToPay;
+              o.owes.push({
+                name: c.name,
+                amount: o.amountToPay
+              });
+              o.amountToPay = 0;
+            }
+            else {
+              var theAmoutToGetZero = (-1 * c.amountToPay);
+              o.totalAmount += theAmoutToGetZero;
+              o.amountToPay -= theAmoutToGetZero;
+              c.amountToPay += theAmoutToGetZero;
+              o.owes.push({
+                name: c.name,
+                amount: theAmoutToGetZero
+              });
+            }
+
+          }
+        });
+      }
+    });
+  }
+
+
   private updatePlan(plan: Planning) {
 
     this.planningService.setPlanning(plan);
     this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {
       this.initPlanning(this.plan._id);
       this.calcCostShare();
+      this.calcCostSharSmart();
     });
   }
 }
