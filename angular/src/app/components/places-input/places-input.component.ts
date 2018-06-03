@@ -40,7 +40,7 @@ export class PlacesInputComponent implements OnInit {
     suggestlistSelectionChanged(suggest: PlaceSuggestion){
         this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
             var newTodo = new Todo();
-            newTodo.title = place.name;
+            newTodo.title = suggest.description;
             newTodo.location = place.geometry.location;
             this.selectionChanged.emit(newTodo);
         });

@@ -1,6 +1,12 @@
-
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <mat-icon (click)="backToPlannings()">keyboard_backspace</mat-icon>
+        <span class="overview-title">{{plan.title}}</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+<!-- 
 <span (click)="backToPlannings()"> back</span>
-<h1>{{plan.title}} </h1>
+<h1>{{plan.title}} </h1> -->
 
 
 <div *ngIf="step">

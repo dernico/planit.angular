@@ -1,15 +1,11 @@
-<div>
-    Todo Files
-</div>
-
 <app-file-upload 
 [(plan)]="plan._id"
 (saveCallback)="addImagesToPlan($event, plan._id)"
 [url]="fileupload.fileurl"
 maxFiles="4"
 maxSize="2"
-fileExt="JPG, GIF, PNG, PDF"
-infoText="Drop your flight tickets, car voucher etc. here" >
+fileExt="JPG, PNG"
+infoText="Drop your images here" >
 </app-file-upload>
 
 <li *ngFor="let image of plan.images; let i = index;">

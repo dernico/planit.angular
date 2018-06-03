@@ -130,13 +130,17 @@ export class OverviewComponent implements OnInit {
     this.selectedSuggestion = suggest;
   }
 
-  placesSelectionUpdate(suggest: PlaceSuggestion, index){
-    this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+  placesSelectionUpdate(suggest: Todo, index){
+    if(!suggest || !suggest.title || !suggest.location) return;
+
+    //this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
+      //if(!place) return;
+
       let step = this.plan.steps[index];
-      step.title = place.name;
-      step.location = place.geometry.location;
+      step.title = suggest.title;
+      step.location = suggest.location;
       this.stepChanged(step);
-    });
+    //});
   }
 
   addStep(todo: Todo, days){

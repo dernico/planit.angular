@@ -50,7 +50,6 @@ import { ImagesComponent } from './pages/planoverview/images/images.component';
 import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
 import { RegisterComponent } from './pages/register/register.component';
 
-
 @NgModule({
   declarations: [
     FileUploadComponent,
