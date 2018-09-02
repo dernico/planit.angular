@@ -64,6 +64,7 @@ export class StepDetailComponent implements OnInit {
 
   stepUpdate(step: Step, stepTitle){
     step.title = stepTitle;
+    this.planningService.removeEdit(step);
     this.planningService.setPlanning(this.plan);
   }
 

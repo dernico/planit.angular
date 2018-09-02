@@ -50,9 +50,9 @@ export class PlanningService {
         }
     }
 
-    public stepTotalCosts(step: Step){
+    public stepTotalCosts(step: Step) {
         let totalCosts = 0;
-        if(step && step.todos && step.todos.length > 0){
+        if (step && step.todos && step.todos.length > 0) {
             step.todos.forEach(todo => {
                 totalCosts += todo.costs;
             });
@@ -60,12 +60,15 @@ export class PlanningService {
         return totalCosts;
     }
 
-    public addStep(plan: Planning, step: Step) {
-
+    public removeEdit(step) {
         //we need to remove the temp field edit that is needed to show input fields
         if ("edit" in step) {
             delete step["edit"];
         }
+    }
+
+    public addStep(plan: Planning, step: Step) {
+
 
         if (!step._id) {
             // this is when step is a new step!
