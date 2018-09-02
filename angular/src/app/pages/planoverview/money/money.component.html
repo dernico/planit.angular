@@ -27,6 +27,7 @@
         <button (click)="deleteCost(i)">delete</button>
     </li>
 </ul>
+
 <span>total costs: {{totalCosts}} (per person: {{costPerPerson}})</span>
 <ul>
     <li *ngFor="let costShare of costSharesSmart; let i = index;">
@@ -41,7 +42,7 @@
 </ul>
 
 
-<ul>
+<!-- <ul>
     <li *ngFor="let costShare of costShares; let i = index;">
         <span>{{costShare.name}} owes {{costShare.totalAmount}} to:</span>
         <ul>
@@ -51,4 +52,4 @@
             </li>
         </ul>
     </li>
-</ul>
+</ul> -->

@@ -45,9 +45,6 @@ export class MoneyComponent implements OnInit {
 
   private initPlanning(id) {
     this.plan = this.planningService.getPlanning(id);
-    if (this.plan.costs == undefined) {
-      this.plan.costs = [];
-    }
   }
 
   public displayWithDisplayName(user: User) {
@@ -76,12 +73,21 @@ export class MoneyComponent implements OnInit {
     this.costShares = [];
 
     this.totalCosts = 0;
+
+    this.plan.steps.forEach(step => {
+      step.todos.forEach(todo => {
+        this.totalCosts += todo.costs;
+      });
+    });
+
     this.costPerPerson = 0;
     this.plan.costs.forEach(cost => {
       let amount = parseFloat(cost.amount.toString());
       this.totalCosts += amount
-      this.costPerPerson += amount / this.plan.users.length;
     });
+
+    
+    this.costPerPerson += this.totalCosts / this.plan.users.length;
 
     this.plan.users.forEach(user => {
       var currentUser = {
@@ -119,34 +125,40 @@ export class MoneyComponent implements OnInit {
     this.costSharesSmart = [];
 
     this.totalCosts = 0;
+    
+    this.plan.steps.forEach(step => {
+      step.todos.forEach(todo => {
+        this.totalCosts += todo.costs;
+      });
+    });
+
     this.costPerPerson = 0;
 
     this.plan.costs.forEach(cost => {
       let amount = parseFloat(cost.amount.toString());
       this.totalCosts += amount
-      this.costPerPerson += amount / this.plan.users.length;
     });
 
-
+    
+    this.costPerPerson += this.totalCosts / this.plan.users.length;
 
     this.plan.users.forEach(user => {
       var currentUser = {
         _id: user._id,
         name: user.displayName,
         amountToPay: this.costPerPerson,
-        totalAmount: 0,
+        totalAmount: this.costPerPerson,
         owes: []
       };
 
-      var payedFromUser = this.plan.costs.filter(c => { return c.from._id == user._id });
-      payedFromUser.forEach(c => {
-        currentUser.amountToPay -= c.amount;
+      var payedFromUser = this.plan.costs.filter(cost => { return cost.from._id == user._id });
+      payedFromUser.forEach(cost => {
+        currentUser.amountToPay -= cost.amount;
       });
 
       this.costSharesSmart.push(currentUser);
     });
 
-    console.log("ASd");
     this.costSharesSmart.forEach(c => {
       if (c.amountToPay < 0) {
         var theothers = this.costSharesSmart.filter(c2 => { return c2._id != c._id && c2.amountToPay > 0 });

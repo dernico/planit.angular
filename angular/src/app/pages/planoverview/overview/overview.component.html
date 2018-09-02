@@ -2,25 +2,11 @@
 
 <div class="overview-container">
     <h4>Travelmates</h4>
-
-    
-    <!-- <mat-grid-list cols="4" rowHeight="50px">
-        <mat-grid-tile *ngFor="let user of plan.users" >
-                <mat-form-field class="example-full-width">
-                        <input matInput [(ngModel)]="name" placeholder="Name for next trip ..">
-                    </mat-form-field>
-        </mat-grid-tile>
-    
-        <mat-grid-tile>
-            <button mat-raised-button (click)="add(name)">Add</button>
-        </mat-grid-tile>
-    </mat-grid-list> -->
-
-    <span *ngFor="let user of plan.users" >
-        <img [src]="user.picture" height="50" [title]="user.email" />
-        <!-- <span (click)="">X</span> -->
-    </span>
-    
+    <div>
+        <span *ngFor="let user of plan.users" >
+            <img [src]="user.picture" height="50" [title]="user.email" />
+        </span>
+    </div>
     <button style="clear: left;" mat-raised-button (click)="sharePlan()">Add</button>
 </div>
 
@@ -29,7 +15,7 @@
     <h4>Dates</h4>
     <div>
         <mat-form-field>
-            <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;planChanged();"
+            <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;startDateChanged();"
                 placeholder="Start">
         </mat-form-field>
         <mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
@@ -46,27 +32,12 @@
     </div>
 </div>
 
-<div class="overview-container">
+<div *ngIf="plan.files.length > 0" class="overview-container">
     <h4>Flight tickets, car vouchers, etc. </h4>
-    
-    <div>
-        <ul *ngIf="plan.files">
-            <li *ngFor="let file of plan.files; let i = index">
-                <span (click)="downloadFile(file)">{{i + 1}}. {{file.filename}}</span>
-                <button mat-raised-button (click)="deleteFileFromPlan(i)">delete</button>
-            </li>
-        </ul>
-    </div>
 
-    <app-file-upload 
-    [(plan)]="plan._id"
-    (saveCallback)="addFilesToPlan($event, plan._id)"
-    [url]="fileupload.fileurl"
-    maxFiles="4"
-    maxSize="2"
-    fileExt="JPG, GIF, PNG, PDF"
-    infoText="Drop your flight tickets, car voucher etc. here" >
-    </app-file-upload>
+    <plan-files 
+        [(plan)] = "plan"
+    ></plan-files>
 
 </div>
 
@@ -104,11 +75,11 @@
                         <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
                         <div (click)="step.edit = true;" *ngIf="!step.edit">
                             <mat-card-title>{{step.title}}</mat-card-title>
-                            <mat-card-subtitle>Days: {{step.days}}</mat-card-subtitle>
+                            <mat-card-subtitle>Days: {{step.days}} Costs: {{stepTotalCosts(step)}}</mat-card-subtitle>
                         </div>
                         <div *ngIf="step.edit">
                             <places-input
-                                placeholderInput="Where?"
+                                [placeholderInput]="step.title"
                                 (selectionChanged)="placesSelectionUpdate($event, i)"
                             ></places-input>
                             <mat-form-field>
@@ -118,21 +89,15 @@
                             <button (click)="removeStep(i);">Remove</button>
                         </div>
                 </mat-card-header>
-<!--                 
+                <!--                 
                 <img mat-card-image src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=11" />
                  -->
-                <div mat-card-image>
+                <div mat-card-image *ngIf="step.location">
                     <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="11">
                         <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
                     </agm-map>
                 </div>
                 <mat-card-content>
-                    <!-- <div mat-card-image>
-                        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="6">
-                            <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
-                        </agm-map>
-                    </div> -->
-                    <!-- <img mat-card-image [src]=""></img> -->
                     <div *ngIf="step.distance">
                         Distance to your next location: {{step.distance.distance.text}} ({{step.distance.duration.text}})
                     </div>
@@ -145,4 +110,18 @@
             </mat-card>
         </div>
     </div>
+</div>
+
+
+
+<div class="overview-container">
+    <app-file-upload 
+    [(plan)]="plan._id"
+    (saveCallback)="addFilesToPlan($event, plan._id)"
+    [url]="fileupload.fileurl"
+    maxFiles="4"
+    maxSize="2"
+    fileExt="JPG, GIF, PNG, PDF"
+    infoText="Drop your flight tickets, car voucher etc. here" >
+    </app-file-upload>
 </div>

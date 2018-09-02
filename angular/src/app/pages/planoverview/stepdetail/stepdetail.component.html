@@ -27,7 +27,7 @@
             <mat-card-title></mat-card-title>
         </mat-card-header>
 
-        <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
+        <agm-map *ngIf="step.location" [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
             <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
             <agm-marker *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
         </agm-map>
@@ -35,8 +35,8 @@
         <mat-card-content>
             <mat-list>
                 <mat-list-item *ngFor="let todo of step.todos; let i = index;">
-                    <span>{{todo.title}}</span>
-                    <button mat-mini-fab color="warn" (click)="removeTodo(i, step)">Remove</button>
+                    <span>{{todo.title}} - ({{todo.costs}})</span>
+                    <button (click)="removeTodo(i, step)">Remove</button>
                 </mat-list-item>
             </mat-list>
         </mat-card-content>
@@ -45,24 +45,23 @@
                 placeholderInput="Next Todo .."
                 (selectionChanged)="placesSelectionChanged($event)"
             ></places-input>
-            <button mat-raised-button (click)="addTodo(step);todoInput.inputValue = null;">add todo</button>
+            
+            <mat-form-field>
+                <input #todoCosts matInput placeholder="Costs" type="number"/>
+            </mat-form-field>
+            <button mat-raised-button (click)="addTodo(step, todoCosts.value);todoInput.inputValue = null;todoCosts.value = null;">add todo</button>
 
             <app-file-upload 
             [(plan)]="plan._id"
-            (saveCallback)="addFilesToStep($event, step._id)"
+            (saveCallback)="addFilesToStep($event, step)"
             [url]="fileupload.fileurl"
             maxFiles="4"
             maxSize="2"
             fileExt="JPG, GIF, PNG, PDF"
             infoText="Drop your hotel, guesthouse etc. confirmations here" >
             </app-file-upload>
-            <div>
-                <ul *ngIf="step.files">
-                    <li *ngFor="let file of step.files; let i = index">
-                        <span (click)="downloadFile(file)">{{i + 1}}. {{file.filename}}</span> <button (click)="deleteFileFromStep(i, step._id)">delete</button>
-                    </li>
-                </ul>
-            </div>
+
+            <step-files [(plan)]="plan" [(step)]="step"></step-files>
         </mat-card-footer>
     </mat-card>
 </div>

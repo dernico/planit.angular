@@ -25,8 +25,6 @@ export class OverviewComponent implements OnInit {
   private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
   private files;
-  private startDate;
-  private endDate;
   private selectedSuggestion;
   private fileupload = {
     fileurl: Configs.fileUrl
@@ -49,9 +47,6 @@ export class OverviewComponent implements OnInit {
     .params
     .subscribe(params => {
         this.plan = this.planningService.getPlanning(params.id);
-        if(this.plan.steps == undefined){
-          this.plan.steps = [];
-        }
     });
   }
 
@@ -63,67 +58,16 @@ export class OverviewComponent implements OnInit {
     this.router.navigate(['stepdetails', this.plan._id, stepid]);
   }
 
+  startDateChanged(){
+    this.plan.endDate = this.plan.startDate;
+  }
+
   planChanged(){
-    this.updatePlan(this.plan);
+    this.planningService.setPlanning(this.plan);
   }
 
   stepChanged(step: Step){
-    //delete Object.getPrototypeOf(newObj).name
-    if("edit" in step){
-      delete step["edit"];
-    }
-    
-    if(!step._id){
-      // this is when step is a new step!
-      this.plan.steps.push(step);
-    }
-
-    if(this.plan.steps.length > 0){
-      
-      let prevStep;
-      if(!step._id){
-        // this is when step is a new step!
-        prevStep = this.plan.steps[this.plan.steps.length - 2];
-      }
-      else{
-        // this is when step already exists
-        for(let i = 0; i < this.plan.steps.length; i++){
-          if(this.plan.steps[i]._id == step._id){
-            if(i > 0){
-              prevStep = this.plan.steps[i - 1];
-              break;
-            }
-          }
-        }
-      }
-      if(prevStep){
-
-        var url = Configs.placesDistanceUrl + "?startLat=" + prevStep.location.lat + "&startLng=" + prevStep.location.lng;
-        url += "&endLat=" + step.location.lat + "&endLng=" + step.location.lng;
-        this.http.get(url).subscribe( (rows :Array<any>) => {
-          if(rows.length > 0  && rows[0].elements.length > 0){
-            var result = rows[0].elements[0];
-            var distance = new Distance();
-            distance.distance = {
-              text: result.distance.text,
-              value: result.distance.value
-            };
-            distance.duration = {
-              text: result.duration.text,
-              value: result.duration.value
-            };
-            prevStep.distance = distance;
-          }
-          
-          this.updatePlan(this.plan);
-        });
-      }
-      else{
-        this.updatePlan(this.plan);
-      }
-    }else{
-      this.updatePlan(this.plan);
-    }
+    this.planningService.stepChanged(this.plan, step);
   }
 
   placesSelectionChanged(suggest: PlaceSuggestion){
@@ -133,14 +77,15 @@ export class OverviewComponent implements OnInit {
   placesSelectionUpdate(suggest: Todo, index){
     if(!suggest || !suggest.title || !suggest.location) return;
 
-    //this.placeDetails(suggest.place_id, (place : PlaceDetail) => {
-      //if(!place) return;
 
       let step = this.plan.steps[index];
       step.title = suggest.title;
       step.location = suggest.location;
       this.stepChanged(step);
-    //});
+  }
+
+  stepTotalCosts(step: Step){
+    return this.planningService.stepTotalCosts(step);
   }
 
   addStep(todo: Todo, days){
@@ -151,23 +96,10 @@ export class OverviewComponent implements OnInit {
     this.stepChanged(newStep);
   }
 
-  private placeDetails(placeid, cb: any){
-    let url = Configs.placesDetailsUrl + '?placeid='+placeid;
-    this.http.get(url).subscribe((res: any) => {
-      cb(res.result);
-    });
-  }
-
   removeStep(index){
     this.plan.steps.splice(index, 1);
-    this.updatePlan(this.plan);
+    this.planningService.setPlanning(this.plan);
   }
-
-  private updatePlan(plan: Planning){
-    this.planningService.setPlanning(plan);
-    this.http.post(Configs.planningsUrl, plan).subscribe((resp) => {});
-  }
-
 
   refreshFiles(status){
     if(status){
@@ -180,28 +112,12 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  addFilesToPlan(newFiles){
-    if (!this.plan.files){
-      this.plan.files = [];
-    }
-    this.plan.files = this.plan.files.concat(newFiles);
-    this.updatePlan(this.plan);
-  }
-  deleteFileFromPlan(index){
-    this.plan.files.splice(index, 1);
-    this.updatePlan(this.plan);
+  addFilesToPlan(newFiles: File[]){
+    this.planningService.addFilesToPlan(this.plan, newFiles);
   }
 
   downloadFile(file:File){
     this.fileService.downloadFile(file);
-  }
-
-  private findStep(stepid, cb){
-    this.plan.steps.forEach(step => {
-      if(step._id == stepid){
-        cb(step);
-      }
-    });
   }
 }
 

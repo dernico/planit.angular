@@ -49,11 +49,16 @@ import { StepDetailComponent } from './pages/planoverview/stepdetail/stepdetail.
 import { ImagesComponent } from './pages/planoverview/images/images.component';
 import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
 import { RegisterComponent } from './pages/register/register.component';
+import { PlanFilesComponent } from './components/plan-files/plan-files.component';
+import { StepFilesComponent } from './components/step-files/step-files.component';
 
 @NgModule({
   declarations: [
     FileUploadComponent,
     PlacesInputComponent,
+    PlanFilesComponent,
+    StepFilesComponent,
+    
 
     HttpSrcDirective,
     AppComponent,
