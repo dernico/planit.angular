@@ -15,11 +15,13 @@
     </h3>
     <div *ngIf="step.edit">
         <places-input
-            placeholderInput="Where?"
+            #stepTitleBox
+            [inputValue]="step.title"
+            [placeholderInput]="step.title"
             (selectionChanged)="placesSelectionUpdate($event, i)"
         ></places-input>
-        <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
-        <button (click)="step.edit = false;">Done</button>
+        <input [(ngModel)]="step.days" type="number" />
+        <button (click)="stepUpdate(step, stepTitleBox.inputValue);step.edit = false;">Done</button>
         <button (click)="removeStep(i);">Remove</button>
     </div>
     <mat-card>

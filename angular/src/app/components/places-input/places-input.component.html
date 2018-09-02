@@ -6,8 +6,13 @@
         (keyup)="stepKeyUp(box.value);" 
         type="text" 
         placeholder="{{placeholderInput}}"
-        [(ngModel)]=inputValue>
+        [(ngModel)]="inputValue"
+        
+        >
 </mat-form-field>
+
+<!-- [ngModel]=inputValue -->
+<!-- value={{inputValue}} -->
 
 <mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
     <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">

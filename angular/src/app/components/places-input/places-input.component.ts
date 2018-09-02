@@ -12,13 +12,15 @@ import { Todo } from '../../models/Todo';
 })
 export class PlacesInputComponent implements OnInit {
     errors: Array<string> = [];
-    //@Input() inputValue;
+    
+    private searchTimer:any;
+    private suggestlist = [];
+
+    @Input() inputValue;
+
     @Input() placeholderInput: string = "Where do you wanna stop?";
     @Output() selectionChanged = new EventEmitter();
     
-    private inputvalue;
-    private searchTimer:any;
-    private suggestlist = [];
 
     constructor(
         private http: HttpClient) { }
@@ -31,10 +33,11 @@ export class PlacesInputComponent implements OnInit {
         newTodo.title = value;
         this.selectionChanged.emit(newTodo);
 
-        clearTimeout(this.searchTimer);
-        this.searchPlaces(value, (suggestlist) => {
-            this.suggestlist = suggestlist;
-        })
+        // Disabled place search
+        // clearTimeout(this.searchTimer);
+        // this.searchPlaces(value, (suggestlist) => {
+        //     this.suggestlist = suggestlist;
+        // });
     }
     
     suggestlistSelectionChanged(suggest: PlaceSuggestion){

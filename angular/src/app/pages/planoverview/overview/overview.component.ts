@@ -67,7 +67,7 @@ export class OverviewComponent implements OnInit {
   }
 
   stepChanged(step: Step){
-    this.planningService.stepChanged(this.plan, step);
+    this.planningService.addStep(this.plan, step);
   }
 
   placesSelectionChanged(suggest: PlaceSuggestion){
@@ -94,6 +94,11 @@ export class OverviewComponent implements OnInit {
     newStep.days = days;
     newStep.location = todo.location;
     this.stepChanged(newStep);
+  }
+  
+  stepUpdate(step: Step, stepTitle){
+    step.title = stepTitle;
+    this.planningService.setPlanning(this.plan);
   }
 
   removeStep(index){

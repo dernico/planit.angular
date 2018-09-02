@@ -62,17 +62,30 @@ export class StepDetailComponent implements OnInit {
     this.planningService.setPlanning(this.plan);
   }
 
+  stepUpdate(step: Step, stepTitle){
+    step.title = stepTitle;
+    this.planningService.setPlanning(this.plan);
+  }
+
   placesSelectionChanged(newTodo: Todo) {
     this.selectedTodo = newTodo;
   }
 
-  placesSelectionUpdate(suggest: PlaceSuggestion, index) {
-    this.placeDetails(suggest.place_id, (place: PlaceDetail) => {
-      let step = this.plan.steps[index];
-      step.title = place.name;
-      step.location = place.geometry.location;
-      this.planningService.setPlanning(this.plan);
-    });
+  placesSelectionUpdate(todo: Todo, index) {
+
+    this.selectedTodo = todo;
+    // let step = this.plan.steps[index];
+    // step.title = todo.title;
+    // console.log(todo);
+    // this.planningService.setPlanning(this.plan);
+
+    // disable places
+    // this.placeDetails(suggest.place_id, (place: PlaceDetail) => {
+    //   let step = this.plan.steps[index];
+    //   step.title = place.name;
+    //   step.location = place.geometry.location;
+    //   this.planningService.setPlanning(this.plan);
+    // });
   }
 
   private placeDetails(placeid, cb: any) {

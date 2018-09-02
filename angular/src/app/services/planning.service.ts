@@ -60,7 +60,7 @@ export class PlanningService {
         return totalCosts;
     }
 
-    public stepChanged(plan: Planning, step: Step) {
+    public addStep(plan: Planning, step: Step) {
 
         //we need to remove the temp field edit that is needed to show input fields
         if ("edit" in step) {

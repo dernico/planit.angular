@@ -81,13 +81,14 @@
                         </div>
                         <div *ngIf="step.edit">
                             <places-input
+                                #stepTitleBox
                                 [placeholderInput]="step.title"
                                 (selectionChanged)="placesSelectionUpdate($event, i)"
                             ></places-input>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
+                                <input matInput [(ngModel)]="step.days" type="number" />
                             </mat-form-field>
-                            <button (click)="step.edit = false;">Done</button>
+                            <button (click)="stepUpdate(step, stepTitleBox.inputValue);step.edit = false;">Done</button>
                             <button (click)="removeStep(i);">Remove</button>
                         </div>
                 </mat-card-header>
