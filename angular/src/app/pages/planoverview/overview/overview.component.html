@@ -2,18 +2,20 @@
 
 <div class="overview-container">
     <h4>Travelmates</h4>
-    <div>
+    <div style="float: left;">
         <span *ngFor="let user of plan.users" >
             <img [src]="user.picture" height="50" [title]="user.email" />
         </span>
     </div>
-    <button style="clear: left;" mat-raised-button (click)="sharePlan()">Add</button>
+    <button mat-icon-button style="clear: left;" (click)="sharePlan()">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>
 
 
-<div class="overview-container">
+<div class="overview-container" >
     <h4>Dates</h4>
-    <div>
+    <div style="float: left;">
         <mat-form-field>
             <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;startDateChanged();"
                 placeholder="Start">

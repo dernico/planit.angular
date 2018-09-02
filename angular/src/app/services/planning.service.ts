@@ -72,7 +72,7 @@ export class PlanningService {
             plan.steps.push(step);
         }
 
-        this.recaluclateDistances(plan, step);
+        //this.recaluclateDistances(plan, step);
     }
 
     public addFilesToPlan(plan: Planning, newFiles: File[]) {
