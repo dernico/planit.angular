@@ -6,8 +6,8 @@
         (keyup)="stepKeyUp(box.value);" 
         type="text" 
         placeholder="{{placeholderInput}}"
-        [(ngModel)]="inputValue"
-        
+        value={{inputValue}}
+        (input)="inputChange(box.value)"
         >
 </mat-form-field>
 

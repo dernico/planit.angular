@@ -15,17 +15,23 @@ export class PlacesInputComponent implements OnInit {
     
     private searchTimer:any;
     private suggestlist = [];
+    private _inputValue: string;
 
     @Input() inputValue;
-
     @Input() placeholderInput: string = "Where do you wanna stop?";
     @Output() selectionChanged = new EventEmitter();
     
 
-    constructor(
-        private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-    ngOnInit() {}
+    ngOnInit() {
+    }
+
+    inputChange(event){
+        let todo = new Todo();
+        todo.title = event;
+        this.selectionChanged.emit(todo);
+    }
     
     stepKeyUp(value){
         

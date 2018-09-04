@@ -17,11 +17,11 @@
         <places-input
             #stepTitleBox
             [inputValue]="step.title"
-            [placeholderInput]="step.title"
-            (selectionChanged)="placesSelectionUpdate($event, i)"
+            placeholderInput="Next Stop"
+            (selectionChanged)="stepSelectionUpdate($event)"
         ></places-input>
         <input [(ngModel)]="step.days" type="number" />
-        <button (click)="stepUpdate(step, stepTitleBox.inputValue);step.edit = false;">Done</button>
+        <button (click)="stepUpdate(step);step.edit = false;">Done</button>
         <button (click)="removeStep(i);">Remove</button>
     </div>
     <mat-card>
@@ -45,7 +45,7 @@
         <mat-card-footer>
             <places-input #todoInput
                 placeholderInput="Next Todo .."
-                (selectionChanged)="placesSelectionChanged($event)"
+                (selectionChanged)="todoChanged($event)"
             ></places-input>
             
             <mat-form-field>

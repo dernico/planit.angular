@@ -5,6 +5,7 @@ import { Configs } from '../configs';
 import { File } from '../models/File';
 import { Step } from '../models/Step';
 import { Distance } from '../models/Distance';
+import { resolve } from 'q';
 
 @Injectable()
 export class PlanningService {
@@ -15,17 +16,22 @@ export class PlanningService {
         sessionStorage.setItem('plannings', JSON.stringify(plannings));
     }
 
-    public setPlanning(planning: Planning) {
-        var plannings = this.getPlannings();
-        var _planning: Planning;
-        for (var i = 0; i < plannings.length; i++) {
-            _planning = plannings[i];
-            if (_planning._id == planning._id) {
-                plannings[0] = planning;
-            }
-        }
-        this.setPlannings(plannings);
-        this.updatePlanning(planning)
+    public setPlanning(planning: Planning): Promise<Planning> {
+        let promise = new Promise<Planning>((resolve, reject) => {
+            this.updatePlanning(planning).subscribe((plannings: Array<Planning>) => {
+
+                // var _planning: Planning;
+                // for (var i = 0; i < plannings.length; i++) {
+                //     _planning = plannings[i];
+                //     if (_planning._id == planning._id) {
+                //         plannings[0] = planning;
+                //     }
+                // }
+                this.setPlannings(plannings);
+                resolve(this.getPlanning(planning._id));
+            });
+        });
+        return promise;
     }
 
     public getPlannings(): Array<Planning> {
@@ -92,7 +98,7 @@ export class PlanningService {
     }
 
     private updatePlanning(plan: Planning) {
-        this.http.post(Configs.planningsUrl, plan).subscribe((resp) => { });
+        return this.http.post(Configs.planningsUrl, plan);
     }
 
     private recaluclateDistances(plan: Planning, step: Step) {

@@ -10,7 +10,7 @@ import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
 import { Observable } from 'rxjs/Observable';
 import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FileService } from '../../../services/file.service';
 import { saveAs } from 'file-saver';
 import { File } from '../../../models/File';
@@ -42,74 +42,77 @@ export class OverviewComponent implements OnInit {
     this.init();
   }
 
-  init(){
+  init() {
     this.route
-    .params
-    .subscribe(params => {
+      .params
+      .subscribe(params => {
         this.plan = this.planningService.getPlanning(params.id);
-    });
+      });
   }
 
-  sharePlan(){
+  sharePlan() {
     this.router.navigate(['share', this.plan._id]);
   }
-  
-  goToDetails(stepid){
+
+  goToDetails(stepid) {
     this.router.navigate(['stepdetails', this.plan._id, stepid]);
   }
 
-  startDateChanged(){
+  startDateChanged() {
     this.plan.endDate = this.plan.startDate;
   }
 
-  planChanged(){
+  planChanged() {
     this.planningService.setPlanning(this.plan);
   }
 
-  stepChanged(step: Step){
-    this.planningService.addStep(this.plan, step);
-  }
+  // stepChanged(step: Step){
+  //   this.planningService.addStep(this.plan, step);
+  // }
 
-  placesSelectionChanged(suggest: PlaceSuggestion){
+  placesSelectionChanged(suggest: PlaceSuggestion) {
     this.selectedSuggestion = suggest;
   }
 
-  placesSelectionUpdate(suggest: Todo, index){
-    if(!suggest || !suggest.title || !suggest.location) return;
+  placesSelectionUpdate(suggest: Todo, index) {
+    if (!suggest || !suggest.title) return;
 
 
-      let step = this.plan.steps[index];
-      step.title = suggest.title;
-      step.location = suggest.location;
-      this.stepChanged(step);
+    let step = this.plan.steps[index];
+    step.title = suggest.title;
+    //step.location = suggest.location;
+    //this.stepChanged(step);
   }
 
-  stepTotalCosts(step: Step){
+  stepTotalCosts(step: Step) {
     return this.planningService.stepTotalCosts(step);
   }
 
-  addStep(todo: Todo, days){
+  addStep(todo: Todo, days) {
     var newStep = new Step();
     newStep.title = todo.title;
     newStep.days = days;
     newStep.location = todo.location;
-    this.stepChanged(newStep);
+    this.planningService.addStep(this.plan, newStep);
+    this.planningService.setPlanning(this.plan).then(newPlanning => {
+      this.plan = newPlanning;
+    });;
   }
-  
-  stepUpdate(step: Step, stepTitle){
-    step.title = stepTitle;
+
+  stepUpdate(step: Step) {
+    this.planningService.removeEdit(step);
     this.planningService.setPlanning(this.plan);
   }
 
-  removeStep(index){
+  removeStep(index) {
     this.plan.steps.splice(index, 1);
     this.planningService.setPlanning(this.plan);
   }
 
-  refreshFiles(status){
-    if(status){
+  refreshFiles(status) {
+    if (status) {
       this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((files: Array<File>) => {
-        
+
         files.forEach(file => {
           this.plan.files
         });
@@ -117,11 +120,11 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  addFilesToPlan(newFiles: File[]){
+  addFilesToPlan(newFiles: File[]) {
     this.planningService.addFilesToPlan(this.plan, newFiles);
   }
 
-  downloadFile(file:File){
+  downloadFile(file: File) {
     this.fileService.downloadFile(file);
   }
 }
