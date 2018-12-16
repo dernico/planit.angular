@@ -17,6 +17,7 @@ import {
   MatGridListModule,
   MatToolbarModule,
   MatIconModule,
+  MatExpansionModule,
 } from '@angular/material';
 
 import { AgmCoreModule } from '@agm/core';
@@ -51,6 +52,7 @@ import { HttpSrcDirective } from './directives/httpSrc/httpSrc.directive';
 import { RegisterComponent } from './pages/register/register.component';
 import { PlanFilesComponent } from './components/plan-files/plan-files.component';
 import { StepFilesComponent } from './components/step-files/step-files.component';
+import { StepListComponent } from './components/step-list/step-list.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import { StepFilesComponent } from './components/step-files/step-files.component
     PlacesInputComponent,
     PlanFilesComponent,
     StepFilesComponent,
-    
+    StepListComponent,
+
 
     HttpSrcDirective,
     AppComponent,
@@ -85,6 +88,7 @@ import { StepFilesComponent } from './components/step-files/step-files.component
     MatButtonModule,MatListModule,
     MatTabsModule, MatGridListModule,
     MatToolbarModule, MatIconModule,
+    MatExpansionModule,
     
     FormsModule,
     BrowserModule,

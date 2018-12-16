@@ -16,6 +16,7 @@ export class StepFilesComponent implements OnInit {
 
     @Input() plan: Planning;
     @Input() step: Step;
+    @Input() showUploadBox: boolean = true;
 
     constructor(
         private http: HttpClient,
@@ -25,6 +26,27 @@ export class StepFilesComponent implements OnInit {
 
     ngOnInit() { }
 
+    refreshFiles(status) {
+        if (status) {
+          this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
+    
+            files.forEach(() => {
+              this.plan.files;
+            });
+          });
+        }
+      }
+    
+      addFilesToStep(newFiles, step) {
+    
+        if (!("files" in step)) {
+          step.files = [];
+        }
+    
+        step.files = step.files.concat(newFiles);
+        this.planningService.setPlanning(this.plan);
+    
+      }
     downloadFile(file: File) {
         this.fileService.downloadFile(file);
     }

@@ -16,3 +16,11 @@
 body{
     font-family: Roboto,"Helvetica Neue",sans-serif;
 }
+
+.right{
+    float: right;
+}
+
+.overview-step{
+    padding-top: 2em;
+}

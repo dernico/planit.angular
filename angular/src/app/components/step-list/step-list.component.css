@@ -1,0 +1,10 @@
+.step-new-item-wrapper{
+    padding: 0px !important;
+}
+.step-new-item-wrapper .step-new-item-form-field{
+    width: 100%;
+}
+
+.step-new-item-wrapper .mat-list-item-content{
+    padding: 0px !important;
+}

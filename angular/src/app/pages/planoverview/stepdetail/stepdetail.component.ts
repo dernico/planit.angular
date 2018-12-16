@@ -92,40 +92,6 @@ export class StepDetailComponent implements OnInit {
     return todos.filter(item => { return item.location; });
   }
 
-  addTodo(step: Step, costs) {
-    if(costs){
-      this.selectedTodo.costs = Number.parseFloat(costs);
-    }
-    step.todos.push(this.selectedTodo);
-    this.planningService.setPlanning(this.plan);
-    this.selectedTodo = null;
-  }
-
-  removeTodo(index, step: Step) {
-    step.todos.splice(index, 1);
-    this.planningService.setPlanning(this.plan);
-  }
-  refreshFiles(status) {
-    if (status) {
-      this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
-
-        files.forEach(() => {
-          this.plan.files;
-        });
-      });
-    }
-  }
-
-  addFilesToStep(newFiles, step) {
-
-    if (!("files" in step)) {
-      step.files = [];
-    }
-
-    step.files = step.files.concat(newFiles);
-    this.planningService.setPlanning(this.plan);
-
-  }
 
 }
 

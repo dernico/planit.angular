@@ -1,8 +1,8 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <mat-icon (click)="backToPlannings()">keyboard_backspace</mat-icon>
-        <span class="overview-title">{{plan.title}}</span>
-    </mat-toolbar-row>
+  <mat-toolbar-row>
+    <mat-icon (click)="backToPlannings()">keyboard_backspace</mat-icon>
+    <span class="overview-title">{{plan.title}}</span>
+  </mat-toolbar-row>
 </mat-toolbar>
 <!-- 
 <span (click)="backToPlannings()"> back</span>
@@ -10,63 +10,31 @@
 
 
 <div *ngIf="step">
-    <h3 (click)="step.edit = true;" *ngIf="!step.edit">
-        {{step.title}} ({{step.days}} days)
-    </h3>
-    <div *ngIf="step.edit">
-        <places-input
-            #stepTitleBox
-            [inputValue]="step.title"
-            placeholderInput="Next Stop"
-            (selectionChanged)="stepSelectionUpdate($event)"
-        ></places-input>
-        <input [(ngModel)]="step.days" type="number" />
-        <button (click)="stepUpdate(step);step.edit = false;">Done</button>
-        <button (click)="removeStep(i);">Remove</button>
-    </div>
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>Todos</mat-card-title>
-        </mat-card-header>
+  <h3 (click)="step.edit = true;" *ngIf="!step.edit">
+    {{step.title}} ({{step.days}} days)
+  </h3>
+  <div *ngIf="step.edit">
+    <places-input #stepTitleBox [inputValue]="step.title" placeholderInput="Next Stop" (selectionChanged)="stepSelectionUpdate($event)"></places-input>
+    <input [(ngModel)]="step.days" type="number" />
+    <button (click)="stepUpdate(step);step.edit = false;">Done</button>
+    <button (click)="removeStep(i);">Remove</button>
+  </div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Todos</mat-card-title>
+    </mat-card-header>
 
-        <agm-map *ngIf="location" [latitude]="location.lat" [longitude]="location.lng" [zoom]="12">
-            <!-- <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+    <agm-map *ngIf="location" [latitude]="location.lat" [longitude]="location.lng" [zoom]="12">
+      <!-- <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
             <agm-marker *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker> -->
-        </agm-map>
+    </agm-map>
 
-        <mat-card-content>
-            <mat-list>
-                <mat-list-item *ngFor="let todo of step.todos; let i = index;">
-                    <!-- <span>{{todo.title}} - ({{todo.costs}})</span> -->
-                    <span>{{todo.title}}</span>
-                    <button (click)="removeTodo(i, step)">Remove</button>
-                </mat-list-item>
-            </mat-list>
-            <places-input #todoInput
-                placeholderInput="Next Todo .."
-                (selectionChanged)="todoChanged($event)"
-            ></places-input>
+    <mat-card-content>
+      <step-list [plan]="plan" [step]="step"></step-list>
 
-            <!-- <mat-form-field>
-                <input #todoCosts matInput placeholder="Costs" type="number"/>
-            </mat-form-field> -->
-            
-            <button mat-raised-button (click)="addTodo(step);todoInput.inputValue = null;">add todo</button>
+    </mat-card-content>
+    <mat-card-footer>
 
-        </mat-card-content>
-        <mat-card-footer>
-            
-            
-            <app-file-upload 
-            [(plan)]="plan._id"
-            (saveCallback)="addFilesToStep($event, step)"
-            maxFiles="4"
-            maxSize="2"
-            fileExt="JPG, GIF, PNG, PDF"
-            infoText="Drop your hotel, guesthouse etc. confirmations here" >
-            </app-file-upload>
-
-            <step-files [(plan)]="plan" [(step)]="step"></step-files>
-        </mat-card-footer>
-    </mat-card>
+    </mat-card-footer>
+  </mat-card>
 </div>

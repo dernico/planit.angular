@@ -1,58 +1,54 @@
-
-
 <div class="overview-container">
-    <h4>Travelmates</h4>
-    <div style="float: left;">
-        <span *ngFor="let user of plan.users" >
-            <img [src]="user.picture" height="50" [title]="user.email" />
-        </span>
-    </div>
-    <button mat-icon-button style="clear: left;" (click)="sharePlan()">
-        <mat-icon>add</mat-icon>
-    </button>
+  <h4>Travelmates</h4>
+  <div style="float: left;">
+    <span *ngFor="let user of plan.users">
+      <img [src]="user.picture" height="50" [title]="user.email" />
+    </span>
+  </div>
+  <button mat-icon-button style="clear: left;" (click)="sharePlan()">
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>
 </div>
 
 
-<div class="overview-container" >
-    <h4>Dates</h4>
-    <div style="float: left;">
-        <mat-form-field>
-            <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;startDateChanged();"
-                placeholder="Start">
-        </mat-form-field>
-        <mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #startDatePicker></mat-datepicker>
-    </div>
-
-    <div>
-        <mat-form-field>
-            <input matInput [matDatepicker]="endDatePicker" [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();"
-                placeholder="End">
-        </mat-form-field>
-        <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #endDatePicker></mat-datepicker>
-    </div>
-</div>
-
 <div class="overview-container">
-    <h4>The places you will visit</h4>
-
-    <places-input
-        useGoogle="true"
-        placeholderInput="Where?"
-        (selectionChanged)="placesSelectionChanged($event)"
-    ></places-input>
-
+  <h4>Dates</h4>
+  <div style="float: left;">
     <mat-form-field>
-        <input matInput [(ngModel)]="stepDays" type="number" placeholder="How many days you wanna stop?">
+      <input matInput [matDatepicker]="startDatePicker" [ngModel]="plan.startDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.startDate=$event;startDateChanged();"
+        placeholder="Start">
     </mat-form-field>
-    <button mat-raised-button (click)="addStep(selectedSuggestion, stepDays)">Add</button>
+    <mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDatePicker" [ngModel]="plan.endDate | date:'yyyy-MM-dd'" (ngModelChange)="plan.endDate=$event;planChanged();"
+        placeholder="End">
+    </mat-form-field>
+    <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </div>
+</div>
+
+<div class="overview-container">
+  <h4>The places you will visit</h4>
+
+  <places-input useGoogle="true" placeholderInput="Where?" (selectionChanged)="placesSelectionChanged($event)"></places-input>
+
+  <mat-form-field>
+    <input matInput [(ngModel)]="stepDays" type="number" placeholder="How many days you wanna stop?">
+  </mat-form-field>
+  <button mat-icon-button (click)="addStep(selectedSuggestion, stepDays)">
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>
 
 
 
-    <div *ngIf="plan.steps">
-        <div *ngFor="let step of plan.steps; let i = index;">
-            <!-- <h3 (click)="step.edit = true;" *ngIf="!step.edit">
+  <div *ngIf="plan.steps">
+    <div *ngFor="let step of plan.steps; let i = index;" class="overview-step">
+      <!-- <h3 (click)="step.edit = true;" *ngIf="!step.edit">
                 {{i + 1}}. {{step.title}} ({{step.days}} days)
             </h3>
             <div *ngIf="step.edit">
@@ -64,67 +60,61 @@
                 <button (click)="step.edit = false;">Done</button>
                 <button (click)="removeStep(i);">Remove</button>
             </div> -->
-            <mat-card>
-                <mat-card-header>
-                        <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
-                        <div (click)="step.edit = true;" *ngIf="!step.edit">
-                            <mat-card-title>{{step.title}}</mat-card-title>
-                            <mat-card-subtitle> {{getFromToDates(step, i)}} ({{step.days}} Days) Costs: {{stepTotalCosts(step)}}</mat-card-subtitle>
-                        </div>
-                        <div *ngIf="step.edit">
-                            <places-input
-                                #stepTitleBox
-                                useGoogle="true"
-                                [inputValue]="step.title"
-                                placeholderInput="Next Stop"
-                                (selectionChanged)="placesSelectionUpdate($event, i)"
-                            ></places-input>
-                            <mat-form-field>
-                                <input matInput [(ngModel)]="step.days" type="number" />
-                            </mat-form-field>
-                            <button (click)="stepUpdate(step);step.edit = false;">Done</button>
-                            <button (click)="removeStep(i);">Remove</button>
-                        </div>
-                </mat-card-header>
-                <!--                 
-                <img mat-card-image src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=11" />
-                 -->
-                <!-- <div mat-card-image *ngIf="step.location">
-                    <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="11">
-                        <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
-                    </agm-map>
-                </div> -->
-                <mat-card-content>
-                    <div *ngIf="step.distance">
-                        Distance to your next location: {{step.distance.distance.text}} ({{step.distance.duration.text}})
-                    </div>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-raised-button (click)="goToDetails(step._id)">Details</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                </mat-card-footer>
-            </mat-card>
-        </div>
+      <mat-card>
+        <mat-card-header>
+          <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
+          <div (click)="step.edit = true;" *ngIf="!step.edit">
+            <mat-card-title>{{step.title}}</mat-card-title>
+            <mat-card-subtitle> {{getFromToDates(step, i)}} ({{step.days}} Days)</mat-card-subtitle>
+          </div>
+          <div *ngIf="step.edit">
+            <places-input #stepTitleBox useGoogle="true" [inputValue]="step.title" placeholderInput="Next Stop"
+              (selectionChanged)="placesSelectionUpdate($event, i)"></places-input>
+            <mat-form-field>
+              <input matInput [(ngModel)]="step.days" type="number" />
+            </mat-form-field>
+            <button (click)="stepUpdate(step);step.edit = false;">Done</button>
+            <button (click)="removeStep(i);">Remove</button>
+          </div>
+        </mat-card-header>
+
+        <step-list [plan]="plan" [step]="step"></step-list>
+        
+
+        <step-files [(plan)]="plan" [(step)]="step" [showUploadBox]="false"></step-files>
+
+        <!-- <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                    Files
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            
+                <step-files [(plan)]="plan" [(step)]="step"></step-files>
+            </mat-expansion-panel>
+        </mat-accordion>
+         -->
+        <mat-card-actions>
+          <!-- <button mat-raised-button (click)="goToDetails(step._id)">Details</button> -->
+        </mat-card-actions>
+        <mat-card-footer>
+        </mat-card-footer>
+      </mat-card>
     </div>
+  </div>
 </div>
 
 
 <div *ngIf="plan.files.length > 0" class="overview-container">
-    <h4>Flight tickets, car vouchers, etc. </h4>
+  <h4>Flight tickets, car vouchers, etc. </h4>
 
-    <plan-files 
-        [(plan)] = "plan"
-    ></plan-files>
+  <plan-files [(plan)]="plan"></plan-files>
 
 </div>
 
 
 <div class="overview-container">
-    <app-file-upload 
-    [(plan)]="plan._id"
-    (saveCallback)="addFilesToPlan($event)"
-    maxFiles="10"
-    infoText="Drop your flight tickets, car voucher etc. here" >
-    </app-file-upload>
+  <app-file-upload [(plan)]="plan._id" (saveCallback)="addFilesToPlan($event)" maxFiles="10" infoText="Drop your flight tickets, car voucher etc. here">
+  </app-file-upload>
 </div>

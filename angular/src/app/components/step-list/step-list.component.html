@@ -1,0 +1,21 @@
+<mat-list>
+  <mat-list-item *ngFor="let todo of step.todos; let i = index; last as last;">
+    <!-- <span>{{todo.title}} - ({{todo.costs}})</span> -->
+    <span>{{todo.title}}</span>
+
+    <button class="right" mat-icon-button (click)="removeTodo(i)">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+    <mat-divider ></mat-divider>
+  </mat-list-item>
+
+  <mat-list-item class="step-new-item-wrapper">
+    <mat-form-field class="step-new-item-form-field">
+      <input matInput #todoInput placeholder="Next Todo .." />
+    </mat-form-field>
+
+    <button mat-icon-button (click)="addTodo(todoInput.value);todoInput.value = null;">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
