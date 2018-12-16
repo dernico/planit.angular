@@ -18,7 +18,6 @@ import { Location } from '../../../models/Location'
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-  private mapsApiKey = Configs.mapsApiKey;
   private plan: Planning;
   public startLocation: Location
   public locations: Array<Location>;

@@ -15,12 +15,12 @@ import { User } from '../../../models/User';
   styleUrls: ['./money.component.css']
 })
 export class MoneyComponent implements OnInit {
-  private plan: Planning;
-  private selectedFromUser: User;
-  private totalCosts: number;
-  private costShares = [];
-  private costSharesSmart = [];
-  private costPerPerson: number;
+  public plan: Planning;
+  public selectedFromUser: User;
+  public totalCosts: number;
+  public costShares = [];
+  public costSharesSmart = [];
+  public costPerPerson: number;
 
   constructor(
     private http: HttpClient,
@@ -74,11 +74,11 @@ export class MoneyComponent implements OnInit {
 
     this.totalCosts = 0;
 
-    this.plan.steps.forEach(step => {
-      step.todos.forEach(todo => {
-        this.totalCosts += todo.costs;
-      });
-    });
+    // this.plan.steps.forEach(step => {
+    //   step.todos.forEach(todo => {
+    //     this.totalCosts += todo.costs;
+    //   });
+    // });
 
     this.costPerPerson = 0;
     this.plan.costs.forEach(cost => {
@@ -126,11 +126,11 @@ export class MoneyComponent implements OnInit {
 
     this.totalCosts = 0;
     
-    this.plan.steps.forEach(step => {
-      step.todos.forEach(todo => {
-        this.totalCosts += todo.costs;
-      });
-    });
+    // this.plan.steps.forEach(step => {
+    //   step.todos.forEach(todo => {
+    //     this.totalCosts += todo.costs;
+    //   });
+    // });
 
     this.costPerPerson = 0;
 

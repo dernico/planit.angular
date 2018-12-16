@@ -11,8 +11,9 @@ import { Configs } from '../../configs';
 })
 export class LoginComponent implements OnInit{
   
-  private emailAdress: string;
-  private password: string;
+  public googleAuth = Configs.googleAuth;
+  public emailAdress: string;
+  public password: string;
   
   constructor(
     private http: HttpClient,

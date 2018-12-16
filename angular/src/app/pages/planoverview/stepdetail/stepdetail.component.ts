@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../../models/Planing';
 import { PlanningService } from '../../../services/planning.service';
 import { Step } from '../../../models/Step';
 import { Todo } from '../../../models/Todo';
-import { PlaceSuggestion } from '../../../models/PlaceSuggestion';
-import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
-import { Observable } from 'rxjs/Observable';
-import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
-import { MatDialogModule } from '@angular/material/dialog';
 import { FileService } from '../../../services/file.service';
-import { saveAs } from 'file-saver';
 import { File } from '../../../models/File';
+import { Location } from '../../../models/Location';
 
 @Component({
   selector: 'app-stepdetail',
@@ -21,18 +16,12 @@ import { File } from '../../../models/File';
   styleUrls: ['./stepdetail.component.css']
 })
 export class StepDetailComponent implements OnInit {
-  private mapsApiKey = Configs.mapsApiKey;
-  private plan: Planning;
-  private step: Step;
-  private files;
-  private selectedTodo: Todo;
-  private todoInputValue: string;
-  private fileupload = {
-    fileurl: Configs.fileUrl
-  };
-
+  public plan: Planning;
+  public step: Step;
+  public selectedTodo: Todo;
+  public location : Location;
+  
   constructor(
-    private http: HttpClient,
     private fileService: FileService,
     private route: ActivatedRoute,
     private router: Router,
@@ -52,6 +41,18 @@ export class StepDetailComponent implements OnInit {
           this.step = this.plan.steps.find(s => { return s._id == params.stepid });
         }
       });
+      // if (navigator.geolocation) {
+      //   var self = this;
+      //   navigator.geolocation.getCurrentPosition(position => {
+      //     self.showPosition(position);
+      //   });
+      // }
+  }
+
+  showPosition(position) {
+    this.location = new Location();
+    this.location.lat = position.coords.latitude;
+    this.location.lng = position.coords.longitude; 
   }
 
   backToPlannings() {
@@ -71,7 +72,7 @@ export class StepDetailComponent implements OnInit {
     this.selectedTodo = newTodo;
   }
 
-  stepSelectionUpdate(todo: Todo, index) {
+  stepSelectionUpdate(todo: Todo) {
     //this.selectedTodo = todo;
     this.step.title = todo.title;
     // console.log(todo);
@@ -86,20 +87,15 @@ export class StepDetailComponent implements OnInit {
     // });
   }
 
-  private placeDetails(placeid, cb: any) {
-    let url = Configs.placesDetailsUrl + '?placeid=' + placeid;
-    this.http.get(url).subscribe((res: any) => {
-      cb(res.result);
-    });
-  }
 
   getTodosWithLocation(todos: Array<Todo>) {
     return todos.filter(item => { return item.location; });
   }
 
   addTodo(step: Step, costs) {
-    
-    this.selectedTodo.costs = Number.parseFloat(costs);
+    if(costs){
+      this.selectedTodo.costs = Number.parseFloat(costs);
+    }
     step.todos.push(this.selectedTodo);
     this.planningService.setPlanning(this.plan);
     this.selectedTodo = null;
@@ -111,10 +107,10 @@ export class StepDetailComponent implements OnInit {
   }
   refreshFiles(status) {
     if (status) {
-      this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((files: Array<File>) => {
+      this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
 
-        files.forEach(file => {
-          this.plan.files
+        files.forEach(() => {
+          this.plan.files;
         });
       });
     }

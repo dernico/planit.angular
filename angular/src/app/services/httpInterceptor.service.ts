@@ -18,7 +18,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       .handle(authReq)
       .catch((err: any, caught) => {
         if(err.status == 401 || err.status == 403){
-          this.router.navigate(['callback'])
+          this.router.navigate(['callback']);
         }
         return Observable.throw(err);
       });

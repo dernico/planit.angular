@@ -12,7 +12,7 @@ import { Configs } from '../../../configs';
   styleUrls: ['./share.component.css']
 })
 export class ShareComponent implements OnInit {
-  private plan: Planning;
+  public plan: Planning;
   public email: string;
 
   constructor(

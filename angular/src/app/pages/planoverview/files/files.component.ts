@@ -48,13 +48,13 @@ export class FilesComponent implements OnInit {
   }
   
   private loadFiles(){
-    this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((res : Array<File>) => {
+    this.fileService.loadFilesForPlan(this.plan._id).subscribe((res : Array<File>) => {
       this.files = res;
     });
   }
 
-  public deleteFile(id){
-    this.fileService.deleteFile(Configs.fileUrl, id).subscribe(() => {
+  public deleteFile(file){
+    this.fileService.deleteFile(file).subscribe(() => {
       this.loadFiles();
     });
   }

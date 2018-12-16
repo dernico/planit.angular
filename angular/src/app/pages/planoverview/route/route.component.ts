@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../../models/Planing';
 import { PlanningService } from '../../../services/planning.service';
-import { Step } from '../../../models/Step';
-import { Todo } from '../../../models/Todo';
 import { PlaceSuggestion } from '../../../models/PlaceSuggestion';
 import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
 import { Observable } from 'rxjs/Observable';
@@ -18,8 +16,7 @@ import { Location } from '../../../models/Location'
   styleUrls: ['./route.component.css']
 })
 export class RouteComponent implements OnInit {
-  private mapsApiKey = Configs.mapsApiKey;
-  private plan: Planning;
+  public plan: Planning;
   public startLocation: Location
   public locations: Array<Location>;
 

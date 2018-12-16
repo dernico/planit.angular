@@ -1,19 +1,21 @@
+
+import { environment } from '../environments/environment';
+
 export class Configs {
 
-    public static mapsApiKey = 'AIzaSyAcLB4ukiK5M2tuVLK4P2kIyib7vUDt_r8';
+    public static mapsApiKey = 'AIzaSyDJZg-8VIJfJlZiuoyCC_HKNyvFyPXYen4';
+    public static googleAuth = environment.baseUrl + '/auth/google';
+    public static loginUrl = environment.baseUrl + '/login';
+    public static registerUrl = environment.baseUrl + '/register';
+    public static planningsUrl = environment.baseUrl + '/plannings';
+    public static placesAutocompleteUrl = environment.baseUrl + '/places/autocomplete';
+    public static placesSearchUrl = environment.baseUrl + '/places/search';
+    public static placesDetailsUrl = environment.baseUrl + '/places/details';
+    public static placesPhotoUrl = environment.baseUrl + '/places/photo';
+    public static placesDistanceUrl = environment.baseUrl + '/places/distance';
 
-    public static baseUrl = 'http://localhost:4200';
-    public static loginUrl = Configs.baseUrl + '/login';
-    public static registerUrl = Configs.baseUrl + '/register';
-    public static planningsUrl = Configs.baseUrl + '/plannings';
-    public static placesAutocompleteUrl = Configs.baseUrl + '/places/autocomplete';
-    public static placesSearchUrl = Configs.baseUrl + '/places/search';
-    public static placesDetailsUrl = Configs.baseUrl + '/places/details';
-    public static placesPhotoUrl = Configs.baseUrl + '/places/photo';
-    public static placesDistanceUrl = Configs.baseUrl + '/places/distance';
-
-    public static fileUrl = Configs.baseUrl + '/file';
-    // public static fileGetImagesUrl = Configs.baseUrl + '/file/images';
+    public static fileUrl = environment.baseUrl + '/file';
+    // public static fileGetImagesUrl = environment.baseUrl + '/file/images';
     
-    public static shareUrl = Configs.baseUrl + '/share';
+    public static shareUrl = environment.baseUrl + '/share';
 }

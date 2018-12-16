@@ -1,12 +1,11 @@
 <app-file-upload 
 [(plan)]="plan._id"
-(saveCallback)="addImagesToPlan($event, plan._id)"
-[url]="fileupload.fileurl"
-maxFiles="4"
-maxSize="2"
+(saveCallback)="addImagesToPlan($event)"
+maxFiles="10"
 fileExt="JPG, PNG"
 infoText="Drop your images here" >
 </app-file-upload>
+
 
 <li *ngFor="let image of plan.images; let i = index;">
     <img [httpSrc]="image.url" height="200px" width="200px;" />

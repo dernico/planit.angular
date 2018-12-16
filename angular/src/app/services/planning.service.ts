@@ -6,11 +6,14 @@ import { File } from '../models/File';
 import { Step } from '../models/Step';
 import { Distance } from '../models/Distance';
 import { resolve } from 'q';
+import { FileService } from './file.service';
 
 @Injectable()
 export class PlanningService {
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private fileservice: FileService) { }
 
     public setPlannings(plannings: Array<Planning>) {
         sessionStorage.setItem('plannings', JSON.stringify(plannings));
@@ -93,8 +96,13 @@ export class PlanningService {
     }
 
     public deleteFileFromPlan(plan: Planning, index: number) {
-        plan.files.splice(index, 1);
-        this.setPlanning(plan);
+        var self = this;
+        var file = plan.files[index];
+        self.fileservice.deleteFile(file).subscribe(function(err){
+            console.log(err);
+            plan.files.splice(index, 1);
+            self.setPlanning(plan);
+        });
     }
 
     private updatePlanning(plan: Planning) {

@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
-//import { Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-//import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-// import 'rxjs/add/operator/catch';
 
-import { Configs } from '../configs';
 import { File } from '../models/File';
+import { Configs } from '../configs';
 
 @Injectable()
 export class FileService {
     constructor(private http: HttpClient) { }
 
-    upload(url, formData) {
-        return this.http.post(url, formData);
+    upload(formData) {
+        return this.http.post(Configs.fileUrl, formData);
 
     }
-    loadFilesForPlan(url, planid) {
-        url = url + '?planid=' + planid;
+    loadFilesForPlan(planid) {
+        const url = Configs.fileUrl + '?planid=' + planid;
         return this.http.get(url);
         /*.map( (files:Array<File>) => {
             let result = {};
@@ -36,17 +33,19 @@ export class FileService {
         });
         */
     }
-    deleteFile(url, fileid) {
-        url += '?id=' + fileid;
+    deleteFile(file) {
+        const url = Configs.fileUrl + "/" + file.fileId;
         return this.http.delete(url);
     }
 
     downloadFile(file: File) {
+        console.log(file);
         const headers = new HttpHeaders();
         headers.append('Accept', 'text/plain');
         this.http.get(file.url, { headers: headers, responseType: 'blob' }).subscribe(resp => {
+            const type = 'application/' + file.extension;
             //const blob = new Blob([resp], { type: 'application/octet-stream' });
-            const blob = new Blob([resp], { type: 'application/pdf' });
+            const blob = new Blob([resp], { type: type });
             //saveAs(blob, file.filename + "." + file.extension);
             this.showFile(blob, file.filename);
         });

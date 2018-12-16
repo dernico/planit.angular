@@ -1,20 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../../models/Planing';
 import { PlanningService } from '../../../services/planning.service';
 import { Step } from '../../../models/Step';
 import { Todo } from '../../../models/Todo';
 import { PlaceSuggestion } from '../../../models/PlaceSuggestion';
-import { PlaceSearchResult } from '../../../models/PlaceSearchResult';
-import { Observable } from 'rxjs/Observable';
-import { PlaceDetail } from '../../../models/PlaceDetail';
 import { Configs } from '../../../configs';
-import { MatDialogModule } from '@angular/material/dialog';
 import { FileService } from '../../../services/file.service';
-import { saveAs } from 'file-saver';
 import { File } from '../../../models/File';
-import { Distance } from '../../../models/Distance';
 
 @Component({
   selector: 'app-overview',
@@ -22,13 +16,10 @@ import { Distance } from '../../../models/Distance';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
-  private mapsApiKey = Configs.mapsApiKey;
-  private plan: Planning;
-  private files;
-  private selectedSuggestion;
-  private fileupload = {
-    fileurl: Configs.fileUrl
-  };
+  public plan: Planning;
+  public files;
+  public selectedSuggestion;
+  public stepDays;
 
   constructor(
     private http: HttpClient,
@@ -66,9 +57,19 @@ export class OverviewComponent implements OnInit {
     this.planningService.setPlanning(this.plan);
   }
 
-  // stepChanged(step: Step){
-  //   this.planningService.addStep(this.plan, step);
-  // }
+  getFromToDates(step: Step, stepIndex){
+    let alreadySpentDays = 0;
+    for(var i = 0; i < stepIndex; i++){
+      alreadySpentDays += this.plan.steps[i].days;
+    }
+    let startDate = new Date(this.plan.startDate);
+    startDate.setDate(startDate.getDate() + alreadySpentDays);
+
+    let endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + step.days);
+    return  startDate.toLocaleDateString() + " - " + endDate.toLocaleDateString();
+  }
+
 
   placesSelectionChanged(suggest: PlaceSuggestion) {
     this.selectedSuggestion = suggest;
@@ -111,7 +112,7 @@ export class OverviewComponent implements OnInit {
 
   refreshFiles(status) {
     if (status) {
-      this.fileService.loadFilesForPlan(Configs.fileUrl, this.plan._id).subscribe((files: Array<File>) => {
+      this.fileService.loadFilesForPlan(this.plan._id).subscribe((files: Array<File>) => {
 
         files.forEach(file => {
           this.plan.files

@@ -34,19 +34,11 @@
     </div>
 </div>
 
-<div *ngIf="plan.files.length > 0" class="overview-container">
-    <h4>Flight tickets, car vouchers, etc. </h4>
-
-    <plan-files 
-        [(plan)] = "plan"
-    ></plan-files>
-
-</div>
-
 <div class="overview-container">
     <h4>The places you will visit</h4>
 
     <places-input
+        useGoogle="true"
         placeholderInput="Where?"
         (selectionChanged)="placesSelectionChanged($event)"
     ></places-input>
@@ -77,11 +69,12 @@
                         <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
                         <div (click)="step.edit = true;" *ngIf="!step.edit">
                             <mat-card-title>{{step.title}}</mat-card-title>
-                            <mat-card-subtitle>Days: {{step.days}} Costs: {{stepTotalCosts(step)}}</mat-card-subtitle>
+                            <mat-card-subtitle> {{getFromToDates(step, i)}} ({{step.days}} Days) Costs: {{stepTotalCosts(step)}}</mat-card-subtitle>
                         </div>
                         <div *ngIf="step.edit">
                             <places-input
                                 #stepTitleBox
+                                useGoogle="true"
                                 [inputValue]="step.title"
                                 placeholderInput="Next Stop"
                                 (selectionChanged)="placesSelectionUpdate($event, i)"
@@ -96,11 +89,11 @@
                 <!--                 
                 <img mat-card-image src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=11" />
                  -->
-                <div mat-card-image *ngIf="step.location">
+                <!-- <div mat-card-image *ngIf="step.location">
                     <agm-map [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="11">
                         <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
                     </agm-map>
-                </div>
+                </div> -->
                 <mat-card-content>
                     <div *ngIf="step.distance">
                         Distance to your next location: {{step.distance.distance.text}} ({{step.distance.duration.text}})
@@ -117,15 +110,21 @@
 </div>
 
 
+<div *ngIf="plan.files.length > 0" class="overview-container">
+    <h4>Flight tickets, car vouchers, etc. </h4>
+
+    <plan-files 
+        [(plan)] = "plan"
+    ></plan-files>
+
+</div>
+
 
 <div class="overview-container">
     <app-file-upload 
     [(plan)]="plan._id"
-    (saveCallback)="addFilesToPlan($event, plan._id)"
-    [url]="fileupload.fileurl"
-    maxFiles="4"
-    maxSize="2"
-    fileExt="JPG, GIF, PNG, PDF"
+    (saveCallback)="addFilesToPlan($event)"
+    maxFiles="10"
     infoText="Drop your flight tickets, car voucher etc. here" >
     </app-file-upload>
 </div>

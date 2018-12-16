@@ -11,8 +11,8 @@ import { Configs } from '../../configs';
 })
 export class RegisterComponent implements OnInit{
   
-  private emailAdress: string;
-  private password: string;
+  public emailAdress: string;
+  public password: string;
   
   constructor(
     private http: HttpClient,

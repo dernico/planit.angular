@@ -26,37 +26,40 @@
     </div>
     <mat-card>
         <mat-card-header>
-            <mat-card-title></mat-card-title>
+            <mat-card-title>Todos</mat-card-title>
         </mat-card-header>
 
-        <agm-map *ngIf="step.location" [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
-            <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
-            <agm-marker *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
+        <agm-map *ngIf="location" [latitude]="location.lat" [longitude]="location.lng" [zoom]="12">
+            <!-- <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker>
+            <agm-marker *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker> -->
         </agm-map>
 
         <mat-card-content>
             <mat-list>
                 <mat-list-item *ngFor="let todo of step.todos; let i = index;">
-                    <span>{{todo.title}} - ({{todo.costs}})</span>
+                    <!-- <span>{{todo.title}} - ({{todo.costs}})</span> -->
+                    <span>{{todo.title}}</span>
                     <button (click)="removeTodo(i, step)">Remove</button>
                 </mat-list-item>
             </mat-list>
-        </mat-card-content>
-        <mat-card-footer>
             <places-input #todoInput
                 placeholderInput="Next Todo .."
                 (selectionChanged)="todoChanged($event)"
             ></places-input>
-            
-            <mat-form-field>
-                <input #todoCosts matInput placeholder="Costs" type="number"/>
-            </mat-form-field>
-            <button mat-raised-button (click)="addTodo(step, todoCosts.value);todoInput.inputValue = null;todoCosts.value = null;">add todo</button>
 
+            <!-- <mat-form-field>
+                <input #todoCosts matInput placeholder="Costs" type="number"/>
+            </mat-form-field> -->
+            
+            <button mat-raised-button (click)="addTodo(step);todoInput.inputValue = null;">add todo</button>
+
+        </mat-card-content>
+        <mat-card-footer>
+            
+            
             <app-file-upload 
             [(plan)]="plan._id"
             (saveCallback)="addFilesToStep($event, step)"
-            [url]="fileupload.fileurl"
             maxFiles="4"
             maxSize="2"
             fileExt="JPG, GIF, PNG, PDF"

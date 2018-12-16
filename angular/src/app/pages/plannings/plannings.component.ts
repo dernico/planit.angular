@@ -11,7 +11,9 @@ import { Configs } from '../../configs';
   styleUrls: ['./plannings.component.css']
 })
 export class PlanningsComponent implements OnInit {
-  plannings: Array<Planning> = [];
+  
+  public name: string;
+  public plannings: Array<Planning> = [];
 
   constructor(
     private http: HttpClient,

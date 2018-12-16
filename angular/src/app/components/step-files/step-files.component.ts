@@ -4,6 +4,8 @@ import { File } from '../../models/File';
 import { PlanningService } from '../../services/planning.service';
 import { Step } from '../../models/Step';
 import { Planning } from '../../models/Planing';
+import { HttpClient } from '@angular/common/http';
+import { Configs } from '../../configs';
 
 @Component({
     selector: 'step-files',
@@ -16,6 +18,7 @@ export class StepFilesComponent implements OnInit {
     @Input() step: Step;
 
     constructor(
+        private http: HttpClient,
         private fileService: FileService,
         private planningService: PlanningService
     ) { }
@@ -27,10 +30,15 @@ export class StepFilesComponent implements OnInit {
     }
 
     deleteFileFromStep(index, step) {
+        let self = this;
         this.findStep(step._id, (step) => {
-            step.files.splice(index, 1);
+            var file = step.files[index];
+            self.http.delete(Configs.fileUrl + "/" + file.fileId).subscribe(function(err){
+                console.log(err);
+                step.files.splice(index, 1);
+                self.planningService.setPlanning(self.plan);
+            });
         });
-        this.planningService.setPlanning(this.plan);
     }
 
 
