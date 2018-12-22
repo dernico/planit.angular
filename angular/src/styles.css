@@ -17,6 +17,14 @@ body{
     font-family: Roboto,"Helvetica Neue",sans-serif;
 }
 
+.clear{
+    clear: both;
+}
+
+.left{
+    float: left;
+}
+
 .right{
     float: right;
 }

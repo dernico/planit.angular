@@ -1,19 +1,19 @@
 .error{ color: #f00; }
 .dragarea{
-    font-size: 15px;
-    border: 3px solid #bbb; 
-    padding: 15px ;
-    background-color: #fff;
-    color: #bbb;
+    /* font-size: 15px; */
+    /* border: 1px dashed #bbb;  */
+    padding: 10px ;
+    /* background-color: #fff;
+    color: #bbb; */
 }
 
 .dragarea a{
     font-size: 10px;
 }
 .droparea{
-    font-size: 15px;
-    border: 3px dashed #bbb; 
-    padding: 15px ;
-    background-color: #eff;
-    color: #aaa;
+    /* font-size: 15px; */
+    border: 1px dashed #bbb; 
+    padding: 10px ;
+    /* background-color: #eff;
+    color: #aaa; */
 }

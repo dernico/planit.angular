@@ -1,17 +1,31 @@
+<div *ngIf="step.files.length > 0">
+  <div class="step-file-list">
+    <!-- <mat-list>
+      <mat-list-item *ngFor="let file of step.files; let i = index">
+        <span (click)="downloadFile(file)">{{file.filename}}</span>
+        <button *ngIf="showUploadBox" mat-icon-button (click)="deleteFileFromStep(i, step)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list> -->
 
+    <div class="left step-file-list-item" *ngFor="let file of step.files; let i = index">
+      <span (click)="downloadFile(file)">{{file.filename}}</span>
+      <button *ngIf="showUploadBox" mat-icon-button (click)="deleteFileFromStep(i, step)">
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </div>
 
-<div>
-    <mat-list *ngIf="step.files">
-        
-        <mat-list-item *ngFor="let file of step.files; let i = index">
-            <span (click)="downloadFile(file)">{{file.filename}}</span> 
-            <button *ngIf="showUploadBox" mat-icon-button (click)="deleteFileFromStep(i, step)">
-                <mat-icon>delete_forever</mat-icon>
-            </button>
-        </mat-list-item>
-    </mat-list>
+    <div class="right">
+      <app-file-upload *ngIf="showUploadBox" [(plan)]="plan._id" (saveCallback)="addFilesToStep($event, step)" maxFiles="4"
+        maxSize="2" fileExt="JPG, GIF, PNG, PDF" infoText=" ">
+      </app-file-upload>
+    </div>
+  </div>
 </div>
 
-<app-file-upload *ngIf="showUploadBox" [(plan)]="plan._id" (saveCallback)="addFilesToStep($event, step)" maxFiles="4" maxSize="2"
-fileExt="JPG, GIF, PNG, PDF" infoText="Documents, Confirmations etc.">
-</app-file-upload>
+<div *ngIf="step.files.length == 0">
+  <app-file-upload *ngIf="showUploadBox" [(plan)]="plan._id" (saveCallback)="addFilesToStep($event, step)" maxFiles="4"
+    maxSize="2" fileExt="JPG, GIF, PNG, PDF" infoText="Add Documents">
+  </app-file-upload>
+</div>

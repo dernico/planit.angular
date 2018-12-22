@@ -1,0 +1,9 @@
+.step-file-list{
+    display: inline-block;
+    padding-left: 20px;
+}
+
+.step-file-list-item{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

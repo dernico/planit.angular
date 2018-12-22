@@ -80,8 +80,7 @@
 
         <step-list [plan]="plan" [step]="step"></step-list>
         
-
-        <step-files [(plan)]="plan" [(step)]="step" [showUploadBox]="false"></step-files>
+        
 
         <!-- <mat-accordion>
             <mat-expansion-panel>
@@ -95,10 +94,10 @@
             </mat-expansion-panel>
         </mat-accordion>
          -->
-        <mat-card-actions>
-          <!-- <button mat-raised-button (click)="goToDetails(step._id)">Details</button> -->
-        </mat-card-actions>
+        <!-- <mat-card-actions>
+        </mat-card-actions> -->
         <mat-card-footer>
+            <step-files [(plan)]="plan" [(step)]="step" [showUploadBox]="true"></step-files>
         </mat-card-footer>
       </mat-card>
     </div>

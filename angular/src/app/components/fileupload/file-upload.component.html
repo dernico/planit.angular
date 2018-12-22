@@ -1,17 +1,18 @@
-<div draggable="true" ngClass="{{dragAreaClass}}">
+<div  draggable="true" ngClass="{{dragAreaClass}}">
+  
     <div class="row">
-        <div class="col-md-12 text-center">
-            {{infoText}}
-            <a href="javascript:void(0)" (click)="file.click()">
-                (Or click to browse)
-            </a>
-            <input type="file" #file [multiple]="(maxFiles > 1)" (change)="onFileChange($event)" style="display:none" />
-        </div>
+    <div class="col-md-12 text-center" >
+        <span>{{infoText}}</span>
+      <button mat-icon-button (click)="file.click()">
+        <mat-icon>attach_file</mat-icon>
+      </button>
+      <input type="file" #file [multiple]="(maxFiles > 1)" (change)="onFileChange($event)" style="display:none" />
     </div>
+  </div>
 
 </div>
 <div class="row error" *ngIf="errors.length > 0">
-    <ul>
-        <li *ngFor="let err of errors">{{err}}</li>
-    </ul>
+  <ul>
+    <li *ngFor="let err of errors">{{err}}</li>
+  </ul>
 </div>
