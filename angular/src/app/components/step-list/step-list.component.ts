@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FileService } from '../../services/file.service';
-import { File } from '../../models/File';
 import { PlanningService } from '../../services/planning.service';
 import { Step } from '../../models/Step';
 import { Planning } from '../../models/Planing';
 import { HttpClient } from '@angular/common/http';
-import { Configs } from '../../configs';
 import { Todo } from '../../models/Todo';
+import { PlaceSuggestion } from '../../models/PlaceSuggestion';
+import { PlaceDetail } from '../../models/PlaceDetail';
 
 @Component({
     selector: 'step-list',
@@ -17,6 +17,9 @@ export class StepListComponent implements OnInit {
 
     @Input() plan: Planning;
     @Input() step: Step;
+    @Input() overview: boolean = false;
+
+    private selectedSuggestion: Todo;
 
     constructor(
         private http: HttpClient,
@@ -28,8 +31,8 @@ export class StepListComponent implements OnInit {
 
     addTodo(todoText) {
         var newTodo = new Todo();
-        newTodo.title = todoText;
-
+        newTodo.title = this.selectedSuggestion.title;
+        newTodo.location = this.selectedSuggestion.location;
         this.step.todos.push(newTodo);
         this.planningService.setPlanning(this.plan);
       }
@@ -37,6 +40,10 @@ export class StepListComponent implements OnInit {
       removeTodo(index) {
         this.step.todos.splice(index, 1);
         this.planningService.setPlanning(this.plan);
+      }
+
+      placesSelectionChanged(suggest: Todo) {
+        this.selectedSuggestion = suggest;
       }
 
 }

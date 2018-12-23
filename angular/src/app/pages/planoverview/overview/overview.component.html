@@ -63,7 +63,8 @@
       <mat-card>
         <mat-card-header>
           <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
-          <div (click)="step.edit = true;" *ngIf="!step.edit">
+          <!-- <div (click)="step.edit = true;" *ngIf="!step.edit"> -->
+          <div (click)="goToDetails(step)" *ngIf="!step.edit">
             <mat-card-title>{{step.title}}</mat-card-title>
             <mat-card-subtitle> {{getFromToDates(step, i)}} ({{step.days}} Days)</mat-card-subtitle>
           </div>
@@ -78,7 +79,7 @@
           </div>
         </mat-card-header>
 
-        <step-list [plan]="plan" [step]="step"></step-list>
+        <step-list [plan]="plan" [step]="step" [overview]="false"></step-list>
         
         
 

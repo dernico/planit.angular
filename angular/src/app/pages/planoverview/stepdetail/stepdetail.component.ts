@@ -75,6 +75,8 @@ export class StepDetailComponent implements OnInit {
   stepSelectionUpdate(todo: Todo) {
     //this.selectedTodo = todo;
     this.step.title = todo.title;
+    this.step.location = todo.location;
+    this.planningService.setPlanning(this.plan);
     // console.log(todo);
     // this.planningService.setPlanning(this.plan);
 

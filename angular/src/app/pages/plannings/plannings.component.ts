@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../models/Planing'
 import { PlanningService } from '../../services/planning.service';
 import { Configs } from '../../configs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-plannings',
@@ -18,7 +19,8 @@ export class PlanningsComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private planningService: PlanningService
+    private planningService: PlanningService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -40,5 +42,9 @@ export class PlanningsComponent implements OnInit {
     this.http.post(Configs.planningsUrl, {title: name}).subscribe(() => {
       this.init();
     });
+  }
+
+  logout(){
+    this.auth.logout();
   }
 }

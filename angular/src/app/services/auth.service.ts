@@ -12,4 +12,8 @@ export class AuthService {
         var token = sessionStorage.getItem('access_token');
         return token;
     }
+
+    public logout(){
+        sessionStorage.removeItem('access_token');
+    }
 }

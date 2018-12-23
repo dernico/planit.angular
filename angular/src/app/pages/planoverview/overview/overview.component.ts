@@ -45,8 +45,8 @@ export class OverviewComponent implements OnInit {
     this.router.navigate(['share', this.plan._id]);
   }
 
-  goToDetails(stepid) {
-    this.router.navigate(['stepdetails', this.plan._id, stepid]);
+  goToDetails(step) {
+    this.router.navigate(['stepdetails', this.plan._id, step._id]);
   }
 
   startDateChanged() {

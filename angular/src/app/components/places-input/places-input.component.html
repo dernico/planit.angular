@@ -7,7 +7,6 @@
         type="text" 
         placeholder="{{placeholderInput}}"
         value={{inputValue}}
-        (input)="inputChange(box.value)"
         >
 </mat-form-field>
 
@@ -16,6 +15,6 @@
 
 <mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
     <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
-        {{ suggest.description }}
+        {{ suggest.formatted_address }}
     </mat-option>
 </mat-autocomplete>
