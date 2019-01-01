@@ -53,6 +53,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { PlanFilesComponent } from './components/plan-files/plan-files.component';
 import { StepFilesComponent } from './components/step-files/step-files.component';
 import { StepListComponent } from './components/step-list/step-list.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,8 @@ import { StepListComponent } from './components/step-list/step-list.component';
     MatTabsModule, MatGridListModule,
     MatToolbarModule, MatIconModule,
     MatExpansionModule,
+
+    DragDropModule,
     
     FormsModule,
     BrowserModule,

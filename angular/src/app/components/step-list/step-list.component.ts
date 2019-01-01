@@ -1,12 +1,9 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { FileService } from '../../services/file.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { Step } from '../../models/Step';
 import { Planning } from '../../models/Planing';
-import { HttpClient } from '@angular/common/http';
 import { Todo } from '../../models/Todo';
-import { PlaceSuggestion } from '../../models/PlaceSuggestion';
-import { PlaceDetail } from '../../models/PlaceDetail';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'step-list',
@@ -28,7 +25,15 @@ export class StepListComponent implements OnInit {
 
     ngOnInit() { }
 
-    addTodo(todoText) {
+    drop(event: CdkDragDrop<Step[]>) {
+      moveItemInArray(this.step.todos, event.previousIndex, event.currentIndex);
+      this.step.todos.forEach((t,i) => {
+        t.order = i;
+      });
+      this.planningService.setPlanning(this.plan).then(p => this.plan = p);
+    }
+
+    addTodo() {
         var newTodo = new Todo();
         newTodo.title = this.selectedSuggestion.title;
         newTodo.description = this.selectedSuggestion.description;

@@ -17,7 +17,7 @@
     <places-input [showMap]="false" [onlyGeoref]="true" [useGoogle]="true" #stepTitleBox [inputValue]="step.title" placeholderInput="Next Stop" (selectionChanged)="stepSelectionUpdate($event)"></places-input>
     <input [(ngModel)]="step.days" type="number" />
     <button (click)="stepUpdate(step);step.edit = false;">Done</button>
-    <button (click)="removeStep(i);">Remove</button>
+    <button (click)="removeStep();">Remove</button>
   </div>
   <mat-card>
     <mat-card-header>

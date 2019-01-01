@@ -10,6 +10,8 @@ import { Configs } from '../../../configs';
 import { FileService } from '../../../services/file.service';
 import { File } from '../../../models/File';
 
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
@@ -38,7 +40,21 @@ export class OverviewComponent implements OnInit {
       .params
       .subscribe(params => {
         this.plan = this.planningService.getPlanning(params.id);
+        this.plan.steps = this.orderedSteps();
       });
+  }
+
+  orderedSteps(){
+    return this.plan.steps.sort((a, b) => { return a.order > b.order ? 1 : -1});
+  }
+
+  drop(event: CdkDragDrop<Step[]>) {
+    console.log(event.item);
+    moveItemInArray(this.plan.steps, event.previousIndex, event.currentIndex);
+    this.plan.steps.forEach((s,i) => {
+      s.order = i;
+    });
+    this.planningService.setPlanning(this.plan).then(p => this.plan = p);
   }
 
   sharePlan() {
@@ -54,7 +70,11 @@ export class OverviewComponent implements OnInit {
   }
 
   planChanged() {
-    this.planningService.setPlanning(this.plan);
+    this.planningService
+      .setPlanning(this.plan)
+      .then(plan => {
+        this.plan = plan
+      });
   }
 
   getFromToDates(step: Step, stepIndex){
@@ -94,6 +114,8 @@ export class OverviewComponent implements OnInit {
     newStep.title = todo.title;
     newStep.days = days;
     newStep.location = todo.location;
+    newStep.order = this.plan.steps.length + 1;
+
     this.planningService.addStep(this.plan, newStep);
     this.planningService.setPlanning(this.plan).then(newPlanning => {
       this.plan = newPlanning;

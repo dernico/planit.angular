@@ -6,4 +6,6 @@ export class Todo {
     public costs: number;
     public description: String;
     public location: Location;
+    public info: any;
+    public order: number;
 }

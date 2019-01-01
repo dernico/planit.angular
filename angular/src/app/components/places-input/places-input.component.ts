@@ -1,14 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, NgZone } from '@angular/core';
 import { Configs } from '../../configs';
 import { HttpClient } from '@angular/common/http';
-import { PlaceSuggestion } from '../../models/PlaceSuggestion';
-import { PlaceDetail } from '../../models/PlaceDetail';
 import { Todo } from '../../models/Todo';
 import { } from 'googlemaps';
 import { Location } from '../../models/Location';
-import { map } from 'rxjs-compat/operator/map';
 import { Step } from '../../models/Step';
-import { AgmMap } from '@agm/core';
+import { AgmMap, LatLngBounds } from '@agm/core';
 
 @Component({
     selector: 'places-input',
@@ -21,9 +18,7 @@ export class PlacesInputComponent implements OnInit {
     private searchTimer: any;
     public suggestlist = [];
     public searching: boolean = false;
-    private selectedResult: google.maps.places.PlaceResult;
     private currentSelection: Todo;
-    private searchResults: google.maps.places.PlaceResult[];
 
     @ViewChild('agmmap')
     public agmmapRef: AgmMap;
@@ -41,12 +36,18 @@ export class PlacesInputComponent implements OnInit {
     constructor(private http: HttpClient, private zone: NgZone) { }
 
     ngOnInit() {
+        // this.agmmapRef.mapReady.subscribe((map) =>{
+        //     let bounds: LatLngBounds;
+        //     this.step.todos.forEach(t =>{
+        //         bounds.extend({lat: t.location.lat, lng: t.location.lng});
+        //     });
+        //     map.fitBounds(bounds);
+        // });
     }
     ngAfterViewInit() {
-        //console.log(this.googlemap);
     }
 
-    inputChange(event) {
+    inputChange() {
         // let todo = new Todo();
         // todo.title = event;
         // this.selectionChanged.emit(todo);
@@ -54,7 +55,6 @@ export class PlacesInputComponent implements OnInit {
 
     public addTodo() {
         this.searching = false;
-        this.searchResults = [];
         this.addTodoEvent.emit(this.currentSelection);
     }
 
@@ -74,14 +74,12 @@ export class PlacesInputComponent implements OnInit {
 
             this.zone.run(() => {
                 self.suggestlist = suggestlist;
-                this.searchResults = suggestlist;
             });
         });
     }
 
     suggestlistSelectionChanged(detail) {
 
-        this.selectedResult = detail;
         if(this.onlyGeoref){
             this.EmitGeocoding(detail);
         }else{
@@ -173,12 +171,6 @@ export class PlacesInputComponent implements OnInit {
         }, 1000);
     }
 
-    private placeDetails(placeid, cb: any) {
-        let url = Configs.placesDetailsUrl + '?placeid=' + placeid;
-        this.http.get(url).subscribe((res: any) => {
-            cb(res.result);
-        });
-    }
 
 
     getTodosWithLocation(todos: Array<Todo>) {

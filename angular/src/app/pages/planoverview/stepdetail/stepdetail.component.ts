@@ -72,7 +72,8 @@ export class StepDetailComponent implements OnInit {
     this.selectedTodo = newTodo;
   }
 
-  removeStep(index) {
+  removeStep() {
+    let index = this.plan.steps.findIndex(s => s._id == this.step._id);
     this.plan.steps.splice(index, 1);
     this.planningService.setPlanning(this.plan);
     this.backToPlannings();

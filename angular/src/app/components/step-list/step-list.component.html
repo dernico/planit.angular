@@ -1,5 +1,5 @@
-<mat-list>
-  <mat-list-item *ngFor="let todo of step.todos; let i = index; last as last;">
+<mat-list cdkDropList (cdkDropListDropped)="drop($event)">
+  <mat-list-item *ngFor="let todo of step.todos; let i = index; last as last;" cdkDrag>
     <!-- <span>{{todo.title}} - ({{todo.costs}})</span> -->
     <span>{{todo.title}}</span>
 
@@ -21,14 +21,8 @@
       <mat-icon>add_circle_outline</mat-icon>
     </button> -->
   </mat-list-item>
-
-  <div *ngIf="!overview" class="step-new-item-wrapper">
-    <places-input 
-      #todoInput 
-      [(step)]="step" 
-      useGoogle="true" 
-      placeholderInput="Next Todo .." 
-      (selectionChanged)="placesSelectionChanged($event)"
-      (addTodoEvent)="addTodo($event)"></places-input>
-  </div>
 </mat-list>
+<div *ngIf="!overview" class="step-new-item-wrapper">
+  <places-input #todoInput [(step)]="step" useGoogle="true" placeholderInput="Next Todo .." (selectionChanged)="placesSelectionChanged($event)"
+    (addTodoEvent)="addTodo($event)"></places-input>
+</div>

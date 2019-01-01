@@ -46,24 +46,10 @@
 
 
 
-  <div *ngIf="plan.steps">
-    <div *ngFor="let step of plan.steps; let i = index;" class="overview-step">
-      <!-- <h3 (click)="step.edit = true;" *ngIf="!step.edit">
-                {{i + 1}}. {{step.title}} ({{step.days}} days)
-            </h3>
-            <div *ngIf="step.edit">
-                <places-input
-                    placeholderInput="Where?"
-                    (selectionChanged)="placesSelectionUpdate($event, i)"
-                ></places-input>
-                <input [(ngModel)]="step.days" type="number" (ngModelChange)="planChanged();" />
-                <button (click)="step.edit = false;">Done</button>
-                <button (click)="removeStep(i);">Remove</button>
-            </div> -->
+  <div *ngIf="plan.steps" cdkDropList (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let step of plan.steps; let i = index;" class="overview-step" cdkDrag>
       <mat-card>
         <mat-card-header>
-          <!-- <img mat-card-avatar src="http://localhost:4200/places/staticmap?lat={{step.location.lat}}&lng={{step.location.lng}}&zoom=15" /> -->
-          <!-- <div (click)="step.edit = true;" *ngIf="!step.edit"> -->
           <div (click)="goToDetails(step)" *ngIf="!step.edit">
             <mat-card-title>{{step.title}}</mat-card-title>
             <mat-card-subtitle> {{getFromToDates(step, i)}} ({{step.days}} Days)</mat-card-subtitle>
@@ -81,8 +67,6 @@
 
         <step-list [plan]="plan" [step]="step" [overview]="true"></step-list>
         
-        
-
         <!-- <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
