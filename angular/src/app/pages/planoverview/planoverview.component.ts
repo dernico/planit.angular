@@ -34,8 +34,8 @@ export class PlanoverviewComponent implements OnInit {
   }
 
   tabChanged(event) {
-    console.log(event);
   }
+  
   ngAfterViewChecked() {
     //check later: this fixes the error -> Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:
     this.changeDetectRef.detectChanges();

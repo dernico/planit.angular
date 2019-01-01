@@ -1,20 +1,28 @@
 <mat-form-field>
-    <input 
-        matInput 
-        #box
-        [matAutocomplete]="suggestList" 
-        (keyup)="stepKeyUp(box.value);" 
-        type="text" 
-        placeholder="{{placeholderInput}}"
-        value={{inputValue}}
-        >
+  <input matInput #box [matAutocomplete]="suggestList" (keyup)="stepKeyUp(box.value);" type="text" placeholder="{{placeholderInput}}"
+    value={{inputValue}}>
 </mat-form-field>
 
 <!-- [ngModel]=inputValue -->
 <!-- value={{inputValue}} -->
 
 <mat-autocomplete #suggestList="matAutocomplete" [displayWith]="displaySuggest">
-    <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
-        {{ suggest.formatted_address }}
-    </mat-option>
+  <mat-option (onSelectionChange)="suggestlistSelectionChanged(suggest)" *ngFor="let suggest of suggestlist" [value]="suggest">
+    <!-- {{ suggest.name }} {{ suggest.formatted_adress }} -->
+    {{displaySuggest(suggest)}}
+  </mat-option>
 </mat-autocomplete>
+
+<button mat-icon-button (click)="addTodo()">
+  <mat-icon>add_circle_outline</mat-icon>
+</button>
+
+<div *ngIf="showMap">
+  <agm-map #agmmap *ngIf="step.location" [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
+    <agm-marker iconUrl="/spot_green.png" *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
+    <agm-marker *ngFor="let searchResult of searchResults" [latitude]="searchResult.geometry.location.lat()" [longitude]="searchResult.geometry.location.lng()"></agm-marker>
+  </agm-map>
+</div>
+
+
+<div *ngIf="showMap" id="map" style="display: none;"></div>

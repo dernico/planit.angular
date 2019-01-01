@@ -19,11 +19,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     if(!this.session.getAccessToken()){
       this.router.navigate(['login']);
-    }else{
-      this.http.get('http://localhost:8080/todos')
-        .subscribe(resp => {
-          console.log('todos resp: ', resp);
-        })
     }
   }
 

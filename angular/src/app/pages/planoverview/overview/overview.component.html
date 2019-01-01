@@ -35,7 +35,7 @@
 <div class="overview-container">
   <h4>The places you will visit</h4>
 
-  <places-input useGoogle="true" placeholderInput="Where?" (selectionChanged)="placesSelectionChanged($event)"></places-input>
+  <places-input [showMap]="false" [useGoogle]="true" [onlyGeoref]="true" placeholderInput="Where?" (selectionChanged)="placesSelectionChanged($event)"></places-input>
 
   <mat-form-field>
     <input matInput [(ngModel)]="stepDays" type="number" placeholder="How many days you wanna stop?">
@@ -79,7 +79,7 @@
           </div>
         </mat-card-header>
 
-        <step-list [plan]="plan" [step]="step" [overview]="false"></step-list>
+        <step-list [plan]="plan" [step]="step" [overview]="true"></step-list>
         
         
 

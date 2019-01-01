@@ -6,20 +6,29 @@
     <button *ngIf="!overview" class="right" mat-icon-button (click)="removeTodo(i)">
       <mat-icon>remove</mat-icon>
     </button>
-    <mat-divider ></mat-divider>
+    <mat-divider></mat-divider>
   </mat-list-item>
 
-  <mat-list-item class="step-new-item-wrapper">
+  <mat-list-item *ngIf="!overview" class="step-new-item-wrapper">
     <!-- <mat-form-field class="step-new-item-form-field">
       
       <input matInput #todoInput placeholder="Next Todo .." />
     </mat-form-field> -->
-
-    <places-input #todoInput useGoogle="true" placeholderInput="Next Todo .." (selectionChanged)="placesSelectionChanged($event)"></places-input>
-
+    <!-- 
+    <places-input #todoInput [step]="step" useGoogle="true" placeholderInput="Next Todo .." (selectionChanged)="placesSelectionChanged($event)"></places-input>
 
     <button mat-icon-button (click)="addTodo(todoInput.inputValue);todoInput.inputValue = null;">
       <mat-icon>add_circle_outline</mat-icon>
-    </button>
+    </button> -->
   </mat-list-item>
+
+  <div *ngIf="!overview" class="step-new-item-wrapper">
+    <places-input 
+      #todoInput 
+      [(step)]="step" 
+      useGoogle="true" 
+      placeholderInput="Next Todo .." 
+      (selectionChanged)="placesSelectionChanged($event)"
+      (addTodoEvent)="addTodo($event)"></places-input>
+  </div>
 </mat-list>

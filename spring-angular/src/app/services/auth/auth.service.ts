@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { IAuthResponse } from './iauth-response';
 import { SessionService } from '../session/session.service';
 import { Router } from '@angular/router';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private session: SessionService,
-    private router: Router
+    private router: Router,
+    private config: ConfigService
     ) { }
 
   login(login: ILogin){
@@ -28,12 +30,11 @@ export class AuthService {
       'Authorization': 'Basic '+btoa("testjwtclientid:XY7kmzoNzl100")
     });
 
-    this.http.post("http://localhost:8080/oauth/token",params.toString(), { headers: headers})
+    this.http.post(this.config.authTokenUrl(), params.toString(), { headers: headers})
       .subscribe((resp: IAuthResponse) => {
-        console.log('authservice - login: ', resp.access_token);
         this.session.setAccessToken(resp.access_token);
         this.router.navigate(['']);
 
-      }, error => {});
+      }, error => {console.log(error);});
   }
 }

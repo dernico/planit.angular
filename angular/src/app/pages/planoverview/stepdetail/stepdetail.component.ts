@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planning } from '../../../models/Planing';
@@ -72,6 +72,12 @@ export class StepDetailComponent implements OnInit {
     this.selectedTodo = newTodo;
   }
 
+  removeStep(index) {
+    this.plan.steps.splice(index, 1);
+    this.planningService.setPlanning(this.plan);
+    this.backToPlannings();
+  }
+
   stepSelectionUpdate(todo: Todo) {
     //this.selectedTodo = todo;
     this.step.title = todo.title;
@@ -88,12 +94,6 @@ export class StepDetailComponent implements OnInit {
     //   this.planningService.setPlanning(this.plan);
     // });
   }
-
-
-  getTodosWithLocation(todos: Array<Todo>) {
-    return todos.filter(item => { return item.location; });
-  }
-
 
 }
 

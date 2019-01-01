@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FileService } from '../../services/file.service';
 import { PlanningService } from '../../services/planning.service';
 import { Step } from '../../models/Step';
@@ -15,15 +15,14 @@ import { PlaceDetail } from '../../models/PlaceDetail';
 })
 export class StepListComponent implements OnInit {
 
+    @Input() googlemap;
     @Input() plan: Planning;
     @Input() step: Step;
     @Input() overview: boolean = false;
-
+    
     private selectedSuggestion: Todo;
 
     constructor(
-        private http: HttpClient,
-        private fileService: FileService,
         private planningService: PlanningService
     ) { }
 
@@ -32,6 +31,7 @@ export class StepListComponent implements OnInit {
     addTodo(todoText) {
         var newTodo = new Todo();
         newTodo.title = this.selectedSuggestion.title;
+        newTodo.description = this.selectedSuggestion.description;
         newTodo.location = this.selectedSuggestion.location;
         this.step.todos.push(newTodo);
         this.planningService.setPlanning(this.plan);
@@ -46,4 +46,7 @@ export class StepListComponent implements OnInit {
         this.selectedSuggestion = suggest;
       }
 
+      getTodosWithLocation(todos: Array<Todo>) {
+        return todos.filter(item => { return item.location; });
+      }
 }

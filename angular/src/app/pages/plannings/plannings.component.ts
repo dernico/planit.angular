@@ -46,5 +46,6 @@ export class PlanningsComponent implements OnInit {
 
   logout(){
     this.auth.logout();
+    this.router.navigate(['callback']);
   }
 }

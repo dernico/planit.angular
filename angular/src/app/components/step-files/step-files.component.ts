@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FileService } from '../../services/file.service';
 import { File } from '../../models/File';
 import { PlanningService } from '../../services/planning.service';

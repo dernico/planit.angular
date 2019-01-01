@@ -22,29 +22,12 @@ export class HttpInterceptorService implements HttpInterceptor {
       .handle(authReq)
       .pipe(map((event: HttpEvent<any>) => {
         if(event instanceof HttpResponse){
-          console.log('interceptor error: ', event);
           if(event.status == 401 || event.status == 403){
             this.router.navigate(['login']);
           }
         }
         return event;
       }));
-      // .toPromise()
-      // .catch(reason => {
-      //   if(reason.status == 401 || reason.status == 403){
-      //     this.router.navigate(['callback']);
-      //   }
-      //   return Observable.throw(reason);
-      // });
-      // .pipe(catchError(err => of(HttpErrorResponse)), map(err => {
-      //   return Observable.;
-      // });
-      // .catch((err: any, caught) => {
-      //   if(err.status == 401 || err.status == 403){
-      //     this.router.navigate(['callback']);
-      //   }
-      //   return Observable.throw(err);
-      // });
   }
 
   private getAuthHeader(token: string) : string{

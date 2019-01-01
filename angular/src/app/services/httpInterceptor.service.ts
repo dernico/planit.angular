@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { AuthService } from './auth.service'
 import { Router } from '@angular/router';
+import { Observable, of, empty } from "rxjs";
+import { catchError, map } from "rxjs/operators";
+import { environment } from '../../environments/environment';
  
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
@@ -16,12 +18,20 @@ export class HttpInterceptorService implements HttpInterceptor {
     // Pass on the cloned request instead of the original request.
     return next
       .handle(authReq)
-      .catch((err: any, caught) => {
-        if(err.status == 401 || err.status == 403){
-          this.router.navigate(['callback']);
+      .pipe(map((event: HttpEvent<any>) => {
+        if(event instanceof HttpResponse){
+          if(event.status == 401 || event.status == 403){
+            this.router.navigate(['callback']);
+          }
         }
-        return Observable.throw(err);
-      });
+        return event;
+      }));
+      // .catch((err: any, caught) => {
+      //   if(err.status == 401 || err.status == 403){
+      //     this.router.navigate(['callback']);
+      //   }
+      //   return Observable.throw(err);
+      // });
   }
 
   private getAuthHeader(token: string) : string{

@@ -1,11 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { Configs } from '../../configs';
 import { HttpClient } from '@angular/common/http';
 import { PlaceSuggestion } from '../../models/PlaceSuggestion';
 import { PlaceDetail } from '../../models/PlaceDetail';
 import { Todo } from '../../models/Todo';
-import {} from 'googlemaps';
+import { } from 'googlemaps';
 import { Location } from '../../models/Location';
+import { map } from 'rxjs-compat/operator/map';
+import { Step } from '../../models/Step';
+import { AgmMap } from '@agm/core';
 
 @Component({
     selector: 'places-input',
@@ -17,17 +20,30 @@ export class PlacesInputComponent implements OnInit {
 
     private searchTimer: any;
     public suggestlist = [];
-    private selectedResult: google.maps.GeocoderResult;
+    public searching: boolean = false;
+    private selectedResult: google.maps.places.PlaceResult;
+    private currentSelection: Todo;
+    private searchResults: google.maps.places.PlaceResult[];
 
+    @ViewChild('agmmap')
+    public agmmapRef: AgmMap;
+
+    @Input() step: Step;
     @Input() useGoogle = false;
+    @Input() onlyGeoref = false;
+    @Input() showMap = true;
     @Input() inputValue;
     @Input() placeholderInput: string = "Where do you wanna stop?";
     @Output() selectionChanged = new EventEmitter();
+    @Output() addTodoEvent = new EventEmitter();
 
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private zone: NgZone) { }
 
     ngOnInit() {
+    }
+    ngAfterViewInit() {
+        //console.log(this.googlemap);
     }
 
     inputChange(event) {
@@ -36,7 +52,14 @@ export class PlacesInputComponent implements OnInit {
         // this.selectionChanged.emit(todo);
     }
 
+    public addTodo() {
+        this.searching = false;
+        this.searchResults = [];
+        this.addTodoEvent.emit(this.currentSelection);
+    }
+
     stepKeyUp(value) {
+        this.searching = true;
         var self = this;
         var newTodo = new Todo();
         newTodo.title = value;
@@ -48,15 +71,23 @@ export class PlacesInputComponent implements OnInit {
         }
         clearTimeout(this.searchTimer);
         this.searchPlaces(value, (suggestlist) => {
-            self.suggestlist = suggestlist;
+
+            this.zone.run(() => {
+                self.suggestlist = suggestlist;
+                this.searchResults = suggestlist;
+            });
         });
     }
 
-    suggestlistSelectionChanged(detail: google.maps.GeocoderResult) {
+    suggestlistSelectionChanged(detail) {
 
         this.selectedResult = detail;
-        this.Emit(detail);
-
+        if(this.onlyGeoref){
+            this.EmitGeocoding(detail);
+        }else{
+            this.Emit(detail);
+        }
+        
         // this.placeDetails(suggest.place_id, (place: PlaceDetail) => {
         //     var newTodo = new Todo();
         //     newTodo.title = suggest.description;
@@ -65,12 +96,25 @@ export class PlacesInputComponent implements OnInit {
         // });
     }
 
-    displaySuggest(suggest: google.maps.GeocoderResult) {
-        return suggest ? suggest.formatted_address : suggest;
+    displaySuggest(suggest: google.maps.places.PlaceResult) {
+        return suggest.name ? suggest.name : suggest.formatted_address;
     }
 
-    private Emit(detail: google.maps.GeocoderResult){
-        
+    private Emit(detail: google.maps.places.PlaceResult) {
+
+        var newTodo = new Todo();
+        newTodo.title = detail.name;
+        newTodo.description = detail.formatted_address;
+
+        var location = new Location();
+        location.lat = detail.geometry.location.lat();
+        location.lng = detail.geometry.location.lng();
+        newTodo.location = location;
+        this.selectionChanged.emit(newTodo);
+    }
+
+    private EmitGeocoding(detail: google.maps.GeocoderResult) {
+
         var newTodo = new Todo();
         newTodo.title = detail.formatted_address;
         var location = new Location();
@@ -85,7 +129,7 @@ export class PlacesInputComponent implements OnInit {
             return;
         }
         this.searchTimer = setTimeout(() => {
-            
+
             // var url = "https://maps.googleapis.com/maps/api/place/textsearch/json";
             // url += "?query=" + query.replace(' ', '+');
             // url += "&key=" + Configs.mapsApiKey;
@@ -96,12 +140,31 @@ export class PlacesInputComponent implements OnInit {
             //     }
             // });
 
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'address': query }, function (results, status) {
-                if ( status === google.maps.GeocoderStatus.OK) {
-                    cb(results);
-                }
-            });
+
+            if (!this.onlyGeoref) {
+                var newMap = document.getElementById('map');
+                var map = new google.maps.Map(newMap);
+
+                var request = {
+                    query: query.replace(' ', '+'),
+                    fields: ['formatted_address', 'name', 'rating', 'opening_hours', 'geometry'],
+                };
+
+                var places = new google.maps.places.PlacesService(map);
+                places.findPlaceFromQuery(request, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        cb(results);
+                    }
+                });
+            } else {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': query }, function (results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        cb(results);
+                    }
+                });
+            }
+
 
             // var url = Configs.placesAutocompleteUrl + '?q=' + encodeURIComponent(query);
             // this.http.get(url).subscribe((res: any) => {
@@ -117,4 +180,8 @@ export class PlacesInputComponent implements OnInit {
         });
     }
 
+
+    getTodosWithLocation(todos: Array<Todo>) {
+        return todos.filter(item => { return item.location; });
+    }
 }

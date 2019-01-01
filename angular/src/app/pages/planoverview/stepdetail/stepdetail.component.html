@@ -14,7 +14,7 @@
     {{step.title}} ({{step.days}} days)
   </h3>
   <div *ngIf="step.edit">
-    <places-input [useGoogle]="true" #stepTitleBox [inputValue]="step.title" placeholderInput="Next Stop" (selectionChanged)="stepSelectionUpdate($event)"></places-input>
+    <places-input [showMap]="false" [onlyGeoref]="true" [useGoogle]="true" #stepTitleBox [inputValue]="step.title" placeholderInput="Next Stop" (selectionChanged)="stepSelectionUpdate($event)"></places-input>
     <input [(ngModel)]="step.days" type="number" />
     <button (click)="stepUpdate(step);step.edit = false;">Done</button>
     <button (click)="removeStep(i);">Remove</button>
@@ -24,14 +24,12 @@
       <mat-card-title>Todos</mat-card-title>
     </mat-card-header>
 
-    <agm-map *ngIf="step.location" [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
-      <!-- <agm-marker [latitude]="step.location.lat" [longitude]="step.location.lng"></agm-marker> -->
+    <!-- <agm-map #agmmap *ngIf="step.location" [latitude]="step.location.lat" [longitude]="step.location.lng" [zoom]="12">
       <agm-marker *ngFor="let todo of getTodosWithLocation(step.todos)" [latitude]="todo.location.lat" [longitude]="todo.location.lng"></agm-marker>
-    </agm-map>
+    </agm-map> -->
 
     <mat-card-content>
       <step-list [plan]="plan" [step]="step"></step-list>
-
     </mat-card-content>
     <mat-card-footer>
 

@@ -1,0 +1,10 @@
+
+<ul>
+  <li *ngFor="let todo of todos">
+    {{todo.title}} <input [(ngModel)]="todo.done" type="checkbox" (change)="doneChange($event, todo)" />
+  </li>
+</ul>
+
+title <input [(ngModel)]="newTodo.title" />
+description <input [(ngModel)]="newTodo.description" />
+<button (click)="add()">add</button>

@@ -19,6 +19,7 @@
             "assets": [
               "src/assets",
               "src/nothere.jpg",
+              "src/spot_green.png",
               "src/favicon.ico"
             ],
             "styles": [
