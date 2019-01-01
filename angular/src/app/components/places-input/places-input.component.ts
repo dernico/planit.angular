@@ -37,7 +37,7 @@ export class PlacesInputComponent implements OnInit {
     }
 
     stepKeyUp(value) {
-
+        var self = this;
         var newTodo = new Todo();
         newTodo.title = value;
         this.selectionChanged.emit(newTodo);
@@ -48,7 +48,7 @@ export class PlacesInputComponent implements OnInit {
         }
         clearTimeout(this.searchTimer);
         this.searchPlaces(value, (suggestlist) => {
-            this.suggestlist = suggestlist;
+            self.suggestlist = suggestlist;
         });
     }
 
